@@ -50,20 +50,28 @@ export default function Home() {
     // dijeda (frameloop="never") dan disembunyikan lewat CSS. Ini supaya
     // saat pengguna scroll balik ke atas, foto tidak perlu di-load ulang
     // dari nol (yang sebelumnya sempat bikin sebagian foto gagal muncul).
-    const cinematicObserver = new IntersectionObserver(
-      ([entry]) => {
-        setCinematicActive(!entry.isIntersecting);
-      },
-      { threshold: 0, rootMargin: '0px 0px -60% 0px' }
-    );
+    //
+    // Observer-nya sengaja BARU MULAI AKTIF setelah jeda 2 detik dari
+    // mount, supaya proses loading foto di detik-detik awal halaman
+    // dibuka tidak mungkin terganggu olehnya sama sekali.
+    let cinematicObserver;
+    const startObserverTimeout = setTimeout(() => {
+      cinematicObserver = new IntersectionObserver(
+        ([entry]) => {
+          setCinematicActive(!entry.isIntersecting);
+        },
+        { threshold: 0, rootMargin: '0px 0px -60% 0px' }
+      );
 
-    if (sentinelRef.current) {
-      cinematicObserver.observe(sentinelRef.current);
-    }
+      if (sentinelRef.current) {
+        cinematicObserver.observe(sentinelRef.current);
+      }
+    }, 2000);
 
     return () => {
       fadeObserver.disconnect();
-      cinematicObserver.disconnect();
+      clearTimeout(startObserverTimeout);
+      if (cinematicObserver) cinematicObserver.disconnect();
     };
   }, []);
 
