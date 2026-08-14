@@ -23,17 +23,23 @@ export default function VideoBackground({
       return undefined;
     }
 
-    // Video sengaja mulai diputar dengan jeda singkat (bukan langsung
-    // autoplay saat mount), supaya foto-foto galeri 3D dapat prioritas
-    // bandwidth lebih dulu di detik-detik awal halaman dibuka - video
-    // (400KB) dan 8 foto yang mulai download bersamaan sempat bikin
-    // sebagian foto dibatalkan browser (NS_BINDING_ABORTED) karena
-    // rebutan resource dengan video ini.
-    const playTimeout = setTimeout(() => {
+    // PENTING: preload="auto" tidak dipakai lagi di elemen <video> di bawah,
+    // karena browser mulai MEN-DOWNLOAD videonya begitu elemen itu mount -
+    // terlepas dari kapan .play() dipanggil. Delay .play() saja TIDAK
+    // menunda proses download-nya, jadi video (400KB) tetap rebutan
+    // bandwidth dengan 8 foto galeri 3D yang mulai download bersamaan, dan
+    // itulah yang bikin sebagian foto dibatalkan browser (NS_BINDING_ABORTED).
+    //
+    // Sekarang video di-set preload="none" dan src-nya baru "dipasang" via
+    // video.load() di sini, SETELAH jeda - jadi proses download video benar-
+    // benar belum mulai sama sekali sampai foto-foto galeri sudah dapat
+    // giliran lebih dulu.
+    const loadTimeout = setTimeout(() => {
+      video.load();
       video.play().catch(() => {});
     }, 900);
 
-    return () => clearTimeout(playTimeout);
+    return () => clearTimeout(loadTimeout);
   }, [active]);
 
   return (
@@ -45,7 +51,8 @@ export default function VideoBackground({
           muted
           loop
           playsInline
-          preload="auto"
+          preload="none"
+          fetchpriority="low"
           poster={poster}
           onError={() => setFailed(true)}
         >
