@@ -12,66 +12,87 @@ const FALLBACK_COLORS = ['#8a6a4f', '#3f6b6c', '#6f5a3e', '#4a5568'];
 
 // Loader manual pakai elemen Image() browser NATIVE (bukan THREE.TextureLoader
 // sama sekali) supaya cara memuat foto ini 100% identik dengan tag <img>
-// biasa yang sudah terbukti berhasil di grid "Destinasi Favorit" - tidak ada
-// setting crossOrigin atau perilaku loader Three.js yang bisa beda sendiri.
+// biasa yang sudah terbukti berhasil di grid "Destinasi Favorit".
 //
-// Ditambah retry otomatis: kalau request sempat gagal/dibatalkan browser
-// (mis. NS_BINDING_ABORTED karena race condition saat halaman baru dimuat),
-// dicoba ulang sampai 3x dengan jeda singkat sebelum benar-benar dianggap
-// gagal dan jatuh ke warna fallback.
+// PENTING: proses loading disimpan di cache LEVEL MODULE (di luar React),
+// bukan di dalam useEffect komponennya. Ini supaya kalau komponennya
+// sempat dipasang-lepas-dipasang lagi dengan cepat (mount/unmount cycle)
+// saat render pertama, proses download gambar yang sedang berjalan TIDAK
+// ikut terputus/dibatalkan - dia jalan terus independen, dan komponen mana
+// pun yang butuh hasilnya (termasuk instance yang baru dipasang ulang)
+// tinggal "berlangganan" ke cache yang sama.
 const MAX_RETRIES = 3;
 const RETRY_DELAY_MS = 600;
+const imageCache = new Map();
 
-function useSafeTexture(url) {
-  const [texture, setTexture] = useState(null);
-  const [failed, setFailed] = useState(false);
+function getOrCreateImageEntry(url) {
+  let entry = imageCache.get(url);
+  if (entry) return entry;
 
-  useEffect(() => {
-    let isMounted = true;
-    let retryTimeoutId;
-    let attempt = 0;
+  entry = { status: 'loading', image: null, listeners: new Set() };
+  imageCache.set(url, entry);
 
-    const tryLoad = () => {
-      const image = new Image();
-      // Sengaja TIDAK menyentuh image.crossOrigin sama sekali di sini.
-      // fetchPriority 'high' supaya browser TIDAK membatalkan/menunda
-      // request foto ini demi resource lain (mis. video background) yang
-      // kebetulan mulai dimuat bersamaan di detik-detik awal halaman.
-      if ('fetchPriority' in image) {
-        image.fetchPriority = 'high';
-      }
+  const attemptLoad = (attempt) => {
+    const image = new Image();
+    // Sengaja TIDAK menyentuh image.crossOrigin sama sekali di sini.
+    if ('fetchPriority' in image) {
+      image.fetchPriority = 'high';
+    }
 
-      image.onload = () => {
-        if (!isMounted) return;
-        const loadedTexture = new THREE.Texture(image);
-        loadedTexture.colorSpace = THREE.SRGBColorSpace;
-        loadedTexture.anisotropy = 4;
-        loadedTexture.needsUpdate = true;
-        setTexture(loadedTexture);
-      };
-
-      image.onerror = () => {
-        if (!isMounted) return;
-        attempt += 1;
-        if (attempt < MAX_RETRIES) {
-          retryTimeoutId = setTimeout(tryLoad, RETRY_DELAY_MS * attempt);
-        } else {
-          setFailed(true);
-        }
-      };
-
-      image.src = url;
+    image.onload = () => {
+      entry.status = 'loaded';
+      entry.image = image;
+      entry.listeners.forEach((cb) => cb());
     };
 
-    tryLoad();
+    image.onerror = () => {
+      if (attempt < MAX_RETRIES) {
+        setTimeout(() => attemptLoad(attempt + 1), RETRY_DELAY_MS * attempt);
+      } else {
+        entry.status = 'failed';
+        entry.listeners.forEach((cb) => cb());
+      }
+    };
+
+    image.src = url;
+  };
+
+  attemptLoad(1);
+  return entry;
+}
+
+function useSafeTexture(url) {
+  const [, forceRender] = useState(0);
+
+  useEffect(() => {
+    const entry = getOrCreateImageEntry(url);
+    const onChange = () => forceRender((n) => n + 1);
+    entry.listeners.add(onChange);
+    // Kalau entry ini sudah selesai (loaded/failed) SEBELUM komponen ini
+    // sempat berlangganan, langsung trigger render sekali supaya statusnya
+    // ke-refresh dan tidak macet di kondisi loading selamanya.
+    if (entry.status !== 'loading') onChange();
 
     return () => {
-      isMounted = false;
-      if (retryTimeoutId) clearTimeout(retryTimeoutId);
+      entry.listeners.delete(onChange);
     };
   }, [url]);
 
-  return { texture, failed };
+  const entry = imageCache.get(url);
+  if (!entry || entry.status === 'loading') {
+    return { texture: null, failed: false };
+  }
+  if (entry.status === 'failed') {
+    return { texture: null, failed: true };
+  }
+
+  if (!entry.texture) {
+    entry.texture = new THREE.Texture(entry.image);
+    entry.texture.colorSpace = THREE.SRGBColorSpace;
+    entry.texture.anisotropy = 4;
+    entry.texture.needsUpdate = true;
+  }
+  return { texture: entry.texture, failed: false };
 }
 
 function PhotoMesh({ photo, index }) {
