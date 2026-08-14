@@ -26,7 +26,13 @@ function useSafeTexture(url, delayMs = 0) {
     let isMounted = true;
     let timeoutId;
     const loader = new THREE.TextureLoader();
-    loader.setCrossOrigin('anonymous');
+    // CATATAN: sengaja TIDAK di-set loader.setCrossOrigin('anonymous') di
+    // sini. Foto-foto ini satu domain dengan situsnya sendiri (same-origin),
+    // dan kita tidak butuh baca piksel mentahnya (tidak ada toDataURL /
+    // readPixels), jadi crossOrigin tidak diperlukan. Menyetelnya justru
+    // bisa memicu browser mengirim request dengan mode berbeda yang di
+    // sebagian konfigurasi hosting/CDN malah membuat gambar gagal dimuat
+    // (walau filenya sendiri valid dan bisa dibuka langsung di tab baru).
 
     const startLoad = () => {
       loader.load(
