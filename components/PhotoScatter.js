@@ -10,9 +10,17 @@ import { galleryPhotos } from '@/lib/photoData';
 // TIDAK melempar error yang bisa menjatuhkan seluruh aplikasi.
 const FALLBACK_COLORS = ['#8a6a4f', '#3f6b6c', '#6f5a3e', '#4a5568'];
 
-// Loader manual pakai elemen Image() browser NATIVE (bukan THREE.TextureLoader
-// sama sekali) supaya cara memuat foto ini 100% identik dengan tag <img>
-// biasa yang sudah terbukti berhasil di grid "Destinasi Favorit".
+// Loader manual pakai elemen <img> DOM SUNGGUHAN (bukan objek Image()
+// lepas, bukan THREE.TextureLoader) - ditempel tersembunyi ke document.body
+// supaya cara browser memperlakukan request ini 100% identik dengan tag
+// <img> biasa yang sudah terbukti berhasil di grid "Destinasi Favorit".
+// Sebelumnya dipakai `new Image()` yang TIDAK pernah nempel ke DOM - itu
+// dicurigai jadi salah satu sebab request-nya gampang dibatalkan browser
+// (NS_BINDING_ABORTED), terutama karena SEMUA foto ini diminta serentak.
+//
+// Untuk alasan yang sama, permintaan setiap foto sengaja DIBERI JEDA
+// singkat berurutan (bukan ke-8 nya ditembak bersamaan dalam satu event
+// loop) supaya tidak terjadi "ledakan" banyak request besar sekaligus.
 //
 // PENTING: proses loading disimpan di cache LEVEL MODULE (di luar React),
 // bukan di dalam useEffect komponennya. Ini supaya kalau komponennya
@@ -23,7 +31,30 @@ const FALLBACK_COLORS = ['#8a6a4f', '#3f6b6c', '#6f5a3e', '#4a5568'];
 // tinggal "berlangganan" ke cache yang sama.
 const MAX_RETRIES = 3;
 const RETRY_DELAY_MS = 600;
+const STAGGER_MS = 180;
 const imageCache = new Map();
+let staggerIndex = 0;
+
+function getHiddenPreloadContainer() {
+  if (typeof document === 'undefined') return null;
+  let container = document.getElementById('__gallery-preload__');
+  if (!container) {
+    container = document.createElement('div');
+    container.id = '__gallery-preload__';
+    // Tersembunyi total dari layar & pembaca layar, TAPI tetap bagian sah
+    // dari DOM - bukan display:none (beberapa browser menunda/tidak
+    // memuat gambar yang display:none dari elemen yang baru dibuat).
+    container.style.position = 'absolute';
+    container.style.width = '1px';
+    container.style.height = '1px';
+    container.style.overflow = 'hidden';
+    container.style.opacity = '0';
+    container.style.pointerEvents = 'none';
+    container.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(container);
+  }
+  return container;
+}
 
 function getOrCreateImageEntry(url) {
   let entry = imageCache.get(url);
@@ -32,32 +63,43 @@ function getOrCreateImageEntry(url) {
   entry = { status: 'loading', image: null, listeners: new Set() };
   imageCache.set(url, entry);
 
-  const attemptLoad = (attempt) => {
-    const image = new Image();
-    // Sengaja TIDAK menyentuh image.crossOrigin sama sekali di sini.
-    if ('fetchPriority' in image) {
-      image.fetchPriority = 'high';
-    }
+  const delay = staggerIndex * STAGGER_MS;
+  staggerIndex += 1;
 
-    image.onload = () => {
-      entry.status = 'loaded';
-      entry.image = image;
-      entry.listeners.forEach((cb) => cb());
-    };
+  const attemptLoad = (attempt, initialDelay = 0) => {
+    const startLoad = () => {
+      const container = getHiddenPreloadContainer();
+      const image = document.createElement('img');
+      image.loading = 'eager';
+      image.decoding = 'async';
 
-    image.onerror = () => {
-      if (attempt < MAX_RETRIES) {
-        setTimeout(() => attemptLoad(attempt + 1), RETRY_DELAY_MS * attempt);
-      } else {
-        entry.status = 'failed';
+      image.onload = () => {
+        entry.status = 'loaded';
+        entry.image = image;
         entry.listeners.forEach((cb) => cb());
-      }
+      };
+
+      image.onerror = () => {
+        if (attempt < MAX_RETRIES) {
+          setTimeout(() => attemptLoad(attempt + 1), RETRY_DELAY_MS * attempt);
+        } else {
+          entry.status = 'failed';
+          entry.listeners.forEach((cb) => cb());
+        }
+      };
+
+      if (container) container.appendChild(image);
+      image.src = url;
     };
 
-    image.src = url;
+    if (initialDelay > 0) {
+      setTimeout(startLoad, initialDelay);
+    } else {
+      startLoad();
+    }
   };
 
-  attemptLoad(1);
+  attemptLoad(1, delay);
   return entry;
 }
 
