@@ -10,58 +10,38 @@ import { galleryPhotos } from '@/lib/photoData';
 // TIDAK melempar error yang bisa menjatuhkan seluruh aplikasi.
 const FALLBACK_COLORS = ['#8a6a4f', '#3f6b6c', '#6f5a3e', '#4a5568'];
 
-// Loader manual (bukan drei's useTexture) supaya kegagalan load gambar
-// ditangani dengan try/catch sendiri, bukan dilempar lewat React Suspense
-// sebagai exception yang tidak tertangkap.
-//
-// "delayMs" menunda MULAI-nya loading tiap foto secara berjenjang, supaya
-// decode + upload ke GPU untuk 8 foto tidak numpuk di frame yang sama
-// persis (itu yang bikin sempat terasa "macet sesaat" sebelum semua foto
-// muncul bersamaan). Foto pertama tetap langsung dimuat tanpa jeda.
-function useSafeTexture(url, delayMs = 0) {
+// Loader manual pakai elemen Image() browser NATIVE (bukan THREE.TextureLoader
+// sama sekali) supaya cara memuat foto ini 100% identik dengan tag <img>
+// biasa yang sudah terbukti berhasil di grid "Destinasi Favorit" - tidak ada
+// setting crossOrigin atau perilaku loader Three.js yang bisa beda sendiri.
+function useSafeTexture(url) {
   const [texture, setTexture] = useState(null);
   const [failed, setFailed] = useState(false);
 
   useEffect(() => {
     let isMounted = true;
-    let timeoutId;
-    const loader = new THREE.TextureLoader();
-    // CATATAN: sengaja TIDAK di-set loader.setCrossOrigin('anonymous') di
-    // sini. Foto-foto ini satu domain dengan situsnya sendiri (same-origin),
-    // dan kita tidak butuh baca piksel mentahnya (tidak ada toDataURL /
-    // readPixels), jadi crossOrigin tidak diperlukan. Menyetelnya justru
-    // bisa memicu browser mengirim request dengan mode berbeda yang di
-    // sebagian konfigurasi hosting/CDN malah membuat gambar gagal dimuat
-    // (walau filenya sendiri valid dan bisa dibuka langsung di tab baru).
+    const image = new Image();
+    // Sengaja TIDAK menyentuh image.crossOrigin sama sekali di sini.
 
-    const startLoad = () => {
-      loader.load(
-        url,
-        (loaded) => {
-          if (!isMounted) return;
-          loaded.colorSpace = THREE.SRGBColorSpace;
-          loaded.anisotropy = 4;
-          loaded.needsUpdate = true;
-          setTexture(loaded);
-        },
-        undefined,
-        () => {
-          if (isMounted) setFailed(true);
-        }
-      );
+    image.onload = () => {
+      if (!isMounted) return;
+      const loadedTexture = new THREE.Texture(image);
+      loadedTexture.colorSpace = THREE.SRGBColorSpace;
+      loadedTexture.anisotropy = 4;
+      loadedTexture.needsUpdate = true;
+      setTexture(loadedTexture);
     };
 
-    if (delayMs > 0) {
-      timeoutId = setTimeout(startLoad, delayMs);
-    } else {
-      startLoad();
-    }
+    image.onerror = () => {
+      if (isMounted) setFailed(true);
+    };
+
+    image.src = url;
 
     return () => {
       isMounted = false;
-      if (timeoutId) clearTimeout(timeoutId);
     };
-  }, [url, delayMs]);
+  }, [url]);
 
   return { texture, failed };
 }
