@@ -14,32 +14,54 @@ const FALLBACK_COLORS = ['#8a6a4f', '#3f6b6c', '#6f5a3e', '#4a5568'];
 // sama sekali) supaya cara memuat foto ini 100% identik dengan tag <img>
 // biasa yang sudah terbukti berhasil di grid "Destinasi Favorit" - tidak ada
 // setting crossOrigin atau perilaku loader Three.js yang bisa beda sendiri.
+//
+// Ditambah retry otomatis: kalau request sempat gagal/dibatalkan browser
+// (mis. NS_BINDING_ABORTED karena race condition saat halaman baru dimuat),
+// dicoba ulang sampai 3x dengan jeda singkat sebelum benar-benar dianggap
+// gagal dan jatuh ke warna fallback.
+const MAX_RETRIES = 3;
+const RETRY_DELAY_MS = 600;
+
 function useSafeTexture(url) {
   const [texture, setTexture] = useState(null);
   const [failed, setFailed] = useState(false);
 
   useEffect(() => {
     let isMounted = true;
-    const image = new Image();
-    // Sengaja TIDAK menyentuh image.crossOrigin sama sekali di sini.
+    let retryTimeoutId;
+    let attempt = 0;
 
-    image.onload = () => {
-      if (!isMounted) return;
-      const loadedTexture = new THREE.Texture(image);
-      loadedTexture.colorSpace = THREE.SRGBColorSpace;
-      loadedTexture.anisotropy = 4;
-      loadedTexture.needsUpdate = true;
-      setTexture(loadedTexture);
+    const tryLoad = () => {
+      const image = new Image();
+      // Sengaja TIDAK menyentuh image.crossOrigin sama sekali di sini.
+
+      image.onload = () => {
+        if (!isMounted) return;
+        const loadedTexture = new THREE.Texture(image);
+        loadedTexture.colorSpace = THREE.SRGBColorSpace;
+        loadedTexture.anisotropy = 4;
+        loadedTexture.needsUpdate = true;
+        setTexture(loadedTexture);
+      };
+
+      image.onerror = () => {
+        if (!isMounted) return;
+        attempt += 1;
+        if (attempt < MAX_RETRIES) {
+          retryTimeoutId = setTimeout(tryLoad, RETRY_DELAY_MS * attempt);
+        } else {
+          setFailed(true);
+        }
+      };
+
+      image.src = url;
     };
 
-    image.onerror = () => {
-      if (isMounted) setFailed(true);
-    };
-
-    image.src = url;
+    tryLoad();
 
     return () => {
       isMounted = false;
+      if (retryTimeoutId) clearTimeout(retryTimeoutId);
     };
   }, [url]);
 
