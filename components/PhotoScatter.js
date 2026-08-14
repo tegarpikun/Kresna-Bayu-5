@@ -34,6 +34,12 @@ function useSafeTexture(url) {
     const tryLoad = () => {
       const image = new Image();
       // Sengaja TIDAK menyentuh image.crossOrigin sama sekali di sini.
+      // fetchPriority 'high' supaya browser TIDAK membatalkan/menunda
+      // request foto ini demi resource lain (mis. video background) yang
+      // kebetulan mulai dimuat bersamaan di detik-detik awal halaman.
+      if ('fetchPriority' in image) {
+        image.fetchPriority = 'high';
+      }
 
       image.onload = () => {
         if (!isMounted) return;
