@@ -17,11 +17,23 @@ export default function VideoBackground({
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
-    if (active) {
-      video.play().catch(() => {});
-    } else {
+
+    if (!active) {
       video.pause();
+      return undefined;
     }
+
+    // Video sengaja mulai diputar dengan jeda singkat (bukan langsung
+    // autoplay saat mount), supaya foto-foto galeri 3D dapat prioritas
+    // bandwidth lebih dulu di detik-detik awal halaman dibuka - video
+    // (400KB) dan 8 foto yang mulai download bersamaan sempat bikin
+    // sebagian foto dibatalkan browser (NS_BINDING_ABORTED) karena
+    // rebutan resource dengan video ini.
+    const playTimeout = setTimeout(() => {
+      video.play().catch(() => {});
+    }, 900);
+
+    return () => clearTimeout(playTimeout);
   }, [active]);
 
   return (
@@ -30,10 +42,10 @@ export default function VideoBackground({
         <video
           ref={videoRef}
           className="h-full w-full object-cover opacity-90"
-          autoPlay
           muted
           loop
           playsInline
+          preload="auto"
           poster={poster}
           onError={() => setFailed(true)}
         >
