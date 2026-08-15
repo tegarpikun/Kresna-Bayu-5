@@ -41,13 +41,17 @@ function getHiddenPreloadContainer() {
   if (!container) {
     container = document.createElement('div');
     container.id = '__gallery-preload__';
-    // Tersembunyi total dari layar & pembaca layar, TAPI tetap bagian sah
-    // dari DOM - bukan display:none (beberapa browser menunda/tidak
-    // memuat gambar yang display:none dari elemen yang baru dibuat).
-    container.style.position = 'absolute';
-    container.style.width = '1px';
-    container.style.height = '1px';
-    container.style.overflow = 'hidden';
+    // PENTING: jangan dibatasi width/height 1px + overflow:hidden - itu
+    // sempat bikin browser (terutama Firefox) menganggap gambar ini
+    // "tidak perlu benar-benar dirender penuh" karena area tampilnya
+    // dianggap terlalu kecil/terpotong, sehingga WebGL cuma dapat data
+    // gambar yang rusak/kosong walau elemen <img>-nya sendiri sudah
+    // "loaded" tanpa error. Solusinya: geser jauh ke luar layar dengan
+    // ukuran wajar (bukan dikecilkan/dipotong), supaya browser tetap
+    // merender gambarnya secara utuh seperti biasa.
+    container.style.position = 'fixed';
+    container.style.left = '-99999px';
+    container.style.top = '-99999px';
     container.style.opacity = '0';
     container.style.pointerEvents = 'none';
     container.setAttribute('aria-hidden', 'true');
