@@ -76,10 +76,12 @@ function getOrCreateImageEntry(url) {
       image.onload = () => {
         entry.status = 'loaded';
         entry.image = image;
+        console.log('[PhotoScatter] loaded:', url, image.naturalWidth, 'x', image.naturalHeight);
         entry.listeners.forEach((cb) => cb());
       };
 
-      image.onerror = () => {
+      image.onerror = (e) => {
+        console.warn('[PhotoScatter] gagal load (percobaan', attempt, '):', url, e);
         if (attempt < MAX_RETRIES) {
           setTimeout(() => attemptLoad(attempt + 1), RETRY_DELAY_MS * attempt);
         } else {
@@ -133,6 +135,7 @@ function useSafeTexture(url) {
     entry.texture.colorSpace = THREE.SRGBColorSpace;
     entry.texture.anisotropy = 4;
     entry.texture.needsUpdate = true;
+    console.log('[PhotoScatter] texture dibuat untuk:', url, entry.texture);
   }
   return { texture: entry.texture, failed: false };
 }
