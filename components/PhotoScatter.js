@@ -136,8 +136,19 @@ function useSafeTexture(url) {
 
   if (!entry.texture) {
     entry.texture = new THREE.Texture(entry.image);
+    // PENTING: foto aslinya (1200x800) bukan ukuran "power-of-two", dan
+    // mipmap default Three.js untuk tekstur yang dibuat manual seperti ini
+    // bisa gagal di-generate secara diam-diam pada beberapa GPU/driver -
+    // teksturnya tetap "valid" secara data (makanya tidak ada error di
+    // console), tapi GPU menolak menampilkannya dan hasilnya cuma warna
+    // rata mengikuti pencahayaan scene, bukan foto aslinya.
+    // Matikan mipmap & pakai filter paling aman untuk kasus ini.
+    entry.texture.generateMipmaps = false;
+    entry.texture.minFilter = THREE.LinearFilter;
+    entry.texture.magFilter = THREE.LinearFilter;
+    entry.texture.wrapS = THREE.ClampToEdgeWrapping;
+    entry.texture.wrapT = THREE.ClampToEdgeWrapping;
     entry.texture.colorSpace = THREE.SRGBColorSpace;
-    entry.texture.anisotropy = 4;
     entry.texture.needsUpdate = true;
     console.log('[PhotoScatter] texture dibuat untuk:', url, entry.texture);
   }
