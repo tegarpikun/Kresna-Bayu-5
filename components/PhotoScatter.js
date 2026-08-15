@@ -159,6 +159,8 @@ function PhotoMesh({ photo, index }) {
   const meshRef = useRef();
   const { texture, failed } = useSafeTexture(photo.url);
 
+  console.log('[PhotoScatter] RENDER PhotoMesh:', photo.url, '| texture:', !!texture, '| failed:', failed);
+
   useFrame((state) => {
     if (!meshRef.current) return;
     const t = state.clock.getElapsedTime();
