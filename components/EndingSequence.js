@@ -50,7 +50,7 @@ export default function EndingSequence({ onTriggerRush }) {
       <div className="relative z-20 flex min-h-[100dvh] flex-col items-center justify-center px-4 sm:px-8 text-center">
         <div className="glass-card animate-on-scroll max-w-2xl p-8 sm:p-14">
           <p className="font-sans text-[10px] sm:text-xs tracking-[0.3em] text-cinematic-amber uppercase mb-4">
-            Babak Penutup
+            Perusahaan Anda perlu Outing?
           </p>
           <h2 className="font-serif text-[clamp(1.8rem,6vw,4rem)] text-cinematic-cream mb-5 sm:mb-6 leading-tight text-shadow-cinematic">
             {siteConfig.endingHeadline}
@@ -87,7 +87,7 @@ export default function EndingSequence({ onTriggerRush }) {
             {siteConfig.creditLine}
           </p>
           <p className="font-sans text-[10px] sm:text-xs tracking-[0.3em] text-cinematic-amber/80 uppercase mb-10">
-            Fin.
+            2002-2026.
           </p>
           <a
             href={buildWhatsappLink()}
