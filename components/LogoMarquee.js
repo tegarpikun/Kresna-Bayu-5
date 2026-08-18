@@ -29,7 +29,7 @@ export default function LogoMarquee() {
                 key={`${logo.name}-${i}`}
                 src={logo.src}
                 alt={logo.name}
-                className="h-10 w-auto shrink-0 object-contain opacity-50 grayscale transition-all duration-300 hover:opacity-90 hover:grayscale-0"
+                className="h-12 w-auto shrink-0 object-contain opacity-50 grayscale transition-all duration-300 hover:opacity-90 hover:grayscale-0"
               />
             ) : (
               <span
