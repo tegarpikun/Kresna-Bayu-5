@@ -30,7 +30,7 @@ export default function SocialIcons({ className = '' }) {
           target="_blank"
           rel="noopener noreferrer"
           aria-label={social.name}
-          className="flex h-9 w-9 items-center justify-center rounded-full border border-welcome-primary/25 text-welcome-primary/70 transition-colors hover:border-welcome-primary hover:text-welcome-primary hover:bg-welcome-primary/5"
+          className="flex h-9 w-9 items-center justify-center rounded-full border border-voyage-gold/25 text-voyage-cream/70 transition-colors hover:border-voyage-gold hover:text-voyage-gold"
         >
           <svg
             viewBox="0 0 24 24"
