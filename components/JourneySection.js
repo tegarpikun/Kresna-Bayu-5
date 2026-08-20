@@ -1,20 +1,16 @@
 'use client';
 
-import { useState, useCallback, useEffect } from 'react';
+import { useState } from 'react';
 import { siteConfig, buildWhatsappLink } from '@/lib/siteConfig';
 import { destinationPhotos } from '@/lib/photoData';
 import SocialIcons from '@/components/SocialIcons';
 import LogoMarquee from '@/components/LogoMarquee';
 
-function DestinationCard({ photo, index, onOpen }) {
+function DestinationCard({ photo }) {
   const [failed, setFailed] = useState(false);
 
   return (
-    <button
-      type="button"
-      onClick={() => onOpen(index)}
-      className="group relative aspect-[4/3] overflow-hidden rounded-xl border border-welcome-border bg-welcome-card text-left shadow-sm transition-shadow duration-300 hover:shadow-lg"
-    >
+    <div className="group relative aspect-[4/3] overflow-hidden rounded-md border border-voyage-gold/15">
       {!failed ? (
         // eslint-disable-next-line @next/next/no-img-element
         <img
@@ -25,128 +21,16 @@ function DestinationCard({ photo, index, onOpen }) {
           className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
         />
       ) : (
-        <div className="flex h-full w-full items-center justify-center bg-welcome-bgSoft text-welcome-primary/50">
-          <span className="font-display italic text-sm">{photo.title}</span>
+        <div className="flex h-full w-full items-center justify-center bg-voyage-navyDeep text-voyage-gold/40">
+          <span className="font-serif italic text-sm">{photo.title}</span>
         </div>
       )}
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-welcome-text/80 via-welcome-text/5 to-transparent" />
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-voyage-navyDeep/90 via-voyage-navyDeep/10 to-transparent" />
       <div className="absolute bottom-0 left-0 right-0 p-4">
-        <p className="font-display text-lg text-white">{photo.title}</p>
-        <p className="font-warm text-[10px] uppercase tracking-[0.2em] text-welcome-accent">
+        <p className="font-serif text-lg text-voyage-cream">{photo.title}</p>
+        <p className="font-sans text-[10px] uppercase tracking-[0.2em] text-voyage-gold/80">
           {photo.location}
         </p>
-      </div>
-    </button>
-  );
-}
-
-function DestinationLightbox({ index, onClose, onNavigate }) {
-  const photo = destinationPhotos[index];
-
-  useEffect(() => {
-    function handleKey(e) {
-      if (e.key === 'Escape') onClose();
-      if (e.key === 'ArrowRight') onNavigate(1);
-      if (e.key === 'ArrowLeft') onNavigate(-1);
-    }
-    window.addEventListener('keydown', handleKey);
-    return () => window.removeEventListener('keydown', handleKey);
-  }, [onClose, onNavigate]);
-
-  if (!photo) return null;
-
-  return (
-    <div
-      className="fixed inset-0 z-[60] flex items-center justify-center bg-welcome-text/90 px-4 py-10 backdrop-blur-sm"
-      onClick={onClose}
-    >
-      <button
-        type="button"
-        onClick={onClose}
-        aria-label="Tutup"
-        className="absolute right-5 top-5 flex h-10 w-10 items-center justify-center rounded-full border border-white/30 font-warm text-lg text-white transition-colors hover:bg-white/10"
-      >
-        &times;
-      </button>
-
-      <button
-        type="button"
-        onClick={(e) => {
-          e.stopPropagation();
-          onNavigate(-1);
-        }}
-        aria-label="Sebelumnya"
-        className="absolute left-3 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/30 text-white transition-colors hover:bg-white/10 sm:left-6"
-      >
-        &#8592;
-      </button>
-      <button
-        type="button"
-        onClick={(e) => {
-          e.stopPropagation();
-          onNavigate(1);
-        }}
-        aria-label="Selanjutnya"
-        className="absolute right-3 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/30 text-white transition-colors hover:bg-white/10 sm:right-6"
-      >
-        &#8594;
-      </button>
-
-      <div
-        className="max-h-[80vh] w-full max-w-3xl overflow-hidden rounded-xl"
-        onClick={(e) => e.stopPropagation()}
-      >
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={photo.url}
-          alt={photo.title}
-          className="max-h-[70vh] w-full object-contain"
-        />
-        <div className="flex items-center justify-between px-1 py-4">
-          <div>
-            <p className="font-display text-xl text-white">{photo.title}</p>
-            <p className="font-warm text-xs uppercase tracking-[0.2em] text-welcome-accent">
-              {photo.location}
-            </p>
-          </div>
-          <p className="font-warm text-sm text-white/60">
-            {index + 1} / {destinationPhotos.length}
-          </p>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function FaqItem({ item, isOpen, onToggle }) {
-  return (
-    <div className="overflow-hidden rounded-xl border border-welcome-border bg-welcome-card">
-      <button
-        type="button"
-        onClick={onToggle}
-        className="flex w-full items-center justify-between gap-4 px-6 py-5 text-left"
-      >
-        <span className="font-display text-base text-welcome-text sm:text-lg">
-          {item.q}
-        </span>
-        <span
-          className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-welcome-primary/30 font-warm text-welcome-primary transition-transform duration-300 ${
-            isOpen ? 'rotate-45' : ''
-          }`}
-        >
-          +
-        </span>
-      </button>
-      <div
-        className={`grid transition-all duration-300 ease-out ${
-          isOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'
-        }`}
-      >
-        <div className="overflow-hidden">
-          <p className="px-6 pb-6 font-warm text-sm leading-relaxed text-welcome-textSoft">
-            {item.a}
-          </p>
-        </div>
       </div>
     </div>
   );
@@ -154,175 +38,120 @@ function FaqItem({ item, isOpen, onToggle }) {
 
 export default function JourneySection() {
   const { journeySection } = siteConfig;
-  const [lightboxIndex, setLightboxIndex] = useState(null);
-  const [openFaq, setOpenFaq] = useState(0);
-
-  const handleNavigate = useCallback((delta) => {
-    setLightboxIndex((current) => {
-      if (current === null) return current;
-      const total = destinationPhotos.length;
-      return (current + delta + total) % total;
-    });
-  }, []);
 
   return (
-    <div className="relative z-20">
-      {/* Transisi halus dari bagian sinematik (gelap) ke bagian welcoming (terang) */}
-      <div className="h-24 bg-gradient-to-b from-cinematic-black to-welcome-bg sm:h-32" />
+    <div className="relative z-20 bg-gradient-to-b from-cinematic-black via-voyage-navyDeep to-voyage-navy">
+      {/* ===== Tentang / Kenapa memilih kami ===== */}
+      <section className="mx-auto max-w-6xl px-6 py-20 sm:py-28">
+        <p className="mb-4 text-center font-sans text-xs uppercase tracking-[0.3em] text-voyage-gold sm:text-left">
+          {journeySection.eyebrow}
+        </p>
+        <h2 className="animate-on-scroll shimmer-text mb-6 text-center font-serif text-[clamp(1.8rem,5vw,3.2rem)] font-semibold leading-tight sm:text-left">
+          {journeySection.title}
+        </h2>
+        <p className="mx-auto max-w-2xl text-center font-sans text-sm leading-relaxed text-voyage-cream/70 sm:mx-0 sm:text-left sm:text-base">
+          {journeySection.body}
+        </p>
 
-      <div className="bg-welcome-bg">
-        {/* ===== Tentang / Kenapa memilih kami ===== */}
-        <section className="mx-auto max-w-6xl px-6 py-16 sm:py-24">
-          <p className="mb-4 text-center font-warm text-xs font-semibold uppercase tracking-[0.3em] text-welcome-primary sm:text-left">
-            {journeySection.eyebrow}
-          </p>
-          <h2 className="animate-on-scroll mb-6 text-center font-display text-[clamp(1.8rem,5vw,3.2rem)] font-semibold leading-tight text-welcome-text sm:text-left">
-            {journeySection.title}
-          </h2>
-          <p className="mx-auto max-w-2xl text-center font-warm text-sm leading-relaxed text-welcome-textSoft sm:mx-0 sm:text-left sm:text-base">
-            {journeySection.body}
-          </p>
-
-          <div className="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-3">
-            {journeySection.features.map((feature, index) => (
-              <div
-                key={feature.title}
-                className="rounded-xl border border-welcome-border bg-welcome-card p-6 shadow-sm transition-shadow duration-300 hover:shadow-md"
-              >
-                <p className="mb-3 font-display text-sm text-welcome-accent">
-                  {String(index + 1).padStart(2, '0')}
-                </p>
-                <div className="mb-4 h-[2px] w-10 bg-welcome-primary" />
-                <h3 className="mb-2 font-display text-lg text-welcome-text">
-                  {feature.title}
-                </h3>
-                <p className="font-warm text-sm leading-relaxed text-welcome-textSoft">
-                  {feature.desc}
-                </p>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* ===== Destinasi (galeri dengan lightbox + counter) ===== */}
-        <section className="mx-auto max-w-6xl px-6 pb-16 sm:pb-24">
-          <h2 className="mb-10 text-center font-display text-[clamp(1.6rem,4.5vw,2.6rem)] text-welcome-text">
-            {journeySection.destinationsTitle}
-          </h2>
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-6 lg:grid-cols-4">
-            {destinationPhotos.map((photo, index) => (
-              <DestinationCard
-                key={photo.id}
-                photo={photo}
-                index={index}
-                onOpen={setLightboxIndex}
-              />
-            ))}
-          </div>
-          <p className="mt-4 text-center font-warm text-xs text-welcome-textSoft">
-            Klik foto untuk melihat lebih besar
-          </p>
-        </section>
-
-        {/* ===== FAQ ===== */}
-        <section className="border-t border-welcome-border bg-welcome-bgSoft">
-          <div className="mx-auto max-w-3xl px-6 py-16 sm:py-24">
-            <h2 className="mb-10 text-center font-display text-[clamp(1.6rem,4.5vw,2.6rem)] text-welcome-text">
-              {journeySection.faqTitle}
-            </h2>
-            <div className="flex flex-col gap-4">
-              {journeySection.faq.map((item, index) => (
-                <FaqItem
-                  key={item.q}
-                  item={item}
-                  isOpen={openFaq === index}
-                  onToggle={() =>
-                    setOpenFaq((current) => (current === index ? -1 : index))
-                  }
-                />
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ===== Testimoni ===== */}
-        <section className="border-t border-welcome-border">
-          <div className="mx-auto max-w-5xl px-6 py-16 sm:py-24">
-            <h2 className="mb-12 text-center font-display text-[clamp(1.6rem,4.5vw,2.6rem)] text-welcome-text">
-              {journeySection.testimonialsTitle}
-            </h2>
-            <div className="grid grid-cols-1 gap-8 sm:grid-cols-2">
-              {journeySection.testimonials.map((t) => (
-                <div
-                  key={t.name}
-                  className="rounded-xl border border-welcome-border bg-welcome-card p-8 shadow-sm"
-                >
-                  <p className="mb-2 font-display text-4xl leading-none text-welcome-accent">
-                    &ldquo;
-                  </p>
-                  <p className="mb-6 font-display italic text-lg leading-relaxed text-welcome-text">
-                    {t.quote}
-                  </p>
-                  <p className="font-warm text-sm font-semibold text-welcome-primary">
-                    {t.name}
-                  </p>
-                  <p className="font-warm text-xs uppercase tracking-[0.15em] text-welcome-textSoft">
-                    {t.role}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <LogoMarquee />
-        </section>
-
-        <footer className="border-t border-welcome-border bg-welcome-bgSoft">
-          <div className="mx-auto max-w-6xl px-6 py-16">
-            <div className="flex flex-col items-center gap-8 sm:flex-row sm:items-start sm:justify-between">
-              <div className="text-center sm:text-left">
-                <p className="font-display text-2xl text-welcome-text">
-                  {siteConfig.brandName}
-                </p>
-                <p className="mt-2 max-w-xs font-warm text-sm text-welcome-textSoft">
-                  {siteConfig.tagline}
-                </p>
-              </div>
-
-              <div className="text-center sm:text-right">
-                <p className="mb-3 font-warm text-xs font-semibold uppercase tracking-[0.2em] text-welcome-primary">
-                  Hubungi Kami
-                </p>
-                <a
-                  href={buildWhatsappLink()}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-full bg-welcome-primary px-6 py-2.5 font-warm text-xs font-semibold uppercase tracking-[0.15em] text-white transition-colors hover:bg-welcome-primaryDeep"
-                >
-                  Chat via WhatsApp
-                </a>
-
-                <SocialIcons className="mt-5 justify-center sm:justify-end" />
-              </div>
-            </div>
-
-            <div className="mt-12 border-t border-welcome-border pt-6 text-center">
-              <p className="font-warm text-xs text-welcome-textSoft">
-                &copy; {new Date().getFullYear()} {siteConfig.brandName}. Semua
-                hak cipta dilindungi.
+        <div className="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-3">
+          {journeySection.features.map((feature, index) => (
+            <div
+              key={feature.title}
+              className="rounded-md border border-voyage-gold/15 bg-white/[0.02] p-6 backdrop-blur-sm"
+            >
+              <p className="mb-3 font-serif text-sm text-voyage-red">
+                {String(index + 1).padStart(2, '0')}
+              </p>
+              <div className="mb-4 h-[2px] w-10 bg-voyage-gold" />
+              <h3 className="mb-2 font-serif text-lg text-voyage-cream">
+                {feature.title}
+              </h3>
+              <p className="font-sans text-sm leading-relaxed text-voyage-cream/60">
+                {feature.desc}
               </p>
             </div>
-          </div>
-        </footer>
-      </div>
+          ))}
+        </div>
+      </section>
 
-      {lightboxIndex !== null && (
-        <DestinationLightbox
-          index={lightboxIndex}
-          onClose={() => setLightboxIndex(null)}
-          onNavigate={handleNavigate}
-        />
-      )}
+      {/* ===== Destinasi ===== */}
+      <section className="mx-auto max-w-6xl px-6 pb-20 sm:pb-28">
+        <h2 className="mb-10 text-center font-serif text-[clamp(1.6rem,4.5vw,2.6rem)] text-voyage-cream">
+          {journeySection.destinationsTitle}
+        </h2>
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-6 lg:grid-cols-4">
+          {destinationPhotos.map((photo) => (
+            <DestinationCard key={photo.id} photo={photo} />
+          ))}
+        </div>
+      </section>
+
+      {/* ===== Testimoni ===== */}
+      <section className="border-t border-voyage-gold/10 bg-voyage-navyDeep/40">
+        <div className="mx-auto max-w-5xl px-6 py-20 sm:py-24">
+          <h2 className="mb-12 text-center font-serif text-[clamp(1.6rem,4.5vw,2.6rem)] text-voyage-cream">
+            {journeySection.testimonialsTitle}
+          </h2>
+          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2">
+            {journeySection.testimonials.map((t) => (
+              <div
+                key={t.name}
+                className="rounded-md border border-voyage-gold/15 bg-white/[0.02] p-8"
+              >
+                <p className="mb-2 font-serif text-4xl leading-none text-voyage-red">
+                  &ldquo;
+                </p>
+                <p className="mb-6 font-serif italic text-lg leading-relaxed text-voyage-cream/90">
+                  {t.quote}
+                </p>
+                <p className="font-sans text-sm text-voyage-gold">{t.name}</p>
+                <p className="font-sans text-xs uppercase tracking-[0.15em] text-voyage-cream/50">
+                  {t.role}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <LogoMarquee />
+      </section>
+      <footer className="border-t border-voyage-gold/10">
+        <div className="mx-auto max-w-6xl px-6 py-16">
+          <div className="flex flex-col items-center gap-8 sm:flex-row sm:items-start sm:justify-between">
+            <div className="text-center sm:text-left">
+              <p className="font-serif text-2xl text-voyage-cream">
+                {siteConfig.brandName}
+              </p>
+              <p className="mt-2 max-w-xs font-sans text-sm text-voyage-cream/50">
+                {siteConfig.tagline}
+              </p>
+            </div>
+
+            <div className="text-center sm:text-right">
+              <p className="mb-3 font-sans text-xs uppercase tracking-[0.2em] text-voyage-gold">
+                Hubungi Kami
+              </p>
+              <a
+                href={buildWhatsappLink()}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-sm border border-voyage-gold/40 px-5 py-2.5 font-sans text-xs uppercase tracking-[0.15em] text-voyage-cream transition-colors hover:bg-voyage-gold hover:text-voyage-navyDeep"
+              >
+                Chat via WhatsApp
+              </a>
+
+              <SocialIcons className="mt-5 justify-center sm:justify-end" />
+            </div>
+          </div>
+
+          <div className="mt-12 border-t border-voyage-gold/10 pt-6 text-center">
+            <p className="font-sans text-xs text-voyage-cream/40">
+              &copy; {new Date().getFullYear()} {siteConfig.brandName}. Semua
+              hak cipta dilindungi.
+            </p>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
