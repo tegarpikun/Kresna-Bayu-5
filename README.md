@@ -1,4 +1,4 @@
-# Krensa Bayu Tour — Cinematic Tour & Travel
+# Kresna Bayu Tour — Cinematic Tour & Travel
 
 Website portofolio tour & travel bergaya "Cinematic Gallery Scatter":
 kamera 3D menembus galeri foto destinasi sambil pengguna scroll, dibungkus
