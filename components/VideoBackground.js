@@ -8,31 +8,34 @@ if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger);
 }
 
-// "Mental canvas" - scene ilustrasi 2 lapisan (langit jauh + kota-dekat)
-// yang bergerak dengan KECEPATAN BERBEDA saat discroll (parallax), supaya
-// terasa berdimensi/3D walau bahannya gambar 2D datar. Lapisan dekat
-// (kota + Tugu Jogja) bergerak lebih cepat daripada lapisan jauh (langit +
-// bulan), persis seperti mata kita melihat objek dekat "lewat" lebih cepat
-// daripada objek jauh saat kita bergerak.
-//
-// Nama file komponen ini masih "VideoBackground" (dipakai di banyak tempat)
-// walau isinya sudah bukan video lagi - supaya tidak perlu ubah import di
-// page.js. Ganti nama filenya kapan-kapan kalau sempat beres-beres.
+// "Mental canvas" - 4 scene ilustrasi (masing-masing 2 lapisan: langit-jauh
+// + landmark-dekat) yang BERGANTIAN mengikuti babak cerita saat discroll -
+// bukan cuma satu kota, dan semuanya siang hari. Tiap scene aktif di 1/4
+// bagian scroll (hero + 3 babak), saling menyilang (crossfade) di
+// perbatasannya. Di dalam scene yang aktif, lapisan dekat bergerak lebih
+// cepat dari lapisan jauh (parallax) supaya berasa berdimensi walau
+// bahannya ilustrasi 2D datar.
+const SCENES = [
+  { sky: '/hero-scene/aceh-sky.png', near: '/hero-scene/aceh-near.png', label: 'Aceh' },
+  { sky: '/hero-scene/borobudur-sky.png', near: '/hero-scene/borobudur-near.png', label: 'Borobudur' },
+  { sky: '/hero-scene/padang-sky.png', near: '/hero-scene/padang-near.png', label: 'Padang' },
+  { sky: '/hero-scene/banten-sky.png', near: '/hero-scene/banten-near.png', label: 'Banten' },
+];
+
 export default function VideoBackground({ endRef }) {
-  const skyRef = useRef(null);
-  const cityRef = useRef(null);
+  const sceneRefs = useRef([]);
 
   useEffect(() => {
-    const sky = skyRef.current;
-    const city = cityRef.current;
-    if (!sky || !city) return undefined;
+    const scenes = sceneRefs.current.filter(Boolean);
+    if (scenes.length === 0) return undefined;
+
+    const segment = 1 / SCENES.length;
 
     const trigger = ScrollTrigger.create({
       trigger: document.documentElement,
       start: 'top top',
       // Batas akhir mengikuti elemen sentinel akhir babak sinematik (dikirim
-      // dari page.js), BUKAN akhir seluruh halaman - supaya pergerakan scene
-      // ini selesai tepat saat babak sinematik berakhir.
+      // dari page.js) - BUKAN akhir seluruh halaman.
       end: () =>
         `+=${
           endRef?.current ? endRef.current.offsetTop : window.innerHeight * 5
@@ -40,14 +43,36 @@ export default function VideoBackground({ endRef }) {
       scrub: 0.4,
       onUpdate: (self) => {
         const p = self.progress;
-        // Lapisan jauh (langit+bulan): gerak pelan & sedikit membesar.
-        sky.style.transform = `translate3d(0, ${p * -6}%, 0) scale(${
-          1.08 + p * 0.05
-        })`;
-        // Lapisan dekat (kota+Tugu Jogja): gerak lebih cepat.
-        city.style.transform = `translate3d(0, ${p * -14}%, 0) scale(${
-          1.1 + p * 0.08
-        })`;
+
+        scenes.forEach((scene, i) => {
+          const center = segment * (i + 0.5);
+          // Jendela segitiga: opacity 1 tepat di tengah babak scene ini,
+          // turun ke 0 di tengah babak tetangga - jadi otomatis saling
+          // menyilang (crossfade) di perbatasan, tanpa "patah".
+          const distance = Math.abs(p - center);
+          const opacity = Math.max(0, 1 - distance / segment);
+          scene.wrapper.style.opacity = opacity;
+
+          // Progress LOKAL di dalam jendela scene ini sendiri (0..1),
+          // dipakai buat parallax supaya tiap scene selalu mulai & selesai
+          // gerak dari titik yang sama, bukan ikut posisi scroll global.
+          const localStart = segment * i;
+          const local = Math.min(
+            1,
+            Math.max(0, (p - localStart) / segment)
+          );
+
+          // Lapisan jauh: gerak pelan, zoom minim - supaya seluruh
+          // landmark tetap kelihatan penuh, tidak kepotong.
+          scene.sky.style.transform = `translate3d(0, ${
+            local * -4
+          }%, 0) scale(${1.04 + local * 0.03})`;
+          // Lapisan dekat: gerak jauh lebih cepat + sedikit geser
+          // horizontal - inilah yang bikin kesan "mental canvas"/berdimensi.
+          scene.near.style.transform = `translate3d(${
+            (i % 2 === 0 ? 1 : -1) * local * 2
+          }%, ${local * -12}%, 0) scale(${1.08 + local * 0.05})`;
+        });
       },
     });
 
@@ -56,22 +81,39 @@ export default function VideoBackground({ endRef }) {
 
   return (
     <div className="fixed inset-0 z-0 overflow-hidden bg-cinematic-black">
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        ref={skyRef}
-        src="/hero-scene/yogyakarta-sky.png"
-        alt=""
-        aria-hidden="true"
-        className="absolute inset-0 h-full w-full object-cover object-bottom will-change-transform"
-      />
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        ref={cityRef}
-        src="/hero-scene/yogyakarta-city.png"
-        alt=""
-        aria-hidden="true"
-        className="absolute inset-0 h-full w-full object-cover object-bottom will-change-transform"
-      />
+      {SCENES.map((scene, i) => (
+        <div
+          key={scene.label}
+          ref={(el) => {
+            if (el) {
+              sceneRefs.current[i] = {
+                wrapper: el,
+                sky: el.querySelector('[data-layer="sky"]'),
+                near: el.querySelector('[data-layer="near"]'),
+              };
+            }
+          }}
+          className="absolute inset-0"
+          style={{ opacity: i === 0 ? 1 : 0 }}
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            data-layer="sky"
+            src={scene.sky}
+            alt=""
+            aria-hidden="true"
+            className="absolute inset-0 h-full w-full object-cover object-center will-change-transform"
+          />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            data-layer="near"
+            src={scene.near}
+            alt=""
+            aria-hidden="true"
+            className="absolute inset-0 h-full w-full object-cover object-center will-change-transform"
+          />
+        </div>
+      ))}
       {/* Tint gelap supaya teks & foto 3D di atasnya tetap terbaca. */}
       <div className="absolute inset-0 bg-cinematic-black/45" />
     </div>
