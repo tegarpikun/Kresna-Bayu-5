@@ -77,6 +77,17 @@ export default function Home() {
 
   return (
     <main className="relative">
+      {/* Logo - fixed di pojok kiri atas, tetap ada sepanjang halaman
+          (bukan cuma di bagian sinematik), di atas lapisan apa pun. */}
+      <div className="fixed left-4 top-4 z-[70] sm:left-6 sm:top-6">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/brand/logo.png"
+          alt={siteConfig.brandName}
+          className="h-9 w-auto drop-shadow-[0_2px_10px_rgba(0,0,0,0.5)] sm:h-11"
+        />
+      </div>
+
       <div
         className={`transition-opacity duration-500 ${
           cinematicActive
@@ -85,7 +96,7 @@ export default function Home() {
         }`}
         aria-hidden={!cinematicActive}
       >
-        <VideoBackground active={cinematicActive} />
+        <VideoBackground endRef={sentinelRef} />
         <CanvasErrorBoundary>
           <CinematicCanvas endingRushRef={endingRushRef} active={cinematicActive} />
         </CanvasErrorBoundary>
@@ -114,7 +125,7 @@ export default function Home() {
             key={chapter.title}
             className="flex min-h-[100dvh] items-center justify-center px-4"
           >
-            <div className="animate-on-scroll text-center">
+            <div className="animate-on-scroll glass-card max-w-3xl px-6 py-8 text-center sm:px-14 sm:py-12">
               <p className="mb-4 font-sans text-[10px] sm:text-xs uppercase tracking-[0.3em] text-cinematic-amber">
                 {chapter.eyebrow}
               </p>
