@@ -56,8 +56,6 @@ export default function UIOverlay() {
       <div ref={cursorRef} className="custom-cursor hidden md:block" />
       <div ref={cursorDotRef} className="custom-cursor-dot hidden md:block" />
 
-      <div className="cinema-bars cinema-bar-top safe-top" />
-      <div className="cinema-bars cinema-bar-bottom safe-bottom" />
       <div className="vignette-overlay" />
 
       <div className="fixed bottom-[calc(4vh+3vh)] left-4 sm:left-8 z-30 safe-bottom">
