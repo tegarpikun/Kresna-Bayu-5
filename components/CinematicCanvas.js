@@ -35,7 +35,7 @@ export default function CinematicCanvas({ endingRushRef, active = true }) {
         }}
         style={{ background: 'transparent' }}
       >
-        <fogExp2 attach="fog" color="#030305" density={0.045} />
+        <fogExp2 attach="fog" color="#030305" density={0.022} />
 
         <Suspense fallback={null}>
           <CinematicLighting />
