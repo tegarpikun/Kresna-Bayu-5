@@ -36,7 +36,9 @@ function DestinationCard({ photo, index, onOpen }) {
           <span className="font-display italic text-sm">{photo.title}</span>
         </div>
       )}
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-welcome-text/80 via-welcome-text/5 to-transparent" />
+      {/* Gradasi gelap DI BAWAH SAJA (bukan di seluruh foto) supaya foto
+          tetap kelihatan jelas, tapi teks judul di atasnya tetap terbaca. */}
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
       <div className="absolute bottom-0 left-0 right-0 p-4">
         <p className="font-display text-lg text-white">{photo.title}</p>
         <p className="font-warm text-[10px] uppercase tracking-[0.2em] text-welcome-accent">
@@ -177,7 +179,17 @@ export default function JourneySection() {
       {/* Transisi halus dari bagian sinematik (gelap) ke bagian welcoming (terang) */}
       <div className="h-24 bg-gradient-to-b from-cinematic-black to-welcome-bg sm:h-32" />
 
-      <div className="bg-welcome-bg">
+      <div className="relative overflow-hidden bg-welcome-bg">
+        {/* Gradasi warna lembut (bukan flat putih polos) - tetap "welcoming"
+            & bersih, tapi ada kedalaman warna sampai ke bawah halaman,
+            menyambung dari mood sinematik di atasnya. Murni CSS, tidak
+            menambah beban loading. */}
+        <div className="pointer-events-none absolute inset-0 -z-10">
+          <div className="absolute -top-24 -left-32 h-[32rem] w-[32rem] rounded-full bg-welcome-primary/15 blur-3xl" />
+          <div className="absolute top-1/3 -right-32 h-[28rem] w-[28rem] rounded-full bg-welcome-accent/15 blur-3xl" />
+          <div className="absolute bottom-0 left-1/4 h-[26rem] w-[26rem] rounded-full bg-welcome-primary/10 blur-3xl" />
+        </div>
+
         {/* ===== Tentang / Kenapa memilih kami ===== */}
         <section className="mx-auto max-w-6xl px-6 py-16 sm:py-24">
           <p className="mb-4 text-center font-warm text-xs font-semibold uppercase tracking-[0.3em] text-welcome-primary sm:text-left">
@@ -198,7 +210,7 @@ export default function JourneySection() {
               >
                 <LottieIcon
                   src={FEATURE_LOTTIES[index % FEATURE_LOTTIES.length]}
-                  className="mb-3 h-20 w-20"
+                  className="mb-3 h-44 w-44 sm:h-48 sm:w-48"
                 />
                 <div className="mb-4 h-[2px] w-10 bg-welcome-primary" />
                 <h3 className="mb-2 font-display text-lg text-welcome-text">
