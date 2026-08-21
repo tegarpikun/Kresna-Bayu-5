@@ -1,67 +1,79 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
-// Video ini dipasang di BELAKANG kanvas 3D (fog, foto, partikel debu tetap
-// melayang di atasnya). Kalau video gagal dimuat / belum ada filenya,
-// otomatis jatuh ke warna gelap solid (tidak pernah tampil putih polos
-// atau rusak).
-export default function VideoBackground({
-  src = '/video/hero-bg.mp4',
-  poster = '/video/hero-bg-poster.jpg',
-  active = true,
-}) {
-  const [failed, setFailed] = useState(false);
-  const videoRef = useRef(null);
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger);
+}
+
+// "Mental canvas" - scene ilustrasi 2 lapisan (langit jauh + kota-dekat)
+// yang bergerak dengan KECEPATAN BERBEDA saat discroll (parallax), supaya
+// terasa berdimensi/3D walau bahannya gambar 2D datar. Lapisan dekat
+// (kota + Tugu Jogja) bergerak lebih cepat daripada lapisan jauh (langit +
+// bulan), persis seperti mata kita melihat objek dekat "lewat" lebih cepat
+// daripada objek jauh saat kita bergerak.
+//
+// Nama file komponen ini masih "VideoBackground" (dipakai di banyak tempat)
+// walau isinya sudah bukan video lagi - supaya tidak perlu ubah import di
+// page.js. Ganti nama filenya kapan-kapan kalau sempat beres-beres.
+export default function VideoBackground({ endRef }) {
+  const skyRef = useRef(null);
+  const cityRef = useRef(null);
 
   useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
+    const sky = skyRef.current;
+    const city = cityRef.current;
+    if (!sky || !city) return undefined;
 
-    if (!active) {
-      video.pause();
-      return undefined;
-    }
+    const trigger = ScrollTrigger.create({
+      trigger: document.documentElement,
+      start: 'top top',
+      // Batas akhir mengikuti elemen sentinel akhir babak sinematik (dikirim
+      // dari page.js), BUKAN akhir seluruh halaman - supaya pergerakan scene
+      // ini selesai tepat saat babak sinematik berakhir.
+      end: () =>
+        `+=${
+          endRef?.current ? endRef.current.offsetTop : window.innerHeight * 5
+        }`,
+      scrub: 0.4,
+      onUpdate: (self) => {
+        const p = self.progress;
+        // Lapisan jauh (langit+bulan): gerak pelan & sedikit membesar.
+        sky.style.transform = `translate3d(0, ${p * -6}%, 0) scale(${
+          1.08 + p * 0.05
+        })`;
+        // Lapisan dekat (kota+Tugu Jogja): gerak lebih cepat.
+        city.style.transform = `translate3d(0, ${p * -14}%, 0) scale(${
+          1.1 + p * 0.08
+        })`;
+      },
+    });
 
-    // PENTING: preload="auto" tidak dipakai lagi di elemen <video> di bawah,
-    // karena browser mulai MEN-DOWNLOAD videonya begitu elemen itu mount -
-    // terlepas dari kapan .play() dipanggil. Delay .play() saja TIDAK
-    // menunda proses download-nya, jadi video (400KB) tetap rebutan
-    // bandwidth dengan 8 foto galeri 3D yang mulai download bersamaan, dan
-    // itulah yang bikin sebagian foto dibatalkan browser (NS_BINDING_ABORTED).
-    //
-    // Sekarang video di-set preload="none" dan src-nya baru "dipasang" via
-    // video.load() di sini, SETELAH jeda - jadi proses download video benar-
-    // benar belum mulai sama sekali sampai foto-foto galeri sudah dapat
-    // giliran lebih dulu.
-    const loadTimeout = setTimeout(() => {
-      video.load();
-      video.play().catch(() => {});
-    }, 900);
-
-    return () => clearTimeout(loadTimeout);
-  }, [active]);
+    return () => trigger.kill();
+  }, [endRef]);
 
   return (
-    <div className="fixed inset-0 z-0 bg-cinematic-black">
-      {!failed && (
-        <video
-          ref={videoRef}
-          className="h-full w-full object-cover opacity-90"
-          muted
-          loop
-          playsInline
-          preload="none"
-          fetchpriority="low"
-          poster={poster}
-          onError={() => setFailed(true)}
-        >
-          <source src={src} type="video/mp4" />
-        </video>
-      )}
-      {/* Tint gelap supaya teks & foto di atasnya tetap terbaca, apa pun
-          isi videonya. Naikkan/turunkan opacity sesuai selera. */}
-      <div className="absolute inset-0 bg-cinematic-black/40" />
+    <div className="fixed inset-0 z-0 overflow-hidden bg-cinematic-black">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        ref={skyRef}
+        src="/hero-scene/yogyakarta-sky.png"
+        alt=""
+        aria-hidden="true"
+        className="absolute inset-0 h-full w-full object-cover object-bottom will-change-transform"
+      />
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        ref={cityRef}
+        src="/hero-scene/yogyakarta-city.png"
+        alt=""
+        aria-hidden="true"
+        className="absolute inset-0 h-full w-full object-cover object-bottom will-change-transform"
+      />
+      {/* Tint gelap supaya teks & foto 3D di atasnya tetap terbaca. */}
+      <div className="absolute inset-0 bg-cinematic-black/45" />
     </div>
   );
 }
