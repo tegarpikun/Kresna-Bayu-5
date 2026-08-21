@@ -62,16 +62,18 @@ export default function VideoBackground({ endRef }) {
             Math.max(0, (p - localStart) / segment)
           );
 
-          // Lapisan jauh: gerak pelan, zoom minim - supaya seluruh
-          // landmark tetap kelihatan penuh, tidak kepotong.
+          // Lapisan jauh: gerak pelan, HAMPIR TANPA zoom - supaya seluruh
+          // langit & landmark tetap kelihatan penuh, tidak kepotong.
           scene.sky.style.transform = `translate3d(0, ${
-            local * -4
-          }%, 0) scale(${1.04 + local * 0.03})`;
-          // Lapisan dekat: gerak jauh lebih cepat + sedikit geser
-          // horizontal - inilah yang bikin kesan "mental canvas"/berdimensi.
+            local * -3
+          }%, 0) scale(${1.01 + local * 0.015})`;
+          // Lapisan dekat: gerak lebih cepat + sedikit geser horizontal -
+          // inilah yang bikin kesan "mental canvas"/berdimensi. Zoom juga
+          // ditekan seminim mungkin supaya bangunan utuh selalu penuh
+          // kelihatan.
           scene.near.style.transform = `translate3d(${
-            (i % 2 === 0 ? 1 : -1) * local * 2
-          }%, ${local * -12}%, 0) scale(${1.08 + local * 0.05})`;
+            (i % 2 === 0 ? 1 : -1) * local * 1.5
+          }%, ${local * -8}%, 0) scale(${1.02 + local * 0.02})`;
         });
       },
     });
@@ -114,8 +116,12 @@ export default function VideoBackground({ endRef }) {
           />
         </div>
       ))}
-      {/* Tint gelap supaya teks & foto 3D di atasnya tetap terbaca. */}
-      <div className="absolute inset-0 bg-cinematic-black/45" />
+      {/* Tint tipis + gradasi atas-bawah - secukupnya supaya teks & foto 3D
+          di atasnya tetap terbaca, TANPA membuat scene jadi gelap rata.
+          Bagian tengah sengaja lebih terang (warna & bangunan tetap
+          hidup), gelap hanya menumpuk di tepi atas/bawah tempat teks
+          biasanya berada. */}
+      <div className="absolute inset-0 bg-gradient-to-b from-cinematic-black/55 via-cinematic-black/10 to-cinematic-black/60" />
     </div>
   );
 }
