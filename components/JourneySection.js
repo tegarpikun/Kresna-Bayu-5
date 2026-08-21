@@ -1,11 +1,12 @@
 'use client';
 
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import { siteConfig, buildWhatsappLink } from '@/lib/siteConfig';
 import { destinationPhotos } from '@/lib/photoData';
 import SocialIcons from '@/components/SocialIcons';
 import LogoMarquee from '@/components/LogoMarquee';
 import LottieIcon from '@/components/LottieIcon';
+import FlyingPlane from '@/components/FlyingPlane';
 
 // Urut mengikuti journeySection.features di siteConfig.js:
 // 1. Rute Kurasi Personal        -> plan.json  (orang merencanakan/lihat HP)
@@ -165,6 +166,7 @@ export default function JourneySection() {
   const { journeySection } = siteConfig;
   const [lightboxIndex, setLightboxIndex] = useState(null);
   const [openFaq, setOpenFaq] = useState(0);
+  const welcomeSectionRef = useRef(null);
 
   const handleNavigate = useCallback((delta) => {
     setLightboxIndex((current) => {
@@ -179,7 +181,8 @@ export default function JourneySection() {
       {/* Transisi halus dari bagian sinematik (gelap) ke bagian welcoming (terang) */}
       <div className="h-24 bg-gradient-to-b from-cinematic-black to-welcome-bg sm:h-32" />
 
-      <div className="relative overflow-hidden bg-welcome-bg">
+      <div ref={welcomeSectionRef} className="relative overflow-hidden bg-welcome-bg">
+        <FlyingPlane containerRef={welcomeSectionRef} />
         {/* Gradasi warna lembut (bukan flat putih polos) - tetap "welcoming"
             & bersih, tapi ada kedalaman warna sampai ke bawah halaman,
             menyambung dari mood sinematik di atasnya. Murni CSS, tidak
@@ -206,11 +209,11 @@ export default function JourneySection() {
             {journeySection.features.map((feature, index) => (
               <div
                 key={feature.title}
-                className="rounded-xl border border-welcome-border bg-welcome-card p-6 shadow-sm transition-shadow duration-300 hover:shadow-md"
+                className="group rounded-xl border border-welcome-border bg-welcome-card p-6 shadow-sm transition-shadow duration-300 hover:shadow-md"
               >
                 <LottieIcon
                   src={FEATURE_LOTTIES[index % FEATURE_LOTTIES.length]}
-                  className="mb-3 h-44 w-44 sm:h-48 sm:w-48"
+                  className="lottie-wiggle mx-auto mb-3 h-44 w-44 sm:h-48 sm:w-48"
                 />
                 <div className="mb-4 h-[2px] w-10 bg-welcome-primary" />
                 <h3 className="mb-2 font-display text-lg text-welcome-text">
