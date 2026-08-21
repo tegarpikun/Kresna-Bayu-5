@@ -33,9 +33,10 @@ export default function Home() {
     const fadeObserver = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-          }
+          // Toggle DUA ARAH - teks muncul (fade in) saat masuk layar, dan
+          // memudar lagi (fade out) saat keluar layar - bukan cuma
+          // muncul sekali lalu diam permanen.
+          entry.target.classList.toggle('visible', entry.isIntersecting);
         });
       },
       { threshold: 0.15 }
@@ -58,7 +59,20 @@ export default function Home() {
     const startObserverTimeout = setTimeout(() => {
       cinematicObserver = new IntersectionObserver(
         ([entry]) => {
-          setCinematicActive(!entry.isIntersecting);
+          // PENTING: pakai posisi sentinel relatif ke viewport (bukan
+          // entry.isIntersecting mentah). Sebelumnya pakai isIntersecting
+          // langsung - itu BUG: begitu discroll cukup jauh ke bawah,
+          // sentinel yang sudah lama terlewati jadi "tidak intersecting"
+          // LAGI (karena sudah keluar area deteksi dari ATAS), sehingga
+          // status "sudah lewat bagian sinematik" keliru balik lagi ke
+          // "belum" - membuat background sinematik nongol lagi di
+          // belakang konten. Dengan bandingkan posisi top, begitu sudah
+          // lewat titik itu, statusnya tidak akan pernah balik lagi
+          // selama masih di bawahnya (cuma balik kalau scroll ke ATAS
+          // sungguhan, yang memang seharusnya begitu).
+          const passedSentinel =
+            entry.boundingClientRect.top <= window.innerHeight * 0.4;
+          setCinematicActive(!passedSentinel);
         },
         { threshold: 0, rootMargin: '0px 0px -60% 0px' }
       );
