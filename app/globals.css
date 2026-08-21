@@ -132,6 +132,21 @@
     transform: translateY(0);
   }
 
+  /* Goyang lucu pas kartu di-hover - dipakai di ikon Lottie kartu fitur. */
+  .lottie-wiggle {
+    transition: transform 0.3s ease;
+  }
+  .group:hover .lottie-wiggle {
+    animation: lottie-wiggle-kf 0.6s ease-in-out;
+  }
+  @keyframes lottie-wiggle-kf {
+    0%, 100% { transform: rotate(0deg) scale(1); }
+    20% { transform: rotate(-8deg) scale(1.05); }
+    40% { transform: rotate(7deg) scale(1.05); }
+    60% { transform: rotate(-5deg) scale(1.02); }
+    80% { transform: rotate(3deg) scale(1.02); }
+  }
+
   .shimmer-text {
     background-image: linear-gradient(
       100deg,
