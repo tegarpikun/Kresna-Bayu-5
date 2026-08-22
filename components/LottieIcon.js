@@ -2,10 +2,26 @@
 
 import { useEffect, useRef } from 'react';
 
-// Player Lottie ringan pakai lottie-web. Animasinya baru dimuat & dimainkan
-// saat elemen ini benar-benar masuk layar (IntersectionObserver) - supaya
-// tidak ikut membebani loading awal halaman untuk animasi yang mungkin
-// belum kelihatan (mis. kartu paling bawah).
+// Modul lottie-web di-cache di level module (bukan per komponen) supaya
+// SEKALI di-import, dipakai bareng oleh semua ikon Lottie di halaman -
+// tidak diunduh ulang tiap kartu.
+let lottieModulePromise;
+function getLottie() {
+  if (!lottieModulePromise) {
+    lottieModulePromise = import('lottie-web').then((mod) => mod.default);
+  }
+  return lottieModulePromise;
+}
+
+// Player Lottie ringan pakai lottie-web.
+//
+// Sebelumnya modul lottie-web baru MULAI diunduh setelah elemen benar-benar
+// masuk layar - jadi user sempat menunggu lama melihat kotak kosong sampai
+// unduhan modulnya selesai baru animasi muncul. Sekarang unduhan modulnya
+// dimulai lebih awal (begitu komponen mount, tanpa menunggu terlihat -
+// filenya kecil jadi aman), dan area deteksi "terlihat" diperlebar
+// (rootMargin) supaya animasi dimainkan begitu section MENDEKATI layar,
+// bukan menunggu sampai benar-benar penuh terlihat dulu.
 export default function LottieIcon({ src, loop = true, className = '' }) {
   const containerRef = useRef(null);
 
@@ -15,11 +31,12 @@ export default function LottieIcon({ src, loop = true, className = '' }) {
 
     let animation;
     let cancelled = false;
+    const lottieReady = getLottie();
 
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting && !animation && !cancelled) {
-          import('lottie-web').then(({ default: lottie }) => {
+          lottieReady.then((lottie) => {
             if (cancelled) return;
             animation = lottie.loadAnimation({
               container,
@@ -32,7 +49,7 @@ export default function LottieIcon({ src, loop = true, className = '' }) {
           observer.disconnect();
         }
       },
-      { threshold: 0.2 }
+      { threshold: 0.01, rootMargin: '400px 0px' }
     );
 
     observer.observe(container);
