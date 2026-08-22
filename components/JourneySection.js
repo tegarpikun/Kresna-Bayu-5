@@ -182,7 +182,17 @@ export default function JourneySection() {
         ref={welcomeSectionRef}
         className="relative overflow-hidden bg-cinematic-black"
       >
-        <FlyingPlane containerRef={welcomeSectionRef} />
+        {/* Rentang gerak diperpanjang (yEnd 74%) dan jumlah zigzag
+            ditambah supaya sepadan dengan section ini yang jauh lebih
+            tinggi (fitur -> destinasi -> FAQ -> testimoni -> footer) -
+            jejak pesawat & ekornya jadi terlihat sampai mendekati bagian
+            "Kata Mereka", bukan berhenti di tengah jalan. */}
+        <FlyingPlane
+          containerRef={welcomeSectionRef}
+          zigzags={6}
+          yStart={6}
+          yEnd={74}
+        />
         {/* Gradasi warna lembut (bukan flat hitam polos) - tetap terasa
             sinematik & konsisten dengan bagian atas, dengan sedikit
             kedalaman warna. Murni CSS, tidak menambah beban loading. */}
