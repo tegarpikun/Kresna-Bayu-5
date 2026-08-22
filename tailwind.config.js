@@ -12,11 +12,16 @@ module.exports = {
       },
       colors: {
         welcome: {
-          bg: '#FFFFFF',       // Latar belakang diatur jadi PUTIH
-          card: '#F8FAFC',     // Kartu diatur agak abu-abu terang (slate-50)
-          primary: '#3B82F6',  // Warna utama (blue-500)
-          secondary: '#64748B',// Warna sekunder (slate-500)
-          text: '#0F172A',     // Teks diatur jadi GELAP/HITAM (slate-900)
+          bg: '#FFFFFF',        // Latar belakang diatur jadi PUTIH
+          bgSoft: '#EEF2F7',    // Variasi latar sedikit lebih redup dari bg
+          card: '#F8FAFC',      // Kartu diatur agak abu-abu terang (slate-50)
+          border: '#E2E8F0',    // Garis pembatas tipis (slate-200)
+          primary: '#3B82F6',   // Warna utama (blue-500)
+          primaryDeep: '#2563EB', // Biru lebih gelap, dipakai untuk hover
+          secondary: '#64748B', // Warna sekunder (slate-500)
+          accent: '#F59E0B',    // Aksen kuning keemasan (amber-500)
+          text: '#0F172A',      // Teks diatur jadi GELAP/HITAM (slate-900)
+          textSoft: '#475569',  // Teks sekunder, sedikit lebih lembut (slate-600)
         },
         cinematic: {
           black: '#030305',
