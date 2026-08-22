@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
 import UIOverlay from '@/components/UIOverlay';
+import WelcomeIntro from '@/components/WelcomeIntro';
 import EndingSequence from '@/components/EndingSequence';
 import WhatsAppButton from '@/components/WhatsAppButton';
 import CanvasErrorBoundary from '@/components/CanvasErrorBoundary';
@@ -102,6 +103,8 @@ export default function Home() {
         />
       </div>
 
+      <WelcomeIntro />
+
       <div
         className={`transition-opacity duration-500 ${
           cinematicActive
@@ -120,15 +123,19 @@ export default function Home() {
       <div className="relative z-20">
         {/* Babak pembuka - kini ikut mengalir bersama scroll, bukan kotak
             yang menempel permanen di layar. */}
-        <div className="flex min-h-[100dvh] items-center justify-center px-4 sm:px-8">
-          <div className="animate-on-scroll glass-card max-w-4xl p-6 text-center sm:p-10 sm:text-left md:p-12">
-            <p className="mb-3 font-sans text-[10px] uppercase tracking-[0.3em] text-cinematic-amber sm:mb-4 sm:text-xs">
+        <div className="relative flex min-h-[100dvh] items-center justify-center px-4 sm:px-8">
+          {/* Tanpa kotak/kartu di belakang lagi - supaya scene ilustrasi
+              tetap kelihatan penuh. Eyebrow masuk dari KIRI, judul dari
+              KANAN (sama-sama cepat di awal lalu melambat pas mendarat),
+              deskripsi baru fade-in setelah keduanya mendarat. */}
+          <div className="max-w-4xl px-2 text-center sm:px-0 sm:text-left">
+            <p className="animate-on-scroll hero-slide-in slide-in-left mb-3 font-sans text-[10px] uppercase tracking-[0.3em] text-cinematic-amber text-shadow-cinematic sm:mb-4 sm:text-xs">
               {siteConfig.hero.eyebrow}
             </p>
-            <h1 className="mb-4 whitespace-pre-line font-serif text-[clamp(2rem,7vw,5rem)] font-bold leading-[1.05] text-cinematic-cream text-shadow-cinematic sm:mb-6">
+            <h1 className="animate-on-scroll hero-slide-in slide-in-right mb-4 whitespace-pre-line font-serif text-[clamp(2rem,7vw,5rem)] font-bold leading-[1.05] text-cinematic-cream text-shadow-cinematic sm:mb-6">
               {siteConfig.hero.title}
             </h1>
-            <p className="mx-auto max-w-lg font-serif text-sm italic text-cinematic-cream/80 sm:mx-0 sm:text-lg md:text-xl">
+            <p className="animate-on-scroll hero-fade-delayed mx-auto max-w-lg font-serif text-sm italic text-cinematic-cream text-shadow-cinematic sm:mx-0 sm:text-lg md:text-xl">
               {siteConfig.hero.subtitle}
             </p>
           </div>
