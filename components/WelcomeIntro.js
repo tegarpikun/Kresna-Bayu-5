@@ -33,24 +33,29 @@ function useTypewriter(text, speed = 45, startDelay = 400) {
 // public/videos/ dengan nama persis di bawah ini, atau ganti "src" sesuai
 // nama file kamu. Selama file belum ada, kotaknya otomatis sembunyi rapi
 // (tidak muncul kotak rusak/broken) berkat onError di bawah.
+//
+// Frame LANDSCAPE (lebar > tinggi), bukan potrait - satu kartu besar di
+// kanan atas, dua kartu lebih kecil berjajar di kiri-bawah & tengah-bawah,
+// sesuai sketsa: kartu kanan-atas masuk dari kanan, dua kartu bawah masuk
+// dari kiri secara berurutan.
 const VIDEO_CARDS = [
   {
     src: '/videos/welcome-1.mp4',
     wrapClass:
-      'left-[2%] top-[12%] w-40 h-52 -rotate-6 sm:left-[6%] sm:w-48 sm:h-64 lg:w-56 lg:h-72',
-    animClass: 'slide-in-left',
+      'right-[3%] top-[8%] w-56 h-32 rotate-3 sm:right-[6%] sm:w-72 sm:h-44 lg:w-[26rem] lg:h-60',
+    animClass: 'slide-in-right',
   },
   {
     src: '/videos/welcome-2.mp4',
     wrapClass:
-      'right-[2%] top-[8%] w-36 h-48 rotate-6 sm:right-[8%] sm:w-44 sm:h-56 lg:w-52 lg:h-64',
-    animClass: 'slide-in-right',
+      'left-[3%] bottom-[8%] w-44 h-28 -rotate-3 sm:left-[6%] sm:w-56 sm:h-36 lg:w-64 lg:h-40',
+    animClass: 'slide-in-left',
   },
   {
     src: '/videos/welcome-3.mp4',
     wrapClass:
-      'bottom-[6%] right-[10%] w-32 h-44 rotate-3 sm:right-[16%] sm:w-40 sm:h-52 lg:w-48 lg:h-60',
-    animClass: 'slide-in-right',
+      'left-[34%] bottom-[3%] w-48 h-28 rotate-2 sm:left-[38%] sm:w-64 sm:h-40 lg:w-72 lg:h-44',
+    animClass: 'slide-in-left',
   },
 ];
 
@@ -82,7 +87,7 @@ export default function WelcomeIntro() {
   return (
     <section
       ref={sectionRef}
-      className="relative flex min-h-[100dvh] items-center justify-center overflow-hidden bg-welcome-bg px-4 sm:px-8"
+      className="relative z-[55] flex min-h-[100dvh] items-center justify-center overflow-hidden bg-welcome-bg px-4 sm:px-8"
     >
       <FlyingPlane containerRef={sectionRef} />
 
