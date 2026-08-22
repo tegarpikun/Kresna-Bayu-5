@@ -5,6 +5,7 @@ import LanguageSwitcher from '@/components/LanguageSwitcher';
 import FlyingPlane from '@/components/FlyingPlane';
 
 const HEADLINE = 'Selamat Datang di Situs Kresna Bayu Tour!';
+const SUBLINE = 'Gulir ke bawah untuk memulai perjalanan sinematik kami.';
 
 function useTypewriter(text, speed = 45, startDelay = 400) {
   const [display, setDisplay] = useState('');
@@ -34,48 +35,69 @@ function useTypewriter(text, speed = 45, startDelay = 400) {
 // nama file kamu. Selama file belum ada, kotaknya otomatis sembunyi rapi
 // (tidak muncul kotak rusak/broken) berkat onError di bawah.
 //
-// Frame LANDSCAPE (lebar > tinggi), bukan potrait - satu kartu besar di
-// kanan atas, dua kartu lebih kecil berjajar di kiri-bawah & tengah-bawah,
-// sesuai sketsa: kartu kanan-atas masuk dari kanan, dua kartu bawah masuk
-// dari kiri secara berurutan.
+// Setiap kartu punya "tilt" acak (kemiringan ringan, beda-beda tiap
+// kartu tapi tidak berlebihan) dan durasi/delay animasi mengambang yang
+// sedikit berbeda satu sama lain - supaya gerakannya terasa organik/acak,
+// bukan serempak dan bukan diam kaku.
 const VIDEO_CARDS = [
   {
     src: '/videos/welcome-1.mp4',
     wrapClass:
-      'right-[3%] top-[8%] w-56 h-32 rotate-3 sm:right-[6%] sm:w-72 sm:h-44 lg:w-[26rem] lg:h-60',
+      'right-[3%] top-[8%] w-56 h-32 sm:right-[6%] sm:w-72 sm:h-44 lg:w-[26rem] lg:h-60',
     animClass: 'slide-in-right',
+    tilt: 5,
+    floatDuration: 5.6,
+    floatDelay: 0,
   },
   {
     src: '/videos/welcome-2.mp4',
     wrapClass:
-      'left-[3%] bottom-[8%] w-44 h-28 -rotate-3 sm:left-[6%] sm:w-56 sm:h-36 lg:w-64 lg:h-40',
+      'left-[3%] bottom-[8%] w-44 h-28 sm:left-[6%] sm:w-56 sm:h-36 lg:w-64 lg:h-40',
     animClass: 'slide-in-left',
+    tilt: -6,
+    floatDuration: 6.4,
+    floatDelay: 0.5,
   },
   {
     src: '/videos/welcome-3.mp4',
     wrapClass:
-      'left-[34%] bottom-[3%] w-48 h-28 rotate-2 sm:left-[38%] sm:w-64 sm:h-40 lg:w-72 lg:h-44',
+      'left-[34%] bottom-[3%] w-48 h-28 sm:left-[38%] sm:w-64 sm:h-40 lg:w-72 lg:h-44',
     animClass: 'slide-in-left',
+    tilt: 4,
+    floatDuration: 5,
+    floatDelay: 0.9,
   },
 ];
 
-function VideoCard({ src, wrapClass, animClass }) {
+function VideoCard({ src, wrapClass, animClass, tilt, floatDuration, floatDelay }) {
   const [failed, setFailed] = useState(false);
   if (failed) return null;
 
   return (
     <div
-      className={`animate-on-scroll hero-slide-in ${animClass} pointer-events-none absolute hidden overflow-hidden rounded-lg border-4 border-cinematic-black shadow-2xl md:block ${wrapClass}`}
+      className={`animate-on-scroll hero-slide-in ${animClass} pointer-events-none absolute hidden md:block ${wrapClass}`}
     >
-      <video
-        src={src}
-        autoPlay
-        muted
-        loop
-        playsInline
-        onError={() => setFailed(true)}
-        className="h-full w-full object-cover"
-      />
+      {/* Elemen luar mengurus animasi masuk (slide-in), elemen dalam ini
+          yang mengurus kemiringan acak + gerakan mengambang terus-menerus
+          - supaya keduanya tidak saling tabrakan/override. */}
+      <div
+        className="card-float h-full w-full overflow-hidden rounded-lg border-4 border-cinematic-black shadow-2xl"
+        style={{
+          '--tilt': `${tilt}deg`,
+          animationDuration: `${floatDuration}s`,
+          animationDelay: `${floatDelay}s`,
+        }}
+      >
+        <video
+          src={src}
+          autoPlay
+          muted
+          loop
+          playsInline
+          onError={() => setFailed(true)}
+          className="h-full w-full object-cover"
+        />
+      </div>
     </div>
   );
 }
@@ -110,6 +132,38 @@ export default function WelcomeIntro() {
           {typed}
           <span className="typewriter-cursor">|</span>
         </h1>
+
+        {/* Sebelumnya bagian bawah headline kosong/terasa terlalu pendek -
+            ditambah subjudul singkat + penanda scroll supaya section ini
+            terasa lebih "penuh" dan mengarahkan pengunjung untuk lanjut
+            scroll. */}
+        <p className="mt-5 font-sans text-sm text-welcome-textSoft sm:text-base">
+          {SUBLINE}
+        </p>
+
+        <div className="mt-10 flex justify-center sm:mt-14">
+          <span
+            aria-hidden="true"
+            className="flex h-10 w-6 items-start justify-center rounded-full border-2 border-welcome-primary/40 p-1.5"
+          >
+            <span className="h-2 w-1 animate-bounce rounded-full bg-welcome-primary/70" />
+          </span>
+        </div>
+      </div>
+
+      {/* Shape divider - transisi ke bagian sinematik di bawahnya dibuat
+          melengkung/organik, bukan garis kotak lurus. */}
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 overflow-hidden leading-[0]">
+        <svg
+          viewBox="0 0 1440 110"
+          preserveAspectRatio="none"
+          className="h-14 w-full sm:h-20 lg:h-28"
+        >
+          <path
+            d="M0,32 C180,90 360,0 540,28 C720,56 900,100 1080,60 C1260,20 1350,70 1440,40 L1440,110 L0,110 Z"
+            fill="#030305"
+          />
+        </svg>
       </div>
     </section>
   );
