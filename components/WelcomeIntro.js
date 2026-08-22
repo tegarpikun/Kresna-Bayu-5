@@ -41,7 +41,7 @@ function useTypewriter(text, speed = 45, startDelay = 400) {
 // bukan serempak dan bukan diam kaku.
 const VIDEO_CARDS = [
   {
-    src: '/videos/welcome-1.mp4',
+    src: '/video/welcome-1.mp4',
     wrapClass:
       'right-[3%] top-[8%] w-56 h-32 sm:right-[6%] sm:w-72 sm:h-44 lg:w-[26rem] lg:h-60',
     animClass: 'slide-in-right',
@@ -50,7 +50,7 @@ const VIDEO_CARDS = [
     floatDelay: 0,
   },
   {
-    src: '/videos/welcome-2.mp4',
+    src: '/video/welcome-2.mp4',
     wrapClass:
       'left-[3%] bottom-[8%] w-44 h-28 sm:left-[6%] sm:w-56 sm:h-36 lg:w-64 lg:h-40',
     animClass: 'slide-in-left',
@@ -59,7 +59,7 @@ const VIDEO_CARDS = [
     floatDelay: 0.5,
   },
   {
-    src: '/videos/welcome-3.mp4',
+    src: '/video/welcome-3.mp4',
     wrapClass:
       'left-[34%] bottom-[3%] w-48 h-28 sm:left-[38%] sm:w-64 sm:h-40 lg:w-72 lg:h-44',
     animClass: 'slide-in-left',
