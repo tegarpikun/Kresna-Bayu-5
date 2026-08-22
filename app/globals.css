@@ -129,7 +129,60 @@
 
   .animate-on-scroll.visible {
     opacity: 1;
+    transform: translate(0, 0);
+  }
+
+  /* Dipakai khusus di teks hero utama - masuk dari samping (bukan dari
+     bawah seperti animate-on-scroll biasa), cepat di awal lalu melambat
+     pas mendarat (durasi dipersingkat + easing "fast-out-slow-in"). */
+  .hero-slide-in {
+    transition-duration: 0.7s;
+    transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .animate-on-scroll.slide-in-left {
+    transform: translateX(-70px);
+  }
+  .animate-on-scroll.slide-in-right {
+    transform: translateX(70px);
+  }
+  /* Deskripsi cuma fade (tanpa geser), dan br sengaja telat sedikit
+     supaya nongol SETELAH eyebrow & judul selesai mendarat. */
+  .hero-fade-delayed {
     transform: translateY(0);
+    transition-duration: 0.6s;
+    transition-delay: 0.35s;
+  }
+
+  /* Google Translate defaultnya nambah banner + geser <body> ke bawah -
+     dimatikan semua supaya layout tetap rapi, tombol kita sendiri yang
+     jadi satu-satunya kontrolnya. */
+  .goog-te-banner-frame,
+  .goog-te-gadget-icon {
+    display: none !important;
+  }
+  body {
+    top: 0 !important;
+  }
+  .goog-tooltip,
+  .goog-tooltip:hover {
+    display: none !important;
+  }
+  .goog-text-highlight {
+    background: none !important;
+    box-shadow: none !important;
+  }
+
+  /* Kursor berkedip di akhir animasi ketik cepat pada judul "Selamat
+     Datang". */
+  .typewriter-cursor {
+    display: inline-block;
+    margin-left: 2px;
+    animation: blink-caret 0.9s step-end infinite;
+    color: theme('colors.welcome.primary');
+  }
+  @keyframes blink-caret {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
   }
 
   /* Goyang lucu pas kartu di-hover - dipakai di ikon Lottie kartu fitur. */
