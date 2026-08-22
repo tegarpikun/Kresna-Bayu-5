@@ -21,27 +21,26 @@ export default function FlyingPlane({ containerRef }) {
     const container = containerRef?.current;
     if (!plane || !container) return undefined;
 
-    const ZIGZAGS = 6; // berapa kali bolak-balik kiri-kanan sepanjang section
+    const ZIGZAGS = 4; // lebih sedikit bolak-balik = lebih tenang, tidak riuh
 
     const trigger = ScrollTrigger.create({
       trigger: container,
       start: 'top bottom',
       end: 'bottom bottom',
-      scrub: 0.6,
+      scrub: 1.1, // lebih besar = lebih smooth/tidak kaget mengikuti scroll
       onUpdate: (self) => {
         const p = self.progress;
         const wave = Math.sin(p * Math.PI * ZIGZAGS);
         const slope = Math.cos(p * Math.PI * ZIGZAGS);
 
         const xPercent = 50 + wave * 40; // 10% - 90% lebar layar
-        const yPercent = p * 100;
+        // Sebelumnya 0%-100% (sampai ke footer, kejauhan ke bawah).
+        // Sekarang ditahan di pita atas-tengah saja (8%-48%).
+        const yPercent = 8 + p * 40;
         const bank = slope * 32; // derajat kemiringan saat berbelok
 
         plane.style.left = `${xPercent}%`;
         plane.style.top = `${yPercent}%`;
-        // 90deg dasar supaya ikon (nose menghadap atas secara default)
-        // menghadap ke KANAN sebagai arah maju, lalu dimiringkan (bank)
-        // sesuai arah belok kiri/kanan.
         plane.style.transform = `translate(-50%, -50%) rotate(${
           90 + bank
         }deg)`;
@@ -55,8 +54,30 @@ export default function FlyingPlane({ containerRef }) {
     <div
       ref={planeRef}
       className="pointer-events-none absolute z-30 hidden sm:block"
-      style={{ left: '50%', top: '0%' }}
+      style={{ left: '50%', top: '8%' }}
     >
+      {/* Ekor putus-putus pendek di belakang pesawat - posisinya di
+          "bawah" ikon dalam koordinat lokal (sebelum rotasi), yang
+          setelah wrapper diputar otomatis jadi "di belakang" arah
+          terbangnya, seberapa pun kemiringan bank-nya. */}
+      <svg
+        width="34"
+        height="60"
+        viewBox="0 0 34 60"
+        className="absolute left-0 top-0"
+      >
+        <line
+          x1="17"
+          y1="26"
+          x2="17"
+          y2="52"
+          stroke="#E0A45C"
+          strokeWidth="2"
+          strokeDasharray="4 5"
+          strokeLinecap="round"
+          opacity="0.65"
+        />
+      </svg>
       <svg
         width="34"
         height="34"
