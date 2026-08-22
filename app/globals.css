@@ -65,10 +65,15 @@
   .vignette-overlay {
     position: fixed;
     inset: 0;
+    /* Sebelumnya transparent baru mulai di 55% lalu gelap pekat (0.85) di
+       tepi - bikin seluruh pinggir layar kelihatan terlalu gelap. Area
+       transparan diperlebar (70%) dan kepekatan gelap di tepi diturunkan
+       (0.5) supaya web tidak terkesan suram, efek "fog" tetap ada tapi
+       jauh lebih tipis. */
     background: radial-gradient(
       ellipse at center,
-      transparent 55%,
-      rgba(3, 3, 5, 0.85) 100%
+      transparent 70%,
+      rgba(3, 3, 5, 0.5) 100%
     );
     pointer-events: none;
     z-index: 50;
@@ -237,6 +242,45 @@
     .shimmer-text.visible {
       animation: none;
       background-position: 0% center;
+    }
+  }
+
+  /* Kartu video di Welcome Intro - miring sesuai --tilt (diset inline per
+     kartu) lalu mengambang pelan naik-turun terus-menerus (bukan diam),
+     dengan sedikit tambahan miring saat di puncak supaya terasa lebih
+     hidup/organik, bukan cuma geser lurus. */
+  .card-float {
+    transform: rotate(var(--tilt, 0deg));
+    animation-name: cardFloat;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+  }
+  @keyframes cardFloat {
+    0%,
+    100% {
+      transform: rotate(var(--tilt, 0deg)) translateY(0);
+    }
+    50% {
+      transform: rotate(calc(var(--tilt, 0deg) + 2deg)) translateY(-10px);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .card-float {
+      animation: none;
+    }
+  }
+
+  /* Dipakai di pesawat terbang dekoratif (FlyingPlane) - membuat posisi &
+     rotasi yang di-update lewat JS saat scroll jadi meluncur halus
+     (melengkung), bukan lompat kaku mengikuti scroll mentah-mentah. */
+  .plane-glide {
+    transition: left 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+      top 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .plane-glide {
+      transition: none;
     }
   }
 
