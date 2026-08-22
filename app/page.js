@@ -99,7 +99,7 @@ export default function Home() {
         <img
           src="/brand/logo.png"
           alt={siteConfig.brandName}
-          className="h-9 w-auto drop-shadow-[0_2px_10px_rgba(0,0,0,0.5)] sm:h-11"
+          className="h-9 w-auto sm:h-11"
         />
       </div>
 
