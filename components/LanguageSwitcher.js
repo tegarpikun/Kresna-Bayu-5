@@ -68,6 +68,7 @@ function setLanguage(code) {
 
 export default function LanguageSwitcher({ variant = 'dark' }) {
   const [open, setOpen] = useState(false);
+  const [current, setCurrent] = useState(LANGUAGES[0]);
   const wrapperRef = useRef(null);
 
   useEffect(() => {
@@ -96,16 +97,17 @@ export default function LanguageSwitcher({ variant = 'dark' }) {
         type="button"
         onClick={() => setOpen((v) => !v)}
         aria-label="Pilih bahasa"
-        className={`flex h-9 w-9 items-center justify-center rounded-full border backdrop-blur-sm transition-colors sm:h-10 sm:w-10 ${
+        className={`flex h-9 w-9 items-center justify-center overflow-hidden rounded-full border backdrop-blur-sm transition-colors sm:h-10 sm:w-10 ${
           isLight
-            ? 'border-welcome-primary/30 bg-white/70 text-welcome-primary hover:border-welcome-primary'
-            : 'border-cinematic-cream/30 bg-cinematic-black/30 text-cinematic-cream hover:border-cinematic-amber'
+            ? 'border-welcome-primary/30 bg-white/70 hover:border-welcome-primary'
+            : 'border-cinematic-cream/30 bg-cinematic-black/30 hover:border-cinematic-amber'
         }`}
       >
-        <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.6">
-          <circle cx="12" cy="12" r="9" />
-          <path d="M3 12h18M12 3c2.5 2.7 4 6 4 9s-1.5 6.3-4 9c-2.5-2.7-4-6-4-9s1.5-6.3 4-9Z" />
-        </svg>
+        {/* Bendera bulat (emoji bendera di-crop lingkaran via overflow-hidden
+            + sedikit di-scale) - bukan icon globe generik. */}
+        <span className="flex h-full w-full scale-[1.35] items-center justify-center text-[19px] leading-none">
+          {current.flag}
+        </span>
       </button>
 
       {open && (
@@ -122,6 +124,7 @@ export default function LanguageSwitcher({ variant = 'dark' }) {
               type="button"
               onClick={() => {
                 setLanguage(lang.code);
+                setCurrent(lang);
                 setOpen(false);
               }}
               className={`flex w-full items-center gap-3 px-4 py-2 text-left font-sans text-sm transition-colors ${
