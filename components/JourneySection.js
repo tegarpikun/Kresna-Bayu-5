@@ -21,7 +21,7 @@ function DestinationCard({ photo, index, onOpen }) {
     <button
       type="button"
       onClick={() => onOpen(index)}
-      className="group relative aspect-[4/3] overflow-hidden rounded-xl border border-welcome-border bg-welcome-card text-left shadow-sm transition-shadow duration-300 hover:shadow-lg"
+      className="group relative aspect-[4/3] overflow-hidden rounded-xl border border-white/10 bg-white/5 text-left transition-all duration-300 hover:border-cinematic-amber/40 hover:shadow-lg hover:shadow-black/50"
     >
       {!failed ? (
         // eslint-disable-next-line @next/next/no-img-element
@@ -33,7 +33,7 @@ function DestinationCard({ photo, index, onOpen }) {
           className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
         />
       ) : (
-        <div className="flex h-full w-full items-center justify-center bg-welcome-bgSoft text-welcome-primary/50">
+        <div className="flex h-full w-full items-center justify-center bg-white/5 text-cinematic-cream/40">
           <span className="font-display italic text-sm">{photo.title}</span>
         </div>
       )}
@@ -42,7 +42,7 @@ function DestinationCard({ photo, index, onOpen }) {
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
       <div className="absolute bottom-0 left-0 right-0 p-4">
         <p className="font-display text-lg text-white">{photo.title}</p>
-        <p className="font-warm text-[10px] uppercase tracking-[0.2em] text-welcome-accent">
+        <p className="font-warm text-[10px] uppercase tracking-[0.2em] text-cinematic-amber">
           {photo.location}
         </p>
       </div>
@@ -67,7 +67,7 @@ function DestinationLightbox({ index, onClose, onNavigate }) {
 
   return (
     <div
-      className="fixed inset-0 z-[60] flex items-center justify-center bg-welcome-text/90 px-4 py-10 backdrop-blur-sm"
+      className="fixed inset-0 z-[60] flex items-center justify-center bg-cinematic-black/90 px-4 py-10 backdrop-blur-sm"
       onClick={onClose}
     >
       <button
@@ -115,7 +115,7 @@ function DestinationLightbox({ index, onClose, onNavigate }) {
         <div className="flex items-center justify-between px-1 py-4">
           <div>
             <p className="font-display text-xl text-white">{photo.title}</p>
-            <p className="font-warm text-xs uppercase tracking-[0.2em] text-welcome-accent">
+            <p className="font-warm text-xs uppercase tracking-[0.2em] text-cinematic-amber">
               {photo.location}
             </p>
           </div>
@@ -130,17 +130,17 @@ function DestinationLightbox({ index, onClose, onNavigate }) {
 
 function FaqItem({ item, isOpen, onToggle }) {
   return (
-    <div className="overflow-hidden rounded-xl border border-welcome-border bg-welcome-card">
+    <div className="overflow-hidden rounded-xl border border-white/10 bg-white/5">
       <button
         type="button"
         onClick={onToggle}
         className="flex w-full items-center justify-between gap-4 px-6 py-5 text-left"
       >
-        <span className="font-display text-base text-welcome-text sm:text-lg">
+        <span className="font-display text-base text-cinematic-cream sm:text-lg">
           {item.q}
         </span>
         <span
-          className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-welcome-primary/30 font-warm text-welcome-primary transition-transform duration-300 ${
+          className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-cinematic-amber/30 font-warm text-cinematic-amber transition-transform duration-300 ${
             isOpen ? 'rotate-45' : ''
           }`}
         >
@@ -153,7 +153,7 @@ function FaqItem({ item, isOpen, onToggle }) {
         }`}
       >
         <div className="overflow-hidden">
-          <p className="px-6 pb-6 font-warm text-sm leading-relaxed text-welcome-textSoft">
+          <p className="px-6 pb-6 font-warm text-sm leading-relaxed text-cinematic-cream/70">
             {item.a}
           </p>
         </div>
@@ -178,30 +178,29 @@ export default function JourneySection() {
 
   return (
     <div className="relative z-20">
-      {/* Transisi halus dari bagian sinematik (gelap) ke bagian welcoming (terang) */}
-      <div className="h-24 bg-gradient-to-b from-cinematic-black to-welcome-bg sm:h-32" />
-
-      <div ref={welcomeSectionRef} className="relative overflow-hidden bg-welcome-bg">
+      <div
+        ref={welcomeSectionRef}
+        className="relative overflow-hidden bg-cinematic-black"
+      >
         <FlyingPlane containerRef={welcomeSectionRef} />
-        {/* Gradasi warna lembut (bukan flat putih polos) - tetap "welcoming"
-            & bersih, tapi ada kedalaman warna sampai ke bawah halaman,
-            menyambung dari mood sinematik di atasnya. Murni CSS, tidak
-            menambah beban loading. */}
+        {/* Gradasi warna lembut (bukan flat hitam polos) - tetap terasa
+            sinematik & konsisten dengan bagian atas, dengan sedikit
+            kedalaman warna. Murni CSS, tidak menambah beban loading. */}
         <div className="pointer-events-none absolute inset-0 -z-10">
-          <div className="absolute -top-24 -left-32 h-[32rem] w-[32rem] rounded-full bg-welcome-primary/15 blur-3xl" />
-          <div className="absolute top-1/3 -right-32 h-[28rem] w-[28rem] rounded-full bg-welcome-accent/15 blur-3xl" />
-          <div className="absolute bottom-0 left-1/4 h-[26rem] w-[26rem] rounded-full bg-welcome-primary/10 blur-3xl" />
+          <div className="absolute -top-24 -left-32 h-[32rem] w-[32rem] rounded-full bg-cinematic-amber/10 blur-3xl" />
+          <div className="absolute top-1/3 -right-32 h-[28rem] w-[28rem] rounded-full bg-cinematic-teal/10 blur-3xl" />
+          <div className="absolute bottom-0 left-1/4 h-[26rem] w-[26rem] rounded-full bg-cinematic-amber/10 blur-3xl" />
         </div>
 
         {/* ===== Tentang / Kenapa memilih kami ===== */}
         <section className="mx-auto max-w-6xl px-6 py-16 sm:py-24">
-          <p className="mb-4 text-center font-warm text-xs font-semibold uppercase tracking-[0.3em] text-welcome-primary sm:text-left">
+          <p className="mb-4 text-center font-warm text-xs font-semibold uppercase tracking-[0.3em] text-cinematic-amber sm:text-left">
             {journeySection.eyebrow}
           </p>
-          <h2 className="animate-on-scroll mb-6 text-center font-display text-[clamp(1.8rem,5vw,3.2rem)] font-semibold leading-tight text-welcome-text sm:text-left">
+          <h2 className="animate-on-scroll mb-6 text-center font-display text-[clamp(1.8rem,5vw,3.2rem)] font-semibold leading-tight text-cinematic-cream sm:text-left">
             {journeySection.title}
           </h2>
-          <p className="mx-auto max-w-2xl text-center font-warm text-sm leading-relaxed text-welcome-textSoft sm:mx-0 sm:text-left sm:text-base">
+          <p className="mx-auto max-w-2xl text-center font-warm text-sm leading-relaxed text-cinematic-cream/70 sm:mx-0 sm:text-left sm:text-base">
             {journeySection.body}
           </p>
 
@@ -209,17 +208,17 @@ export default function JourneySection() {
             {journeySection.features.map((feature, index) => (
               <div
                 key={feature.title}
-                className="group rounded-xl border border-welcome-border bg-welcome-card p-6 shadow-sm transition-shadow duration-300 hover:shadow-md"
+                className="glass-card group p-6 transition-all duration-300 hover:border-cinematic-amber/30 hover:shadow-lg hover:shadow-black/40"
               >
                 <LottieIcon
                   src={FEATURE_LOTTIES[index % FEATURE_LOTTIES.length]}
                   className="lottie-wiggle mx-auto mb-3 h-44 w-44 sm:h-48 sm:w-48"
                 />
-                <div className="mb-4 h-[2px] w-10 bg-welcome-primary" />
-                <h3 className="mb-2 font-display text-lg text-welcome-text">
+                <div className="mb-4 h-[2px] w-10 bg-cinematic-amber" />
+                <h3 className="mb-2 font-display text-lg text-cinematic-cream">
                   {feature.title}
                 </h3>
-                <p className="font-warm text-sm leading-relaxed text-welcome-textSoft">
+                <p className="font-warm text-sm leading-relaxed text-cinematic-cream/70">
                   {feature.desc}
                 </p>
               </div>
@@ -229,7 +228,7 @@ export default function JourneySection() {
 
         {/* ===== Destinasi (galeri dengan lightbox + counter) ===== */}
         <section className="mx-auto max-w-6xl px-6 pb-16 sm:pb-24">
-          <h2 className="mb-10 text-center font-display text-[clamp(1.6rem,4.5vw,2.6rem)] text-welcome-text">
+          <h2 className="mb-10 text-center font-display text-[clamp(1.6rem,4.5vw,2.6rem)] text-cinematic-cream">
             {journeySection.destinationsTitle}
           </h2>
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-6 lg:grid-cols-4">
@@ -242,15 +241,15 @@ export default function JourneySection() {
               />
             ))}
           </div>
-          <p className="mt-4 text-center font-warm text-xs text-welcome-textSoft">
+          <p className="mt-4 text-center font-warm text-xs text-cinematic-cream/60">
             Klik foto untuk melihat lebih besar
           </p>
         </section>
 
         {/* ===== FAQ ===== */}
-        <section className="border-t border-welcome-border bg-welcome-bgSoft">
+        <section className="border-t border-white/10 bg-white/[0.03]">
           <div className="mx-auto max-w-3xl px-6 py-16 sm:py-24">
-            <h2 className="mb-10 text-center font-display text-[clamp(1.6rem,4.5vw,2.6rem)] text-welcome-text">
+            <h2 className="mb-10 text-center font-display text-[clamp(1.6rem,4.5vw,2.6rem)] text-cinematic-cream">
               {journeySection.faqTitle}
             </h2>
             <div className="flex flex-col gap-4">
@@ -269,27 +268,27 @@ export default function JourneySection() {
         </section>
 
         {/* ===== Testimoni ===== */}
-        <section className="border-t border-welcome-border">
+        <section className="border-t border-white/10">
           <div className="mx-auto max-w-5xl px-6 py-16 sm:py-24">
-            <h2 className="mb-12 text-center font-display text-[clamp(1.6rem,4.5vw,2.6rem)] text-welcome-text">
+            <h2 className="mb-12 text-center font-display text-[clamp(1.6rem,4.5vw,2.6rem)] text-cinematic-cream">
               {journeySection.testimonialsTitle}
             </h2>
             <div className="grid grid-cols-1 gap-8 sm:grid-cols-2">
               {journeySection.testimonials.map((t) => (
                 <div
                   key={t.name}
-                  className="rounded-xl border border-welcome-border bg-welcome-card p-8 shadow-sm"
+                  className="rounded-xl border border-white/10 bg-white/5 p-8"
                 >
-                  <p className="mb-2 font-display text-4xl leading-none text-welcome-accent">
+                  <p className="mb-2 font-display text-4xl leading-none text-cinematic-amber">
                     &ldquo;
                   </p>
-                  <p className="mb-6 font-display italic text-lg leading-relaxed text-welcome-text">
+                  <p className="mb-6 font-display italic text-lg leading-relaxed text-cinematic-cream">
                     {t.quote}
                   </p>
-                  <p className="font-warm text-sm font-semibold text-welcome-primary">
+                  <p className="font-warm text-sm font-semibold text-cinematic-amber">
                     {t.name}
                   </p>
-                  <p className="font-warm text-xs uppercase tracking-[0.15em] text-welcome-textSoft">
+                  <p className="font-warm text-xs uppercase tracking-[0.15em] text-cinematic-cream/60">
                     {t.role}
                   </p>
                 </div>
@@ -300,27 +299,27 @@ export default function JourneySection() {
           <LogoMarquee />
         </section>
 
-        <footer className="border-t border-welcome-border bg-welcome-bgSoft">
+        <footer className="border-t border-white/10 bg-black/40">
           <div className="mx-auto max-w-6xl px-6 py-16">
             <div className="flex flex-col items-center gap-8 sm:flex-row sm:items-start sm:justify-between">
               <div className="text-center sm:text-left">
-                <p className="font-display text-2xl text-welcome-text">
+                <p className="font-display text-2xl text-cinematic-cream">
                   {siteConfig.brandName}
                 </p>
-                <p className="mt-2 max-w-xs font-warm text-sm text-welcome-textSoft">
+                <p className="mt-2 max-w-xs font-warm text-sm text-cinematic-cream/60">
                   {siteConfig.tagline}
                 </p>
               </div>
 
               <div className="text-center sm:text-right">
-                <p className="mb-3 font-warm text-xs font-semibold uppercase tracking-[0.2em] text-welcome-primary">
+                <p className="mb-3 font-warm text-xs font-semibold uppercase tracking-[0.2em] text-cinematic-amber">
                   Hubungi Kami
                 </p>
                 <a
                   href={buildWhatsappLink()}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-full bg-welcome-primary px-6 py-2.5 font-warm text-xs font-semibold uppercase tracking-[0.15em] text-white transition-colors hover:bg-welcome-primaryDeep"
+                  className="inline-flex items-center gap-2 rounded-full bg-cinematic-whatsapp px-6 py-2.5 font-warm text-xs font-semibold uppercase tracking-[0.15em] text-white transition-colors hover:brightness-90"
                 >
                   Chat via WhatsApp
                 </a>
@@ -329,8 +328,8 @@ export default function JourneySection() {
               </div>
             </div>
 
-            <div className="mt-12 border-t border-welcome-border pt-6 text-center">
-              <p className="font-warm text-xs text-welcome-textSoft">
+            <div className="mt-12 border-t border-white/10 pt-6 text-center">
+              <p className="font-warm text-xs text-cinematic-cream/50">
                 &copy; {new Date().getFullYear()} {siteConfig.brandName}. Semua
                 hak cipta dilindungi.
               </p>
