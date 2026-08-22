@@ -35,7 +35,9 @@ export default function CinematicCanvas({ endingRushRef, active = true }) {
         }}
         style={{ background: 'transparent' }}
       >
-        <fogExp2 attach="fog" color="#030305" density={0.022} />
+        {/* Densitas fog diturunkan (0.022 -> 0.012) - sebelumnya foto di
+            galeri 3D & sekitarnya kelihatan terlalu gelap/suram. */}
+        <fogExp2 attach="fog" color="#030305" density={0.012} />
 
         <Suspense fallback={null}>
           <CinematicLighting />
