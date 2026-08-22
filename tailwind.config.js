@@ -11,13 +11,12 @@ module.exports = {
         sans: ['Inter', 'system-ui', 'sans-serif'],
       },
       colors: {
-        // Blok welcome baru telah ditambahkan di sini
         welcome: {
-          bg: '#F8FAFC',       // Contoh warna latar belakang (slate-50)
-          card: '#FFFFFF',     // Contoh warna kartu (white)
-          primary: '#3B82F6',  // Contoh warna utama (blue-500)
-          secondary: '#64748B',// Contoh warna sekunder (slate-500)
-          text: '#0F172A',     // Contoh warna teks (slate-900)
+          bg: '#FFFFFF',       // Latar belakang diatur jadi PUTIH
+          card: '#F8FAFC',     // Kartu diatur agak abu-abu terang (slate-50)
+          primary: '#3B82F6',  // Warna utama (blue-500)
+          secondary: '#64748B',// Warna sekunder (slate-500)
+          text: '#0F172A',     // Teks diatur jadi GELAP/HITAM (slate-900)
         },
         cinematic: {
           black: '#030305',
