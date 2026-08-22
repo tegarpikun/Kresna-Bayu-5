@@ -11,6 +11,14 @@ module.exports = {
         sans: ['Inter', 'system-ui', 'sans-serif'],
       },
       colors: {
+        // Blok welcome baru telah ditambahkan di sini
+        welcome: {
+          bg: '#F8FAFC',       // Contoh warna latar belakang (slate-50)
+          card: '#FFFFFF',     // Contoh warna kartu (white)
+          primary: '#3B82F6',  // Contoh warna utama (blue-500)
+          secondary: '#64748B',// Contoh warna sekunder (slate-500)
+          text: '#0F172A',     // Contoh warna teks (slate-900)
+        },
         cinematic: {
           black: '#030305',
           amber: '#D4A574',
