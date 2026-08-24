@@ -159,7 +159,12 @@ export default function Home() {
             panjang supaya foto-foto yang terbang & pergantian scene
             background bisa dinikmati lebih lama, tanpa teks apa pun di
             atasnya. */}
-        <div className="min-h-[300dvh]" aria-hidden="true" />
+        {/* Dinaikkan dari 300dvh ke 450dvh - membuat perjalanan scroll di
+            galeri foto 3D lebih lama/tidak terburu-buru, dan memberi
+            jarak scroll (pixel) yang lebih panjang untuk rentang kamera
+            yang sama (lihat CameraRig.js) - jadi tiap foto "tinggal" di
+            layar lebih lama sebelum berganti ke foto berikutnya. */}
+        <div className="min-h-[450dvh]" aria-hidden="true" />
 
         <EndingSequence
           onTriggerRush={() => {
