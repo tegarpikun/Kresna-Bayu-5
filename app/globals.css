@@ -119,6 +119,17 @@
     border-radius: 4px;
   }
 
+  /* Sama seperti glass-card tapi TANPA backdrop-blur - dipakai di panel
+     yang duduk di atas scene 3D yang sibuk (foto-foto melayang). Backdrop-
+     blur di glass-card biasa akan mengaburkan foto-foto di belakangnya
+     jadi gumpalan gelap yang menutupi scene; versi ini cukup warna gelap
+     tembus pandang saja supaya scene tetap kelihatan penuh. */
+  .text-panel {
+    background: rgba(3, 3, 5, 0.45);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 4px;
+  }
+
   .custom-cursor {
     width: 20px;
     height: 20px;
