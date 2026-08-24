@@ -99,13 +99,12 @@
   .vignette-overlay {
     position: fixed;
     inset: 0;
-    /* Dikurangi lagi - area transparan makin luas (85%) dan gelap di tepi
-       makin tipis (0.22) supaya web tidak terkesan gelap/suram, cuma
-       sentuhan fog sangat halus di sudut layar. */
+    /* Dikurangi drastis lagi sesuai permintaan - hampir dihilangkan,
+       cuma sisa fog sangat tipis di pojok paling luar layar. */
     background: radial-gradient(
       ellipse at center,
-      transparent 85%,
-      rgba(3, 3, 5, 0.22) 100%
+      transparent 92%,
+      rgba(3, 3, 5, 0.12) 100%
     );
     pointer-events: none;
     z-index: 50;
