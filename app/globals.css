@@ -1,196 +1,389 @@
-'use client';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-import { useEffect, useRef, useState } from 'react';
+/* Situs ini SEKARANG cuma pakai 2 font: Caviar Dreams (judul/display,
+   di-hosting sendiri lewat @font-face di bawah - bukan dari Google Fonts)
+   dan Montserrat (teks/label, tetap dari Google Fonts). Semua font lain
+   yang dulu dipakai (Playfair Display, Inter, Fraunces, Plus Jakarta
+   Sans) sudah dilepas dari sini. */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,700&display=swap');
 
-const HEADLINE = 'Melayani Sepenuh Hati';
-const SUBLINE = 'Info selanjutnya scroll ke bawah.';
-
-function useTypewriter(text, speed = 45, startDelay = 400) {
-  const [display, setDisplay] = useState('');
-
-  useEffect(() => {
-    let i = 0;
-    let interval;
-    const timeout = setTimeout(() => {
-      interval = setInterval(() => {
-        i += 1;
-        setDisplay(text.slice(0, i));
-        if (i >= text.length) clearInterval(interval);
-      }, speed);
-    }, startDelay);
-
-    return () => {
-      clearTimeout(timeout);
-      clearInterval(interval);
-    };
-  }, [text, speed, startDelay]);
-
-  return display;
+@font-face {
+  font-family: 'Caviar Dreams';
+  src: url('/fonts/caviar-dreams/CaviarDreams.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Caviar Dreams';
+  src: url('/fonts/caviar-dreams/CaviarDreams_Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Caviar Dreams';
+  src: url('/fonts/caviar-dreams/CaviarDreams_Italic.ttf') format('truetype');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Caviar Dreams';
+  src: url('/fonts/caviar-dreams/CaviarDreams_BoldItalic.ttf') format('truetype');
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
 }
 
-// PENTING: video ini masih PLACEHOLDER path - taruh file asli kamu di
-// public/video/ dengan nama persis di bawah ini, atau ganti "src" sesuai
-// nama file kamu. Selama file belum ada, kotaknya otomatis sembunyi rapi
-// (tidak muncul kotak rusak/broken) berkat onError di bawah.
-//
-// Video "welcome-1" DIHAPUS (sesuai permintaan) - tersisa 2 kartu saja,
-// dan posisinya sekarang dirapikan berdekatan dengan judul (bukan
-// bertebaran ke pojok layar), serta digeser lebih ke atas supaya tidak
-// pernah ketutupan shape divider di bagian bawah section.
-//
-// Setiap kartu punya "tilt" acak (kemiringan ringan, beda-beda tiap
-// kartu tapi tidak berlebihan) dan durasi/delay animasi mengambang yang
-// sedikit berbeda satu sama lain - supaya gerakannya terasa organik/acak,
-// bukan serempak dan bukan diam kaku.
-const VIDEO_CARDS = [
-  {
-    src: '/video/welcome-2.mp4',
-    wrapClass:
-      'left-[4%] top-[16%] w-40 h-24 sm:left-[8%] sm:top-[18%] sm:w-56 sm:h-36 lg:left-[13%] lg:top-[20%] lg:w-64 lg:h-40',
-    animClass: 'slide-in-left',
-    tilt: -6,
-    floatDuration: 7.2,
-    floatDelay: 0.3,
-  },
-  {
-    src: '/video/welcome-3.mp4',
-    wrapClass:
-      'right-[4%] bottom-[20%] w-44 h-28 sm:right-[8%] sm:bottom-[22%] sm:w-60 sm:h-40 lg:right-[13%] lg:bottom-[24%] lg:w-72 lg:h-44',
-    animClass: 'slide-in-right',
-    tilt: 5,
-    floatDuration: 6.4,
-    floatDelay: 0.7,
-  },
-];
+@layer base {
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
 
-function VideoCard({ src, wrapClass, animClass, tilt, floatDuration, floatDelay }) {
-  const [failed, setFailed] = useState(false);
-  const videoRef = useRef(null);
+  html {
+    scroll-behavior: smooth;
+  }
 
-  useEffect(() => {
-    const videoEl = videoRef.current;
-    if (!videoEl) return undefined;
+  body {
+    background-color: #030305;
+    color: #f5e6d3;
+    overflow-x: hidden;
+  }
 
-    // Video hanya diputar saat kartunya benar-benar kelihatan di layar.
-    // Begitu discroll menjauh (keluar viewport), video dijeda supaya
-    // tidak membebani perangkat sia-sia; begitu discroll balik hingga
-    // kelihatan lagi, otomatis lanjut main lagi dari posisi terakhir.
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          videoEl.play().catch(() => {});
-        } else {
-          videoEl.pause();
-        }
-      },
-      { threshold: 0.15 }
+  /* Custom cursor hanya aktif pada perangkat dengan mouse presisi.
+     Ini mencegah kursor perangkat hilang di HP/tablet (touch). */
+  @media (pointer: fine) {
+    body.custom-cursor-active {
+      cursor: none;
+    }
+  }
+
+  ::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #030305;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: linear-gradient(to bottom, #d4a574, #2c7a7b);
+    border-radius: 2px;
+  }
+}
+
+@layer components {
+  .cinema-bars {
+    position: fixed;
+    left: 0;
+    right: 0;
+    height: max(4vh, 14px);
+    background: #030305;
+    z-index: 100;
+    pointer-events: none;
+  }
+
+  .cinema-bar-top {
+    top: 0;
+  }
+
+  .cinema-bar-bottom {
+    bottom: 0;
+  }
+
+  .vignette-overlay {
+    position: fixed;
+    inset: 0;
+    /* Sebelumnya transparent baru mulai di 55% lalu gelap pekat (0.85) di
+       tepi - bikin seluruh pinggir layar kelihatan terlalu gelap. Area
+       transparan diperlebar (70%) dan kepekatan gelap di tepi diturunkan
+       (0.5) supaya web tidak terkesan suram, efek "fog" tetap ada tapi
+       jauh lebih tipis. */
+    background: radial-gradient(
+      ellipse at center,
+      transparent 70%,
+      rgba(3, 3, 5, 0.5) 100%
     );
-    observer.observe(videoEl);
+    pointer-events: none;
+    z-index: 50;
+  }
 
-    return () => observer.disconnect();
-  }, []);
+  .glass-card {
+    background: rgba(3, 3, 5, 0.38);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+  }
 
-  if (failed) return null;
+  .custom-cursor {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #d4a574;
+    border-radius: 50%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: 200;
+    transition: transform 0.15s ease;
+    mix-blend-mode: difference;
+    will-change: transform;
+  }
 
-  return (
-    <div
-      className={`animate-on-scroll hero-slide-in ${animClass} pointer-events-none absolute hidden md:block ${wrapClass}`}
-    >
-      {/* Elemen luar mengurus animasi masuk (slide-in), elemen dalam ini
-          yang mengurus kemiringan acak + gerakan mengambang terus-menerus
-          - supaya keduanya tidak saling tabrakan/override. */}
-      <div
-        className="card-float h-full w-full overflow-hidden rounded-lg border-4 border-cinematic-black shadow-2xl"
-        style={{
-          '--tilt': `${tilt}deg`,
-          animationDuration: `${floatDuration}s`,
-          animationDelay: `${floatDelay}s`,
-        }}
-      >
-        <video
-          ref={videoRef}
-          src={src}
-          autoPlay
-          muted
-          loop
-          playsInline
-          onError={() => setFailed(true)}
-          className="h-full w-full object-cover"
-        />
-      </div>
-    </div>
-  );
+  .custom-cursor-dot {
+    width: 4px;
+    height: 4px;
+    background: #d4a574;
+    border-radius: 50%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: 201;
+    will-change: transform;
+  }
 }
 
-export default function WelcomeIntro() {
-  const sectionRef = useRef(null);
-  const typed = useTypewriter(HEADLINE);
+@layer utilities {
+  /* Sesuai permintaan: setiap teks yang pakai Montserrat (class font-sans
+     / font-warm) SELALU tebal + huruf kapital semua. Diterapkan di satu
+     tempat di sini supaya tidak perlu mengubah className satu-satu di
+     puluhan tempat berbeda. Elemen yang butuh huruf besar/kecil asli
+     (mis. alamat email, kutipan panjang) sebaiknya pakai font-serif. */
+  .font-sans,
+  .font-warm {
+    font-weight: 700;
+    text-transform: uppercase;
+  }
 
-  return (
-    <section
-      id="home"
-      ref={sectionRef}
-      className="scroll-nav-target relative z-[55] flex min-h-[100dvh] items-center justify-center overflow-hidden bg-cinematic-black px-4 sm:px-8"
-    >
-      {/* Foto latar (ganti bg putih polos sebelumnya) + lapisan gelap
-          gradasi di atasnya supaya judul & subjudul tetap terbaca jelas
-          di atas foto yang ramai. */}
-      <div className="pointer-events-none absolute inset-0 -z-10">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="/images/welcome-bg.jpg"
-          alt=""
-          aria-hidden="true"
-          fetchPriority="high"
-          className="h-full w-full object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-cinematic-black/70 via-cinematic-black/45 to-cinematic-black/80" />
-        <div className="absolute inset-0 bg-cinematic-black/10" />
-        <div className="absolute -left-32 -top-32 h-[30rem] w-[30rem] rounded-full bg-welcome-primary/10 blur-3xl" />
-        <div className="absolute -bottom-32 -right-24 h-[26rem] w-[26rem] rounded-full bg-welcome-accent/15 blur-3xl" />
-      </div>
+  /* Supaya bagian yang dituju link navigasi (Home/About us/Service/
+     Contact) tidak nyangkut di belakang navbar yang fixed di atas saat
+     di-scroll ke posisinya. */
+  .scroll-nav-target {
+    scroll-margin-top: 5.5rem;
+  }
 
-      {VIDEO_CARDS.map((card) => (
-        <VideoCard key={card.src} {...card} />
-      ))}
+  .text-shadow-cinematic {
+    /* Bayangan gelap dulu (bikin teks tetap kebaca di background apa pun,
+       termasuk scene ilustrasi yang lebih terang sekarang), baru glow
+       amber tipis di atasnya buat mood sinematiknya. */
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9), 0 4px 24px rgba(0, 0, 0, 0.75),
+      0 0 40px rgba(212, 165, 116, 0.35), 0 0 80px rgba(212, 165, 116, 0.15);
+  }
 
-      <div className="relative z-10 max-w-3xl text-center">
-        <h1 className="min-h-[1.3em] font-display text-[clamp(1.6rem,5.5vw,3.4rem)] font-semibold leading-tight text-cinematic-cream text-shadow-cinematic">
-          {typed}
-          <span className="typewriter-cursor">|</span>
-        </h1>
+  .animate-on-scroll {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+  }
 
-        {/* Sebelumnya bagian bawah headline kosong/terasa terlalu pendek -
-            ditambah subjudul singkat + penanda scroll supaya section ini
-            terasa lebih "penuh" dan mengarahkan pengunjung untuk lanjut
-            scroll. */}
-        <p className="mt-5 font-sans text-sm text-cinematic-cream/85 text-shadow-cinematic sm:text-base">
-          {SUBLINE}
-        </p>
+  .animate-on-scroll.visible {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
 
-        <div className="mt-10 flex justify-center sm:mt-14">
-          <span
-            aria-hidden="true"
-            className="flex h-10 w-6 items-start justify-center rounded-full border-2 border-cinematic-cream/40 p-1.5"
-          >
-            <span className="h-2 w-1 animate-bounce rounded-full bg-cinematic-amber/80" />
-          </span>
-        </div>
-      </div>
+  /* Dipakai khusus di teks hero utama - masuk dari samping (bukan dari
+     bawah seperti animate-on-scroll biasa), cepat di awal lalu melambat
+     pas mendarat (durasi dipersingkat + easing "fast-out-slow-in"). */
+  .hero-slide-in {
+    transition-duration: 0.7s;
+    transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .animate-on-scroll.slide-in-left {
+    transform: translateX(-70px);
+  }
+  .animate-on-scroll.slide-in-right {
+    transform: translateX(70px);
+  }
+  /* Deskripsi cuma fade (tanpa geser), dan br sengaja telat sedikit
+     supaya nongol SETELAH eyebrow & judul selesai mendarat. */
+  .hero-fade-delayed {
+    transform: translateY(0);
+    transition-duration: 0.6s;
+    transition-delay: 0.35s;
+  }
 
-      {/* Shape divider - transisi ke bagian sinematik di bawahnya. */}
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 overflow-hidden leading-[0]">
-        <svg
-          viewBox="0 0 1440 110"
-          preserveAspectRatio="none"
-          className="h-14 w-full sm:h-20 lg:h-28"
-        >
-          <path
-            d="M0,70 C180,110 360,60 540,85 C720,100 900,65 1080,90 C1260,105 1350,75 1440,95 L1440,110 L0,110 Z"
-            fill="#030305"
-          />
-        </svg>
-      </div>
-    </section>
-  );
+  /* Google Translate defaultnya nambah banner + geser <body> ke bawah -
+     dimatikan semua supaya layout tetap rapi, tombol kita sendiri yang
+     jadi satu-satunya kontrolnya. */
+  .goog-te-banner-frame,
+  .goog-te-gadget-icon {
+    display: none !important;
+  }
+  body {
+    top: 0 !important;
+  }
+  .goog-tooltip,
+  .goog-tooltip:hover {
+    display: none !important;
+  }
+  .goog-text-highlight {
+    background: none !important;
+    box-shadow: none !important;
+  }
+
+  /* Kursor berkedip di akhir animasi ketik cepat pada judul "Selamat
+     Datang". */
+  .typewriter-cursor {
+    display: inline-block;
+    margin-left: 2px;
+    animation: blink-caret 0.9s step-end infinite;
+    color: theme('colors.welcome.primary');
+  }
+  @keyframes blink-caret {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+
+  /* Goyang lucu pas kartu di-hover - dipakai di ikon Lottie kartu fitur. */
+  .lottie-wiggle {
+    transition: transform 0.3s ease;
+  }
+  .group:hover .lottie-wiggle {
+    animation: lottie-wiggle-kf 0.6s ease-in-out;
+  }
+  @keyframes lottie-wiggle-kf {
+    0%, 100% { transform: rotate(0deg) scale(1); }
+    20% { transform: rotate(-8deg) scale(1.05); }
+    40% { transform: rotate(7deg) scale(1.05); }
+    60% { transform: rotate(-5deg) scale(1.02); }
+    80% { transform: rotate(3deg) scale(1.02); }
+  }
+
+  .shimmer-text {
+    background-image: linear-gradient(
+      100deg,
+      #f6efdd 0%,
+      #f6efdd 35%,
+      #d4af37 48%,
+      #fff6d9 54%,
+      #d4af37 60%,
+      #f6efdd 75%,
+      #f6efdd 100%
+    );
+    background-size: 250% auto;
+    background-position: 200% center;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .shimmer-text.visible {
+    animation: shimmerSweep 3.2s ease-in-out infinite;
+  }
+
+  @keyframes shimmerSweep {
+    0% {
+      background-position: 200% center;
+    }
+    60%,
+    100% {
+      background-position: -60% center;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .shimmer-text.visible {
+      animation: none;
+      background-position: 0% center;
+    }
+  }
+
+  /* Kartu video di Welcome Intro - miring sesuai --tilt (diset inline per
+     kartu) lalu mengambang pelan naik-turun terus-menerus (bukan diam),
+     dengan sedikit tambahan miring saat di puncak supaya terasa lebih
+     hidup/organik, bukan cuma geser lurus. Ditambah sedikit "napas"
+     (scale mengecil-membesar tipis) supaya gerakannya berasa lebih
+     lembut/bernafas, bukan cuma naik-turun kaku. */
+  .card-float {
+    transform: rotate(var(--tilt, 0deg));
+    animation-name: cardFloat;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+  }
+  @keyframes cardFloat {
+    0%,
+    100% {
+      transform: rotate(var(--tilt, 0deg)) translateY(0) scale(1);
+    }
+    50% {
+      transform: rotate(calc(var(--tilt, 0deg) + 2deg)) translateY(-10px)
+        scale(1.02);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .card-float {
+      animation: none;
+    }
+  }
+
+  /* Dipakai di pesawat terbang dekoratif (FlyingPlane) - membuat posisi &
+     rotasi yang di-update lewat JS saat scroll jadi meluncur halus
+     (melengkung), bukan lompat kaku mengikuti scroll mentah-mentah. */
+  .plane-glide {
+    transition: left 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+      top 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .plane-glide {
+      transition: none;
+    }
+  }
+
+  .safe-top {
+    padding-top: env(safe-area-inset-top);
+  }
+
+  .safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .marquee-mask {
+    -webkit-mask-image: linear-gradient(
+      90deg,
+      transparent 0%,
+      #000 10%,
+      #000 90%,
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      90deg,
+      transparent 0%,
+      #000 10%,
+      #000 90%,
+      transparent 100%
+    );
+  }
+
+  .marquee-track {
+    animation: marqueeScroll 28s linear infinite;
+  }
+
+  .marquee-mask:hover .marquee-track {
+    animation-play-state: paused;
+  }
+
+  @keyframes marqueeScroll {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .marquee-track {
+      animation: none;
+    }
+  }
 }
