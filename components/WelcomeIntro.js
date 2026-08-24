@@ -53,7 +53,7 @@ const VIDEO_CARDS = [
     floatDelay: 0.3,
   },
   {
-    src: '/video/welcome-3-v2.mp4',
+    src: '/video/welcome-3-v3.mp4',
     wrapClass:
       'right-[4%] bottom-[20%] w-44 h-28 sm:right-[8%] sm:bottom-[22%] sm:w-60 sm:h-40 lg:right-[13%] lg:bottom-[24%] lg:w-72 lg:h-44',
     animClass: 'slide-in-right',
