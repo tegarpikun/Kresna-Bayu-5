@@ -39,7 +39,7 @@ function DestinationCard({ photo, index, onOpen }) {
       )}
       {/* Gradasi gelap DI BAWAH SAJA (bukan di seluruh foto) supaya foto
           tetap kelihatan jelas, tapi teks judul di atasnya tetap terbaca. */}
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/65 via-black/15 to-transparent" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
       <div className="absolute bottom-0 left-0 right-0 p-4">
         <p className="font-display text-lg text-white">{photo.title}</p>
         <p className="font-warm text-[10px] uppercase tracking-[0.2em] text-cinematic-amber">
@@ -182,7 +182,17 @@ export default function JourneySection() {
         ref={welcomeSectionRef}
         className="relative overflow-hidden bg-cinematic-black"
       >
-        <FlyingPlane containerRef={welcomeSectionRef} />
+        {/* Rentang gerak diperpanjang (yEnd 74%) dan jumlah zigzag
+            ditambah supaya sepadan dengan section ini yang jauh lebih
+            tinggi (fitur -> destinasi -> FAQ -> testimoni -> footer) -
+            jejak pesawat & ekornya jadi terlihat sampai mendekati bagian
+            "Kata Mereka", bukan berhenti di tengah jalan. */}
+        <FlyingPlane
+          containerRef={welcomeSectionRef}
+          zigzags={6}
+          yStart={6}
+          yEnd={74}
+        />
         {/* Gradasi warna lembut (bukan flat hitam polos) - tetap terasa
             sinematik & konsisten dengan bagian atas, dengan sedikit
             kedalaman warna. Murni CSS, tidak menambah beban loading. */}
@@ -313,13 +323,13 @@ export default function JourneySection() {
 
               <div className="text-center sm:text-right">
                 <p className="mb-3 font-warm text-xs font-semibold uppercase tracking-[0.2em] text-cinematic-amber">
-                  Hubungi Kami
+                  Alamat Kami
                 </p>
                 <a
                   href={buildWhatsappLink()}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-full bg-cinematic-whatsapp px-6 py-2.5 font-warm text-xs font-semibold uppercase tracking-[0.15em] text-white transition-colors hover:brightness-90"
+                  className="inline-flex items-center gap-2 font-warm text-sm font-normal normal-case text-cinematic-cream/80 underline-offset-4 transition-colors hover:text-cinematic-amber hover:underline"
                 >
                   Chat via WhatsApp
                 </a>
