@@ -8,8 +8,8 @@ export default function LogoMarquee() {
   const track = [...logos, ...logos];
 
   return (
-    <div className="border-t border-slate-200 py-10">
-      <p className="mb-8 text-center font-sans text-[10px] uppercase tracking-[0.3em] text-slate-500">
+    <div className="border-t border-voyage-gold/10 py-10">
+      <p className="mb-8 text-center font-sans text-[10px] uppercase tracking-[0.3em] text-voyage-gold/70">
         Dipercaya oleh Mitra Kami
       </p>
 
@@ -22,12 +22,12 @@ export default function LogoMarquee() {
                 key={`${logo.name}-${i}`}
                 src={logo.src}
                 alt={logo.name}
-                className="h-12 w-auto shrink-0 object-contain opacity-60 grayscale transition-all duration-300 hover:opacity-100 hover:grayscale-0"
+                className="h-12 w-auto shrink-0 object-contain opacity-80 transition-opacity duration-300 hover:opacity-100"
               />
             ) : (
               <span
                 key={`${logo.name}-${i}`}
-                className="whitespace-nowrap font-serif text-xl italic tracking-wide text-slate-400 transition-colors hover:text-amber-600"
+                className="whitespace-nowrap font-serif text-xl italic tracking-wide text-voyage-cream/40 transition-colors hover:text-voyage-gold/80"
               >
                 {logo.name}
               </span>
