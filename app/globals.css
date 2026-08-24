@@ -244,13 +244,23 @@
     box-shadow: none !important;
   }
 
-  /* DIUBAH: Kursor ketik pada judul WelcomeIntro diubah jadi hitam (slate-900) 
-     agar kontras di atas background putih */
+  /* PERBAIKAN: sebelumnya selector di sini tertulis "writer-cursor" -
+     tanpa titik "." di depan dan tanpa awalan "type". Itu BUKAN typo
+     kosmetik biasa - artinya aturan ini menyasar tag HTML bernama
+     <writer-cursor> (yang tidak pernah ada), BUKAN elemen dengan
+     class="typewriter-cursor" yang sungguhan dipakai di WelcomeIntro.js.
+     Akibatnya aturan warna di sini TIDAK PERNAH kepakai sama sekali -
+     kursor "|" jadi ikut warna teks judul di atasnya + numpuk bayangan
+     gelap dari text-shadow-cinematic (yang di garis tipis kayak kursor,
+     bayangan gelapnya jadi lebih dominan dibanding tinta aslinya),
+     itulah sebabnya kelihatan hitam. Sekarang selector-nya dibetulkan
+     jadi ".typewriter-cursor" dan warnanya diganti biru sesuai
+     permintaan. */
   .typewriter-cursor {
     display: inline-block;
     margin-left: 2px;
     animation: blink-caret 0.9s step-end infinite;
-    color: theme('colors.slate.900'); 
+    color: #4a90e2;
   }
   @keyframes blink-caret {
     0%, 100% { opacity: 1; }
