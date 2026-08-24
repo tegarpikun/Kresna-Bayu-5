@@ -17,7 +17,6 @@ export default function EndingSequence({ onTriggerRush }) {
 
     const tl = gsap.timeline();
 
-    // Fade ke hitam sinematik
     tl.to(overlayRef.current, {
       opacity: 1,
       duration: 2.2,
@@ -31,6 +30,9 @@ export default function EndingSequence({ onTriggerRush }) {
       '-=0.4'
     );
 
+    // Tahan sebentar di layar hitam, lalu buka kembali (reveal) supaya
+    // pengguna bisa lanjut scroll ke bagian statis di bawahnya — bukan
+    // jalan buntu permanen.
     tl.to(creditRef.current, {
       opacity: 0,
       duration: 0.6,
@@ -45,8 +47,10 @@ export default function EndingSequence({ onTriggerRush }) {
 
   return (
     <>
-      {/* Konten utama dengan background gelap sinematik */}
-      <div className="relative z-20 flex min-h-[100dvh] flex-col items-center justify-center bg-cinematic-black px-4 sm:px-8 text-center">
+      {/* Konten utama TANPA background solid (biarkan scene belakang terlihat) */}
+      <div className="relative z-20 flex min-h-[100dvh] flex-col items-center justify-center px-4 sm:px-8 text-center">
+        
+        {/* Panel kaca gelap transparan agar menyatu dengan background */}
         <div className="text-panel animate-on-scroll max-w-2xl p-8 sm:p-14">
           <p className="font-sans text-[10px] sm:text-xs tracking-[0.3em] text-cinematic-amber uppercase mb-4">
             Perusahaan Anda perlu Outing?
@@ -72,7 +76,7 @@ export default function EndingSequence({ onTriggerRush }) {
         </div>
       </div>
 
-      {/* Layar fade-to-black untuk efek sinematik saat CTA diklik */}
+      {/* Layar fade-to-black (untuk efek sinematik saat CTA diklik) */}
       <div
         ref={overlayRef}
         className="pointer-events-none fixed inset-0 z-[200] bg-cinematic-black opacity-0"
