@@ -11,9 +11,10 @@ if (typeof window !== 'undefined') {
 
 // Rentang perjalanan kamera di sumbu Z. Disesuaikan agar kamera benar-benar
 // "menembus" seluruh jajaran foto di lib/photoData.js (foto terjauh ada di
-// sekitar z = -33).
+// sekitar z = -58.6, setelah 6 foto baru ditambahkan - sebelumnya cuma
+// sampai -33.4 / kamera berhenti di -38).
 const CAMERA_START_Z = 6;
-const CAMERA_END_Z = -38;
+const CAMERA_END_Z = -63;
 const CAMERA_DRIFT_X = 2.2;
 const CAMERA_DRIFT_Y = -1.1;
 
