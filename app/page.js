@@ -133,8 +133,16 @@ export default function Home() {
             sentinelRef={sentinelRef}
           />
         </CanvasErrorBoundary>
-        <UIOverlay />
       </div>
+
+      {/* UIOverlay (termasuk cursor custom) SENGAJA dipindah keluar dari
+          div yang di-toggle opacity oleh cinematicActive di atas - lihat
+          catatan panjang di dalam components/UIOverlay.js kenapa. Cukup
+          dikasih tahu status cinematicActive lewat prop supaya vignette
+          & teks "Gulir untuk menjelajah" di dalamnya tetap ikut
+          fade in/out seperti sebelumnya, tapi cursor-nya sendiri sekarang
+          SELALU tampil di sepanjang halaman. */}
+      <UIOverlay cinematicActive={cinematicActive} />
 
       <div className="relative z-20">
         {/* Babak pembuka - kini ikut mengalir bersama scroll, bukan kotak
