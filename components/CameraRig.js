@@ -6,14 +6,14 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger);
 }
-// Rentang perjalanan kamera di sumbu Z. Dikembalikan ke -38 (dari -63) -
-// -63 itu sisa kalibrasi untuk rencana "6 foto baru" yang ternyata tidak
-// pernah benar-benar ditambahkan ke lib/photoData.js (masih 8 foto, foto
-// terjauh di z = -33.4). -38 memberi sedikit jarak lebih setelah foto
-// terakhir supaya terasa "sampai tujuan", tanpa kamera bablas jauh ke
-// ruang kosong.
+// Rentang perjalanan kamera di sumbu Z. -30 (dari -38) - foto terjauh di
+// lib/photoData.js ada di z=-33.4; dengan -38 kamera sudah KELEWATAN foto
+// terakhir 4.6 unit di akhir scroll (fotonya jadi ada di belakang kamera,
+// tidak kelihatan lagi pas scroll selesai). -30 membuat kamera berhenti
+// SEBELUM/PAS di depan foto terakhir, jadi foto itu benar-benar kelihatan
+// penuh di layar tepat saat scroll mencapai ujung, bukan sudah terlewati.
 const CAMERA_START_Z = 6;
-const CAMERA_END_Z = -38;
+const CAMERA_END_Z = -30;
 const CAMERA_DRIFT_X = 2.2;
 const CAMERA_DRIFT_Y = -1.1;
 export default function CameraRig({ endingRushRef, sentinelRef }) {
