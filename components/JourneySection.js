@@ -189,13 +189,16 @@ export default function JourneySection() {
 
         {/* ===== Tentang / Kenapa memilih kami ===== */}
         <section className="mx-auto max-w-6xl px-6 py-16 sm:py-24">
-          <p className="mb-4 text-center font-warm text-xs font-semibold uppercase tracking-[0.3em] text-amber-600 sm:text-left">
+          {/* Eyebrow: Diperbesar dan di tengah */}
+          <p className="mb-4 text-center font-warm text-sm sm:text-base font-semibold uppercase tracking-[0.3em] text-amber-600">
             {journeySection.eyebrow}
           </p>
-          <h2 className="animate-on-scroll mb-6 text-center font-display text-[clamp(1.8rem,5vw,3.2rem)] font-semibold leading-tight text-slate-900 sm:text-left">
+          {/* Judul: Bold dan Center */}
+          <h2 className="animate-on-scroll mb-6 text-center font-display text-[clamp(1.8rem,5vw,3.2rem)] font-bold leading-tight text-slate-900">
             {journeySection.title}
           </h2>
-          <p className="mx-auto max-w-2xl text-center font-warm text-sm leading-relaxed text-slate-600 sm:mx-0 sm:text-left sm:text-base">
+          {/* Paragraf: isi medium/regular (karena global font-warm sudah 500, tapi pastikan tidak bold) */}
+          <p className="mx-auto max-w-2xl text-center font-warm text-sm font-medium leading-relaxed text-slate-600 sm:text-base">
             {journeySection.body}
           </p>
 
@@ -213,7 +216,7 @@ export default function JourneySection() {
                 <h3 className="mb-2 font-display text-lg text-slate-900">
                   {feature.title}
                 </h3>
-                <p className="font-warm text-sm leading-relaxed text-slate-600">
+                <p className="font-warm text-sm font-medium leading-relaxed text-slate-600">
                   {feature.desc}
                 </p>
               </div>
@@ -223,7 +226,7 @@ export default function JourneySection() {
 
         {/* ===== Destinasi ===== */}
         <section className="mx-auto max-w-6xl px-6 pb-16 sm:pb-24">
-          <h2 className="mb-10 text-center font-display text-[clamp(1.6rem,4.5vw,2.6rem)] text-slate-900">
+          <h2 className="mb-10 text-center font-display text-[clamp(1.6rem,4.5vw,2.6rem)] font-bold text-slate-900">
             {journeySection.destinationsTitle}
           </h2>
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-6 lg:grid-cols-4">
@@ -236,7 +239,7 @@ export default function JourneySection() {
               />
             ))}
           </div>
-          <p className="mt-4 text-center font-warm text-xs text-slate-500">
+          <p className="mt-4 text-center font-warm text-xs font-medium text-slate-500">
             Klik foto untuk melihat lebih besar
           </p>
         </section>
@@ -244,7 +247,7 @@ export default function JourneySection() {
         {/* ===== FAQ ===== */}
         <section className="border-t border-slate-200 bg-slate-50">
           <div className="mx-auto max-w-3xl px-6 py-16 sm:py-24">
-            <h2 className="mb-10 text-center font-display text-[clamp(1.6rem,4.5vw,2.6rem)] text-slate-900">
+            <h2 className="mb-10 text-center font-display text-[clamp(1.6rem,4.5vw,2.6rem)] font-bold text-slate-900">
               {journeySection.faqTitle}
             </h2>
             <div className="flex flex-col gap-4">
@@ -262,17 +265,17 @@ export default function JourneySection() {
           </div>
         </section>
 
-        {/* ===== Testimoni ===== */}
+        {/* ===== Testimoni (Kata Mereka) - Diberi Frame Tebal ===== */}
         <section className="border-t border-slate-200">
           <div className="mx-auto max-w-5xl px-6 py-16 sm:py-24">
-            <h2 className="mb-12 text-center font-display text-[clamp(1.6rem,4.5vw,2.6rem)] text-slate-900">
+            <h2 className="mb-12 text-center font-display text-[clamp(1.6rem,4.5vw,2.6rem)] font-bold text-slate-900">
               {journeySection.testimonialsTitle}
             </h2>
             <div className="grid grid-cols-1 gap-8 sm:grid-cols-2">
               {journeySection.testimonials.map((t) => (
                 <div
                   key={t.name}
-                  className="rounded-xl border border-slate-200 bg-white p-8"
+                  className="rounded-xl border-2 border-slate-300 bg-white p-8 shadow-md"
                 >
                   <p className="mb-2 font-display text-4xl leading-none text-amber-600">
                     &ldquo;
@@ -283,7 +286,7 @@ export default function JourneySection() {
                   <p className="font-warm text-sm font-semibold text-amber-600">
                     {t.name}
                   </p>
-                  <p className="font-warm text-xs uppercase tracking-[0.15em] text-slate-500">
+                  <p className="font-warm text-xs uppercase tracking-[0.15em] font-medium text-slate-500">
                     {t.role}
                   </p>
                 </div>
@@ -301,7 +304,7 @@ export default function JourneySection() {
                 <p className="font-display text-2xl text-slate-900">
                   {siteConfig.brandName}
                 </p>
-                <p className="mt-2 max-w-xs font-warm text-sm text-slate-600">
+                <p className="mt-2 max-w-xs font-warm text-sm font-medium text-slate-600">
                   {siteConfig.tagline}
                 </p>
               </div>
@@ -310,11 +313,12 @@ export default function JourneySection() {
                 <p className="mb-3 font-warm text-xs font-semibold uppercase tracking-[0.2em] text-amber-700">
                   Alamat Kami
                 </p>
+                {/* Warinoi Timur: ubah ke font-medium agar tidak bold */}
                 <a
                   href={buildWhatsappLink()}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 font-warm text-sm font-normal normal-case text-slate-700 underline-offset-4 transition-colors hover:text-amber-600 hover:underline"
+                  className="inline-flex items-center gap-2 font-warm text-sm font-medium normal-case text-slate-700 underline-offset-4 transition-colors hover:text-amber-600 hover:underline"
                 >
                   Warinoi Timur V no.17, Kota Malang
                 </a>
@@ -324,7 +328,7 @@ export default function JourneySection() {
             </div>
 
             <div className="mt-12 border-t border-slate-200 pt-6 text-center">
-              <p className="font-warm text-xs text-slate-500">
+              <p className="font-warm text-xs font-medium text-slate-500">
                 &copy; {new Date().getFullYear()} {siteConfig.brandName}. Semua
                 hak cipta dilindungi.
               </p>
