@@ -331,7 +331,7 @@ export default function JourneySection() {
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 font-warm text-sm font-normal normal-case text-cinematic-cream/80 underline-offset-4 transition-colors hover:text-cinematic-amber hover:underline"
                 >
-                  Chat via WhatsApp
+                  Warinoi Timur V no.17, Kota Malang
                 </a>
 
                 <SocialIcons className="mt-5 justify-center sm:justify-end" />
