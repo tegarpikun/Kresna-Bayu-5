@@ -188,7 +188,8 @@ export default function JourneySection() {
         </div>
 
         {/* ===== Tentang / Kenapa memilih kami ===== */}
-        <section className="mx-auto max-w-6xl px-6 py-16 sm:py-24">
+        {/* TAMBAHKAN ID="about" DI SINI */}
+        <section id="about" className="mx-auto max-w-6xl px-6 py-16 sm:py-24">
           {/* Eyebrow: Diperbesar dan di tengah */}
           <p className="mb-4 text-center font-warm text-sm sm:text-base font-semibold uppercase tracking-[0.3em] text-amber-600">
             {journeySection.eyebrow}
@@ -225,7 +226,8 @@ export default function JourneySection() {
         </section>
 
         {/* ===== Destinasi ===== */}
-        <section className="mx-auto max-w-6xl px-6 pb-16 sm:pb-24">
+        {/* TAMBAHKAN ID="services" DI SINI */}
+        <section id="services" className="mx-auto max-w-6xl px-6 pb-16 sm:pb-24">
           <h2 className="mb-10 text-center font-display text-[clamp(1.6rem,4.5vw,2.6rem)] font-bold text-slate-900">
             {journeySection.destinationsTitle}
           </h2>
@@ -297,7 +299,8 @@ export default function JourneySection() {
           <LogoMarquee />
         </section>
 
-        <footer className="border-t border-slate-200 bg-slate-50">
+        {/* TAMBAHKAN ID="contact" DI SINI */}
+        <footer id="contact" className="border-t border-slate-200 bg-slate-50">
           <div className="mx-auto max-w-6xl px-6 py-16">
             <div className="flex flex-col items-center gap-8 sm:flex-row sm:items-start sm:justify-between">
               <div className="text-center sm:text-left">
