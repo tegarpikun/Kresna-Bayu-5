@@ -172,14 +172,12 @@
 }
 
 @layer utilities {
-  /* Sesuai permintaan: setiap teks yang pakai Montserrat (class font-sans
-     / font-warm) SELALU tebal + huruf kapital semua. Diterapkan di satu
-     tempat di sini supaya tidak perlu mengubah className satu-satu di
-     puluhan tempat berbeda. Elemen yang butuh huruf besar/kecil asli
-     (mis. alamat email, kutipan panjang) sebaiknya pakai font-serif. */
+  /* DIUBAH SESUAI PERMINTAAN: Teks isi (font-sans / font-warm) sekarang
+     memakai font-weight MEDIUM (500) agar kontras dengan judul yang BOLD.
+     Judul memakai font-display (Caviar Dreams Bold) sehingga tetap tebal. */
   .font-sans,
   .font-warm {
-    font-weight: 700;
+    font-weight: 500;
     text-transform: uppercase;
   }
 
