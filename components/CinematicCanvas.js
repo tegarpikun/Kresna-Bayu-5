@@ -35,7 +35,11 @@ export default function CinematicCanvas({ endingRushRef, active = true }) {
         }}
         style={{ background: 'transparent' }}
       >
-        <fogExp2 attach="fog" color="#030305" density={0.011} />
+        {/* Densitas diturunkan (0.011 -> 0.007) menyesuaikan jangkauan
+            kamera yang sekarang lebih jauh (sampai z=-63, sebelumnya
+            cuma -38) setelah 6 foto baru ditambahkan - supaya foto-foto
+            baru di ujung jalur tidak tertutup kabut berlebihan. */}
+        <fogExp2 attach="fog" color="#030305" density={0.007} />
 
         <Suspense fallback={null}>
           <CinematicLighting />
