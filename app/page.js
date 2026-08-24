@@ -99,7 +99,7 @@ export default function Home() {
         <img
           src="/brand/logo.png"
           alt={siteConfig.brandName}
-          className="h-9 w-auto drop-shadow-[0_2px_10px_rgba(0,0,0,0.5)] sm:h-11"
+          className="h-9 w-auto sm:h-11"
         />
       </div>
 
@@ -140,28 +140,6 @@ export default function Home() {
             </p>
           </div>
         </div>
-
-        {siteConfig.chapters.map((chapter) => (
-          <div
-            key={chapter.title}
-            className="flex min-h-[100dvh] items-center justify-center px-4"
-          >
-            {/* Tanpa kotak "glass-card" di belakang - class itu pakai
-                backdrop-blur yang malah mengaburkan foto-foto yang
-                melayang di scene 3D di belakangnya jadi gumpalan gelap,
-                dan menutupi scene. Sekarang teks langsung mengambang di
-                atas scene (sama seperti bagian hero paling atas),
-                dibantu text-shadow-cinematic saja supaya tetap kebaca. */}
-            <div className="animate-on-scroll max-w-3xl px-6 py-8 text-center sm:px-14 sm:py-12">
-              <p className="mb-4 font-sans text-[10px] sm:text-xs uppercase tracking-[0.3em] text-cinematic-amber text-shadow-cinematic">
-                {chapter.eyebrow}
-              </p>
-              <h2 className="font-serif text-[clamp(2rem,7vw,4.5rem)] text-cinematic-cream text-shadow-cinematic">
-                {chapter.title}
-              </h2>
-            </div>
-          </div>
-        ))}
 
         <EndingSequence
           onTriggerRush={() => {
