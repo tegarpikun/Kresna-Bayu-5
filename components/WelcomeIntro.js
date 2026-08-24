@@ -3,8 +3,8 @@
 import { useEffect, useRef, useState } from 'react';
 import FlyingPlane from '@/components/FlyingPlane';
 
-const HEADLINE = 'Selamat Datang di Situs Kresna Bayu Tour!';
-const SUBLINE = 'Gulir ke bawah untuk memulai perjalanan sinematik kami.';
+const HEADLINE = 'Melayani Sepenuh Hati';
+const SUBLINE = 'Info selanjutnya scroll ke bawah.';
 
 function useTypewriter(text, speed = 45, startDelay = 400) {
   const [display, setDisplay] = useState('');
