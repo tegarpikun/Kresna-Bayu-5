@@ -177,19 +177,6 @@ export default function WelcomeIntro() {
         </div>
       </div>
 
-      {/* Shape divider - transisi ke bagian sinematik di bawahnya. */}
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 overflow-hidden leading-[0]">
-        <svg
-          viewBox="0 0 1440 110"
-          preserveAspectRatio="none"
-          className="h-14 w-full sm:h-20 lg:h-28"
-        >
-          <path
-            d="M0,70 C180,110 360,60 540,85 C720,100 900,65 1080,90 C1260,105 1350,75 1440,95 L1440,110 L0,110 Z"
-            fill="#030305"
-          />
-        </svg>
-      </div>
     </section>
   );
 }
