@@ -39,7 +39,7 @@ function DestinationCard({ photo, index, onOpen }) {
       )}
       {/* Gradasi gelap DI BAWAH SAJA (bukan di seluruh foto) supaya foto
           tetap kelihatan jelas, tapi teks judul di atasnya tetap terbaca. */}
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/65 via-black/15 to-transparent" />
       <div className="absolute bottom-0 left-0 right-0 p-4">
         <p className="font-display text-lg text-white">{photo.title}</p>
         <p className="font-warm text-[10px] uppercase tracking-[0.2em] text-cinematic-amber">
@@ -182,17 +182,7 @@ export default function JourneySection() {
         ref={welcomeSectionRef}
         className="relative overflow-hidden bg-cinematic-black"
       >
-        {/* Rentang gerak diperpanjang (yEnd 74%) dan jumlah zigzag
-            ditambah supaya sepadan dengan section ini yang jauh lebih
-            tinggi (fitur -> destinasi -> FAQ -> testimoni -> footer) -
-            jejak pesawat & ekornya jadi terlihat sampai mendekati bagian
-            "Kata Mereka", bukan berhenti di tengah jalan. */}
-        <FlyingPlane
-          containerRef={welcomeSectionRef}
-          zigzags={6}
-          yStart={6}
-          yEnd={74}
-        />
+        <FlyingPlane containerRef={welcomeSectionRef} />
         {/* Gradasi warna lembut (bukan flat hitam polos) - tetap terasa
             sinematik & konsisten dengan bagian atas, dengan sedikit
             kedalaman warna. Murni CSS, tidak menambah beban loading. */}
@@ -236,12 +226,8 @@ export default function JourneySection() {
           </div>
         </section>
 
-        {/* ===== Destinasi (galeri dengan lightbox + counter) =====
-            id="services" - tujuan link nav "Service". */}
-        <section
-          id="services"
-          className="scroll-nav-target mx-auto max-w-6xl px-6 pb-16 sm:pb-24"
-        >
+        {/* ===== Destinasi (galeri dengan lightbox + counter) ===== */}
+        <section className="mx-auto max-w-6xl px-6 pb-16 sm:pb-24">
           <h2 className="mb-10 text-center font-display text-[clamp(1.6rem,4.5vw,2.6rem)] text-cinematic-cream">
             {journeySection.destinationsTitle}
           </h2>
@@ -313,11 +299,7 @@ export default function JourneySection() {
           <LogoMarquee />
         </section>
 
-        {/* id="contact" - tujuan link nav "Contact". */}
-        <footer
-          id="contact"
-          className="scroll-nav-target border-t border-white/10 bg-black/40"
-        >
+        <footer className="border-t border-white/10 bg-black/40">
           <div className="mx-auto max-w-6xl px-6 py-16">
             <div className="flex flex-col items-center gap-8 sm:flex-row sm:items-start sm:justify-between">
               <div className="text-center sm:text-left">
