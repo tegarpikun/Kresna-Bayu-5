@@ -50,6 +50,8 @@
   }
 
   body {
+    /* Background dasar tetap gelap untuk area sinematik 3D, tapi bagian 
+       terang (WelcomeIntro & JourneySection) akan menimpanya dengan bg-white */
     background-color: #030305;
     color: #f5e6d3;
     overflow-x: hidden;
@@ -63,16 +65,18 @@
     }
   }
 
+  /* Scrollbar diubah menjadi abu-abu netral agar tetap terlihat rapi 
+     di atas background putih maupun hitam */
   ::-webkit-scrollbar {
     width: 4px;
   }
 
   ::-webkit-scrollbar-track {
-    background: #030305;
+    background: #f1f5f9; /* slate-100 */
   }
 
   ::-webkit-scrollbar-thumb {
-    background: linear-gradient(to bottom, #d4a574, #2c7a7b);
+    background: linear-gradient(to bottom, #cbd5e1, #94a3b8); /* slate-300 ke slate-400 */
     border-radius: 2px;
   }
 }
@@ -96,16 +100,12 @@
     bottom: 0;
   }
 
+  /* DIUBAH: Vignette dihilangkan (transparan) supaya tidak ada bayangan 
+     gelap yang menimpa section putih setelah animasi 3D */
   .vignette-overlay {
     position: fixed;
     inset: 0;
-    /* Dikurangi drastis lagi sesuai permintaan - hampir dihilangkan,
-       cuma sisa fog sangat tipis di pojok paling luar layar. */
-    background: radial-gradient(
-      ellipse at center,
-      transparent 92%,
-      rgba(3, 3, 5, 0.12) 100%
-    );
+    background: transparent;
     pointer-events: none;
     z-index: 50;
   }
@@ -118,14 +118,27 @@
     border-radius: 4px;
   }
 
+  /* DITAMBAHKAN: Kartu kaca versi putih untuk area terang */
+  .glass-card-light {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(15, 23, 42, 0.1);
+    border-radius: 4px;
+  }
+
   /* Sama seperti glass-card tapi TANPA backdrop-blur - dipakai di panel
-     yang duduk di atas scene 3D yang sibuk (foto-foto melayang). Backdrop-
-     blur di glass-card biasa akan mengaburkan foto-foto di belakangnya
-     jadi gumpalan gelap yang menutupi scene; versi ini cukup warna gelap
-     tembus pandang saja supaya scene tetap kelihatan penuh. */
+     yang duduk di atas scene 3D yang sibuk. Tetap gelap. */
   .text-panel {
     background: rgba(3, 3, 5, 0.45);
     border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 4px;
+  }
+
+  /* DITAMBAHKAN: Panel teks versi putih untuk area terang */
+  .text-panel-light {
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(15, 23, 42, 0.1);
     border-radius: 4px;
   }
 
@@ -177,12 +190,16 @@
     scroll-margin-top: 5.5rem;
   }
 
+  /* Tetap dipakai di bagian sinematik yang gelap */
   .text-shadow-cinematic {
-    /* Bayangan gelap dulu (bikin teks tetap kebaca di background apa pun,
-       termasuk scene ilustrasi yang lebih terang sekarang), baru glow
-       amber tipis di atasnya buat mood sinematiknya. */
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9), 0 4px 24px rgba(0, 0, 0, 0.75),
       0 0 40px rgba(212, 165, 116, 0.35), 0 0 80px rgba(212, 165, 116, 0.15);
+  }
+
+  /* DITAMBAHKAN: Text shadow lembut untuk background putih agar teks 
+     tetap terbaca tanpa terlihat seperti bayangan tebal */
+  .text-shadow-light {
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1), 0 4px 16px rgba(0, 0, 0, 0.05);
   }
 
   .animate-on-scroll {
@@ -197,9 +214,6 @@
     transform: translate(0, 0);
   }
 
-  /* Dipakai khusus di teks hero utama - masuk dari samping (bukan dari
-     bawah seperti animate-on-scroll biasa), cepat di awal lalu melambat
-     pas mendarat (durasi dipersingkat + easing "fast-out-slow-in"). */
   .hero-slide-in {
     transition-duration: 0.7s;
     transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
@@ -210,17 +224,12 @@
   .animate-on-scroll.slide-in-right {
     transform: translateX(70px);
   }
-  /* Deskripsi cuma fade (tanpa geser), dan br sengaja telat sedikit
-     supaya nongol SETELAH eyebrow & judul selesai mendarat. */
   .hero-fade-delayed {
     transform: translateY(0);
     transition-duration: 0.6s;
     transition-delay: 0.35s;
   }
 
-  /* Google Translate defaultnya nambah banner + geser <body> ke bawah -
-     dimatikan semua supaya layout tetap rapi, tombol kita sendiri yang
-     jadi satu-satunya kontrolnya. */
   .goog-te-banner-frame,
   .goog-te-gadget-icon {
     display: none !important;
@@ -237,13 +246,13 @@
     box-shadow: none !important;
   }
 
-  /* Kursor berkedip di akhir animasi ketik cepat pada judul "Selamat
-     Datang". */
+  /* DIUBAH: Kursor ketik pada judul WelcomeIntro diubah jadi hitam (slate-900) 
+     agar kontras di atas background putih */
   .typewriter-cursor {
     display: inline-block;
     margin-left: 2px;
     animation: blink-caret 0.9s step-end infinite;
-    color: theme('colors.welcome.primary');
+    color: theme('colors.slate.900'); 
   }
   @keyframes blink-caret {
     0%, 100% { opacity: 1; }
@@ -308,9 +317,7 @@
   /* Kartu video di Welcome Intro - miring sesuai --tilt (diset inline per
      kartu) lalu mengambang pelan naik-turun terus-menerus (bukan diam),
      dengan sedikit tambahan miring saat di puncak supaya terasa lebih
-     hidup/organik, bukan cuma geser lurus. Ditambah sedikit "napas"
-     (scale mengecil-membesar tipis) supaya gerakannya berasa lebih
-     lembut/bernafas, bukan cuma naik-turun kaku. */
+     hidup/organik, bukan cuma geser lurus. */
   .card-float {
     transform: rotate(var(--tilt, 0deg));
     animation-name: cardFloat;
