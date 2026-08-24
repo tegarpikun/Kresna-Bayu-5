@@ -44,7 +44,7 @@ function useTypewriter(text, speed = 45, startDelay = 400) {
 // bukan serempak dan bukan diam kaku.
 const VIDEO_CARDS = [
   {
-    src: '/video/welcome-2-v2.mp4',
+    src: '/video/welcome-2-v3.mp4',
     wrapClass:
       'left-[4%] top-[16%] w-40 h-24 sm:left-[8%] sm:top-[18%] sm:w-56 sm:h-36 lg:left-[13%] lg:top-[20%] lg:w-64 lg:h-40',
     animClass: 'slide-in-left',
