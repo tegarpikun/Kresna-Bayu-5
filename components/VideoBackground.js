@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -22,29 +22,8 @@ const SCENES = [
   { sky: '/hero-scene/banten-sky.png', near: '/hero-scene/banten-near.png', label: 'Banten' },
 ];
 
-// Jeda antar-scene (ms) saat gambar latar dimuat bertahap - lihat catatan
-// di komponen VideoBackground di bawah.
-const SCENE_STAGGER_MS = 300;
-
 export default function VideoBackground({ endRef }) {
   const sceneRefs = useRef([]);
-  // Ke-8 gambar latar (4 scene x 2 lapisan) berukuran cukup besar
-  // (2200x1237px). Sebelumnya semuanya dimuat SEKALIGUS begitu halaman
-  // dibuka walau cuma scene pertama yang kelihatan - ini salah satu
-  // sumber beban berat di awal yang bikin animasi galeri foto 3D
-  // (PhotoScatter) ikut tersendat karena berebut waktu decode gambar di
-  // thread utama. Sekarang scene pertama tetap dimuat langsung (supaya
-  // background tidak kosong), sisanya menyusul bertahap satu-satu -
-  // TANPA mengubah/mengompres file gambar itu sendiri sama sekali.
-  const [readyCount, setReadyCount] = useState(1);
-
-  useEffect(() => {
-    if (readyCount >= SCENES.length) return undefined;
-    const timer = setTimeout(() => {
-      setReadyCount((c) => Math.min(SCENES.length, c + 1));
-    }, SCENE_STAGGER_MS);
-    return () => clearTimeout(timer);
-  }, [readyCount]);
 
   useEffect(() => {
     const scenes = sceneRefs.current.filter(Boolean);
@@ -85,23 +64,16 @@ export default function VideoBackground({ endRef }) {
 
           // Lapisan jauh: gerak pelan, HAMPIR TANPA zoom - supaya seluruh
           // langit & landmark tetap kelihatan penuh, tidak kepotong.
-          // Dijaga dengan pengecekan null karena gambar scene ke-2 dst
-          // sengaja BELUM tentu ter-mount (masih menyusul giliran
-          // dimuat) di detik-detik awal halaman dibuka.
-          if (scene.sky) {
-            scene.sky.style.transform = `translate3d(0, ${
-              local * -3
-            }%, 0) scale(${1.01 + local * 0.015})`;
-          }
+          scene.sky.style.transform = `translate3d(0, ${
+            local * -3
+          }%, 0) scale(${1.01 + local * 0.015})`;
           // Lapisan dekat: gerak lebih cepat + sedikit geser horizontal -
           // inilah yang bikin kesan "mental canvas"/berdimensi. Zoom juga
           // ditekan seminim mungkin supaya bangunan utuh selalu penuh
           // kelihatan.
-          if (scene.near) {
-            scene.near.style.transform = `translate3d(${
-              (i % 2 === 0 ? 1 : -1) * local * 1.5
-            }%, ${local * -8}%, 0) scale(${1.02 + local * 0.02})`;
-          }
+          scene.near.style.transform = `translate3d(${
+            (i % 2 === 0 ? 1 : -1) * local * 1.5
+          }%, ${local * -8}%, 0) scale(${1.02 + local * 0.02})`;
         });
       },
     });
@@ -115,54 +87,33 @@ export default function VideoBackground({ endRef }) {
         <div
           key={scene.label}
           ref={(el) => {
-            // Wrapper-nya SELALU dipasang untuk semua 4 scene sejak awal
-            // (supaya ScrollTrigger di atas selalu punya referensi yang
-            // stabil untuk tiap scene, termasuk yang gambarnya masih
-            // menyusul dimuat). Objeknya dipertahankan (bukan dibuat
-            // ulang) supaya field sky/near yang diisi belakangan oleh ref
-            // callback <img> di bawah tidak tertimpa balik ke null.
             if (el) {
-              if (!sceneRefs.current[i]) sceneRefs.current[i] = {};
-              sceneRefs.current[i].wrapper = el;
+              sceneRefs.current[i] = {
+                wrapper: el,
+                sky: el.querySelector('[data-layer="sky"]'),
+                near: el.querySelector('[data-layer="near"]'),
+              };
             }
           }}
           className="absolute inset-0"
           style={{ opacity: i === 0 ? 1 : 0 }}
         >
-          {i < readyCount && (
-            <>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                ref={(el) => {
-                  if (el) {
-                    if (!sceneRefs.current[i]) sceneRefs.current[i] = {};
-                    sceneRefs.current[i].sky = el;
-                  }
-                }}
-                data-layer="sky"
-                src={scene.sky}
-                alt=""
-                aria-hidden="true"
-                fetchPriority={i === 0 ? 'high' : 'low'}
-                className="absolute inset-0 h-full w-full object-cover object-center will-change-transform"
-              />
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                ref={(el) => {
-                  if (el) {
-                    if (!sceneRefs.current[i]) sceneRefs.current[i] = {};
-                    sceneRefs.current[i].near = el;
-                  }
-                }}
-                data-layer="near"
-                src={scene.near}
-                alt=""
-                aria-hidden="true"
-                fetchPriority={i === 0 ? 'high' : 'low'}
-                className="absolute inset-0 h-full w-full object-cover object-center will-change-transform"
-              />
-            </>
-          )}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            data-layer="sky"
+            src={scene.sky}
+            alt=""
+            aria-hidden="true"
+            className="absolute inset-0 h-full w-full object-cover object-center will-change-transform"
+          />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            data-layer="near"
+            src={scene.near}
+            alt=""
+            aria-hidden="true"
+            className="absolute inset-0 h-full w-full object-cover object-center will-change-transform"
+          />
         </div>
       ))}
       {/* Tint tipis + gradasi atas-bawah - secukupnya supaya teks & foto 3D
@@ -170,7 +121,7 @@ export default function VideoBackground({ endRef }) {
           Bagian tengah sengaja lebih terang (warna & bangunan tetap
           hidup), gelap hanya menumpuk di tepi atas/bawah tempat teks
           biasanya berada. */}
-      <div className="absolute inset-0 bg-gradient-to-b from-cinematic-black/55 via-cinematic-black/10 to-cinematic-black/60" />
+      <div className="absolute inset-0 bg-gradient-to-b from-cinematic-black/30 via-transparent to-cinematic-black/35" />
     </div>
   );
 }
