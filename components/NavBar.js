@@ -16,7 +16,6 @@ export default function NavBar() {
   return (
     <nav className="fixed inset-x-0 top-0 z-[65] bg-transparent safe-top">
       <div className="mx-auto flex h-14 max-w-7xl items-center justify-end gap-6 px-4 sm:h-16 sm:px-8">
-        {/* Link Navigasi Desktop */}
         <div className="hidden items-center gap-7 md:flex lg:gap-9">
           {NAV_LINKS.map((link) => (
             <a
@@ -29,38 +28,23 @@ export default function NavBar() {
           ))}
         </div>
 
-        {/* Language Switcher - transparan agar menyatu */}
         <LanguageSwitcher variant="transparent" />
 
-        {/* Tombol Hamburger Mobile */}
         <button
           type="button"
           onClick={() => setOpen((v) => !v)}
           aria-label="Buka menu navigasi"
           aria-expanded={open}
-          className="flex h-9 w-9 flex-col items-center justify-center gap-[5px] rounded-full border border-white/40 bg-white/20 backdrop-blur-sm md:hidden"
+          className="flex h-9 w-9 flex-col items-center justify-center gap-[5px] rounded-full border border-white/40 bg-transparent md:hidden"
         >
-          <span
-            className={`block h-[1.5px] w-4 bg-white transition-transform ${
-              open ? 'translate-y-[6.5px] rotate-45' : ''
-            }`}
-          />
-          <span
-            className={`block h-[1.5px] w-4 bg-white transition-opacity ${
-              open ? 'opacity-0' : 'opacity-100'
-            }`}
-          />
-          <span
-            className={`block h-[1.5px] w-4 bg-white transition-transform ${
-              open ? '-translate-y-[6.5px] -rotate-45' : ''
-            }`}
-          />
+          <span className={`block h-[1.5px] w-4 bg-white transition-transform ${open ? 'translate-y-[6.5px] rotate-45' : ''}`} />
+          <span className={`block h-[1.5px] w-4 bg-white transition-opacity ${open ? 'opacity-0' : 'opacity-100'}`} />
+          <span className={`block h-[1.5px] w-4 bg-white transition-transform ${open ? '-translate-y-[6.5px] -rotate-45' : ''}`} />
         </button>
       </div>
 
-      {/* Menu Mobile Dropdown - transparan gelap agar teks terbaca */}
       {open && (
-        <div className="flex flex-col gap-1 border-t border-white/20 bg-black/50 backdrop-blur-md px-4 py-3 md:hidden">
+        <div className="flex flex-col gap-1 border-t border-white/20 bg-black/50 px-4 py-3 md:hidden">
           {NAV_LINKS.map((link) => (
             <a
               key={link.href}
