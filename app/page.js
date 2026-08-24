@@ -72,8 +72,16 @@ export default function Home() {
           // lewat titik itu, statusnya tidak akan pernah balik lagi
           // selama masih di bawahnya (cuma balik kalau scroll ke ATAS
           // sungguhan, yang memang seharusnya begitu).
-          const passedSentinel =
-            entry.boundingClientRect.top <= window.innerHeight * 0.4;
+          // PENTING: sebelumnya dibandingkan ke 40% tinggi layar - itu
+          // BUG BARU. CameraRig.js (yang mengatur kapan kamera "selesai"
+          // sampai ke foto terakhir) memakai patokan sentinel mencapai
+          // PALING ATAS (0%) layar - endTrigger sentinelRef, end 'top
+          // top'. Kalau di sini dipatok ke 40%, galeri jadi memudar/
+          // hilang LEBIH DULU sebelum kamera sungguh-sungguh selesai
+          // menempuh perjalanannya ke foto terakhir. Sekarang dipatok ke
+          // titik yang SAMA PERSIS (0%) supaya galeri baru memudar tepat
+          // setelah foto terakhir benar-benar sempat terlihat.
+          const passedSentinel = entry.boundingClientRect.top <= 0;
           setCinematicActive(!passedSentinel);
         },
         { threshold: 0, rootMargin: '0px 0px -60% 0px' }
