@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
 import UIOverlay from '@/components/UIOverlay';
-import NavBar from '@/components/NavBar';
 import WelcomeIntro from '@/components/WelcomeIntro';
 import EndingSequence from '@/components/EndingSequence';
 import WhatsAppButton from '@/components/WhatsAppButton';
@@ -100,13 +99,9 @@ export default function Home() {
         <img
           src="/brand/logo.png"
           alt={siteConfig.brandName}
-          className="h-9 w-auto sm:h-11"
+          className="h-9 w-auto drop-shadow-[0_2px_10px_rgba(0,0,0,0.5)] sm:h-11"
         />
       </div>
-
-      {/* Navigasi: Home / About Us / Service / Contact - fixed di atas,
-          tetap ada sepanjang halaman. */}
-      <NavBar />
 
       <WelcomeIntro />
 
@@ -127,13 +122,8 @@ export default function Home() {
 
       <div className="relative z-20">
         {/* Babak pembuka - kini ikut mengalir bersama scroll, bukan kotak
-            yang menempel permanen di layar. Diberi id="about" karena ini
-            bagian yang menampilkan animasi galeri foto 3D di belakangnya -
-            jadi tujuan link nav "About Us". */}
-        <div
-          id="about"
-          className="scroll-nav-target relative flex min-h-[100dvh] items-center justify-center px-4 sm:px-8"
-        >
+            yang menempel permanen di layar. */}
+        <div className="relative flex min-h-[100dvh] items-center justify-center px-4 sm:px-8">
           {/* Tanpa kotak/kartu di belakang lagi - supaya scene ilustrasi
               tetap kelihatan penuh. Eyebrow masuk dari KIRI, judul dari
               KANAN (sama-sama cepat di awal lalu melambat pas mendarat),
@@ -156,8 +146,14 @@ export default function Home() {
             key={chapter.title}
             className="flex min-h-[100dvh] items-center justify-center px-4"
           >
-            <div className="animate-on-scroll glass-card max-w-3xl px-6 py-8 text-center sm:px-14 sm:py-12">
-              <p className="mb-4 font-sans text-[10px] sm:text-xs uppercase tracking-[0.3em] text-cinematic-amber">
+            {/* Tanpa kotak "glass-card" di belakang - class itu pakai
+                backdrop-blur yang malah mengaburkan foto-foto yang
+                melayang di scene 3D di belakangnya jadi gumpalan gelap,
+                dan menutupi scene. Sekarang teks langsung mengambang di
+                atas scene (sama seperti bagian hero paling atas),
+                dibantu text-shadow-cinematic saja supaya tetap kebaca. */}
+            <div className="animate-on-scroll max-w-3xl px-6 py-8 text-center sm:px-14 sm:py-12">
+              <p className="mb-4 font-sans text-[10px] sm:text-xs uppercase tracking-[0.3em] text-cinematic-amber text-shadow-cinematic">
                 {chapter.eyebrow}
               </p>
               <h2 className="font-serif text-[clamp(2rem,7vw,4.5rem)] text-cinematic-cream text-shadow-cinematic">
