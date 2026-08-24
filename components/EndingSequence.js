@@ -48,7 +48,7 @@ export default function EndingSequence({ onTriggerRush }) {
   return (
     <>
       <div className="relative z-20 flex min-h-[100dvh] flex-col items-center justify-center px-4 sm:px-8 text-center">
-        <div className="glass-card animate-on-scroll max-w-2xl p-8 sm:p-14">
+        <div className="text-panel animate-on-scroll max-w-2xl p-8 sm:p-14">
           <p className="font-sans text-[10px] sm:text-xs tracking-[0.3em] text-cinematic-amber uppercase mb-4">
             Perusahaan Anda perlu Outing?
           </p>
