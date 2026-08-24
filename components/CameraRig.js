@@ -89,7 +89,11 @@ export default function CameraRig({ endingRushRef, sentinelRef }) {
     const drift = Math.min(p / 0.6, 1);
     const baseX = CAMERA_DRIFT_X * drift;
     const baseY = CAMERA_DRIFT_Y * drift;
-    camera.position.z += (baseZ - camera.position.z) * 0.08;
+    // Faktor lerp dinaikkan (0.08 -> 0.13) - kamera "mengejar" posisi
+    // targetnya lebih cepat per frame, supaya tidak keteteran/ketinggalan
+    // jauh di belakang target kalau user scroll cepat, terutama pas
+    // mendekati ujung jalur (foto terakhir).
+    camera.position.z += (baseZ - camera.position.z) * 0.13;
     camera.position.x +=
       (baseX + mouseDamped.current.x * 0.6 - camera.position.x) * 0.06;
     camera.position.y +=
