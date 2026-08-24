@@ -358,8 +358,8 @@ export default function JourneySection() {
 
             <div className="mt-12 border-t border-slate-200 pt-6 text-center">
               <p className="font-warm text-xs font-medium text-slate-500">
-                &copy; {new Date().getFullYear()} {siteConfig.brandName}. Semua
-                hak cipta dilindungi.
+                &copy; {new Date().getFullYear()} {siteConfig.brandName}.
+                Hak Cipta dilindungi Undang-Undang.
               </p>
             </div>
           </div>
