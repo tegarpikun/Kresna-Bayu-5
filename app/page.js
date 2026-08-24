@@ -9,6 +9,7 @@ import WhatsAppButton from '@/components/WhatsAppButton';
 import CanvasErrorBoundary from '@/components/CanvasErrorBoundary';
 import JourneySection from '@/components/JourneySection';
 import VideoBackground from '@/components/VideoBackground';
+import NavBar from '@/components/NavBar'; // <--- TAMBAHKAN IMPOR NAVBAR
 import { siteConfig } from '@/lib/siteConfig';
 
 const CinematicCanvas = dynamic(() => import('@/components/CinematicCanvas'), {
@@ -92,6 +93,9 @@ export default function Home() {
 
   return (
     <main className="relative">
+      {/* NavBar - Fixed di kanan atas, berisi Language Switcher (aktif) */}
+      <NavBar />
+
       {/* Logo - fixed di pojok kiri atas, tetap ada sepanjang halaman
           (bukan cuma di bagian sinematik), di atas lapisan apa pun. */}
       <div className="fixed left-4 top-4 z-[70] sm:left-6 sm:top-6">
@@ -99,7 +103,7 @@ export default function Home() {
         <img
           src="/brand/logo.png"
           alt={siteConfig.brandName}
-          className="h-9 w-auto sm:h-11"
+          className="h-9 w-auto sm:h-11 drop-shadow-lg" // <--- TAMBAHKAN SHADOW
         />
       </div>
 
