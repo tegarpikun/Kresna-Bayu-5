@@ -99,15 +99,13 @@
   .vignette-overlay {
     position: fixed;
     inset: 0;
-    /* Sebelumnya transparent baru mulai di 55% lalu gelap pekat (0.85) di
-       tepi - bikin seluruh pinggir layar kelihatan terlalu gelap. Area
-       transparan diperlebar (70%) dan kepekatan gelap di tepi diturunkan
-       (0.5) supaya web tidak terkesan suram, efek "fog" tetap ada tapi
-       jauh lebih tipis. */
+    /* Dikurangi lagi - area transparan makin luas (85%) dan gelap di tepi
+       makin tipis (0.22) supaya web tidak terkesan gelap/suram, cuma
+       sentuhan fog sangat halus di sudut layar. */
     background: radial-gradient(
       ellipse at center,
-      transparent 70%,
-      rgba(3, 3, 5, 0.5) 100%
+      transparent 85%,
+      rgba(3, 3, 5, 0.22) 100%
     );
     pointer-events: none;
     z-index: 50;
