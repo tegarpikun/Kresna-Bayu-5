@@ -10,6 +10,18 @@ import FlyingPlane from '@/components/FlyingPlane';
 
 const FEATURE_LOTTIES = ['/lottie/plan.json', '/lottie/guide.json', '/lottie/route.json'];
 
+// Ubah nomor WhatsApp mentah (mis. "6281334499505") jadi format yang enak
+// dibaca (mis. "+62 813-3449-9505"). Diformat otomatis dari
+// siteConfig.whatsappNumber (bukan ditulis manual di JSX) supaya kalau
+// nomornya diganti di siteConfig.js, tampilan di footer ikut otomatis
+// berubah tanpa perlu edit dua tempat.
+function formatPhoneDisplay(raw) {
+  const digits = raw.replace(/\D/g, '');
+  const match = digits.match(/^(\d{2})(\d{3})(\d{4})(\d+)$/);
+  if (!match) return `+${digits}`;
+  return `+${match[1]} ${match[2]}-${match[3]}-${match[4]}`;
+}
+
 function DestinationCard({ photo, index, onOpen }) {
   const [failed, setFailed] = useState(false);
 
@@ -311,14 +323,33 @@ export default function JourneySection() {
                 <p className="mb-3 font-warm text-xs font-bold uppercase tracking-[0.2em] text-amber-700">
                   Alamat Kami
                 </p>
-                {/* Warinoi Timur: Montserrat Bold */}
+                {/* Sebelumnya alamat ini malah jadi link ke WhatsApp - agak
+                    aneh (alamat bukan ajakan chat). Sekarang jadi teks
+                    biasa, dan link WhatsApp-nya dipindah ke nomor telepon
+                    di "Kontak Kami" di bawah - lebih pas dipakai di sana. */}
+                <p className="font-sans text-sm font-bold normal-case text-slate-900">
+                  Warinoi Timur V no.17, Kota Malang
+                </p>
+
+                {/* ===== Kontak Kami =====
+                    Label "Kontak Kami" pakai warna amber-700 - sama seperti
+                    label "Alamat Kami" di atasnya - sedangkan nomor
+                    teleponnya sendiri warnanya beda (slate-900 gelap
+                    pekat), supaya label & isinya kebeda jelas, sesuai yang
+                    diminta. Nomornya otomatis ambil dari
+                    siteConfig.whatsappNumber (lewat formatPhoneDisplay di
+                    atas) - kalau nomor WA diganti di siteConfig.js, di sini
+                    ikut berubah otomatis, tidak perlu edit dua tempat. */}
+                <p className="mb-3 mt-6 font-warm text-xs font-bold uppercase tracking-[0.2em] text-amber-700">
+                  Kontak Kami
+                </p>
                 <a
                   href={buildWhatsappLink()}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 font-sans text-sm font-bold normal-case text-slate-900 underline-offset-4 transition-colors hover:text-amber-600 hover:underline"
+                  className="inline-flex items-center gap-2 font-sans text-base font-bold normal-case text-slate-900 underline-offset-4 transition-colors hover:text-amber-600 hover:underline"
                 >
-                  Warinoi Timur V no.17, Kota Malang
+                  {formatPhoneDisplay(siteConfig.whatsappNumber)}
                 </a>
 
                 <SocialIcons className="mt-5 justify-center sm:justify-end" />
