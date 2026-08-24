@@ -10,24 +10,18 @@ import CameraRig from './CameraRig';
 
 export default function CinematicCanvas({ endingRushRef, active = true }) {
   const [dustCount, setDustCount] = useState(500);
-  const [maxDpr, setMaxDpr] = useState(2);
 
   useEffect(() => {
     // Kurangi jumlah partikel di layar kecil agar tetap ringan / mendekati 60fps.
-    // Resolusi render kanvas (dpr) juga diturunkan di layar kecil - ini
-    // TIDAK menyentuh/mengompres foto sama sekali, cuma mengurangi jumlah
-    // piksel yang perlu digambar ulang tiap frame supaya animasi galeri
-    // 3D tidak gampang tersendat di HP.
     const isCompact = window.innerWidth < 768;
     setDustCount(isCompact ? 220 : 500);
-    setMaxDpr(isCompact ? 1.5 : 2);
   }, []);
 
   return (
     <div className="fixed inset-0 z-10">
       <Canvas
         camera={{ position: [0, 0, 6], fov: 55, near: 0.1, far: 120 }}
-        dpr={[1, maxDpr]}
+        dpr={[1, 2]}
         // "never" menjeda render loop saat tidak aktif (hemat GPU) tanpa
         // membongkar kanvas/WebGL context, supaya tekstur yang sudah
         // dimuat tidak hilang dan tidak perlu di-reload saat aktif lagi.
@@ -41,9 +35,7 @@ export default function CinematicCanvas({ endingRushRef, active = true }) {
         }}
         style={{ background: 'transparent' }}
       >
-        {/* Densitas fog diturunkan (0.022 -> 0.012) - sebelumnya foto di
-            galeri 3D & sekitarnya kelihatan terlalu gelap/suram. */}
-        <fogExp2 attach="fog" color="#030305" density={0.012} />
+        <fogExp2 attach="fog" color="#030305" density={0.011} />
 
         <Suspense fallback={null}>
           <CinematicLighting />
