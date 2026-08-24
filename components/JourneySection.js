@@ -17,7 +17,7 @@ function DestinationCard({ photo, index, onOpen }) {
     <button
       type="button"
       onClick={() => onOpen(index)}
-      className="group relative aspect-[4/3] overflow-hidden rounded-xl border border-slate-200 bg-white text-left transition-all duration-300 hover:border-amber-500/50 hover:shadow-lg hover:shadow-slate-300/50"
+      className="group relative aspect-[4/3] overflow-hidden rounded-xl border-2 border-slate-300 bg-slate-50 text-left transition-all duration-300 hover:border-amber-500/50 hover:shadow-[0_10px_20px_rgba(0,0,0,0.15)]"
     >
       {!failed ? (
         // eslint-disable-next-line @next/next/no-img-element
@@ -29,7 +29,7 @@ function DestinationCard({ photo, index, onOpen }) {
           className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
         />
       ) : (
-        <div className="flex h-full w-full items-center justify-center bg-slate-50 text-slate-400">
+        <div className="flex h-full w-full items-center justify-center bg-slate-100 text-slate-400">
           <span className="font-display italic text-sm">{photo.title}</span>
         </div>
       )}
@@ -123,7 +123,7 @@ function DestinationLightbox({ index, onClose, onNavigate }) {
 
 function FaqItem({ item, isOpen, onToggle }) {
   return (
-    <div className="overflow-hidden rounded-xl border border-slate-200 bg-white">
+    <div className="overflow-hidden rounded-xl border-2 border-slate-300 bg-slate-50 shadow-[0_4px_12px_rgba(0,0,0,0.1)]">
       <button
         type="button"
         onClick={onToggle}
@@ -133,7 +133,7 @@ function FaqItem({ item, isOpen, onToggle }) {
           {item.q}
         </span>
         <span
-          className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-amber-600/30 font-warm text-amber-600 transition-transform duration-300 ${
+          className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full border-2 border-amber-600/40 font-warm text-amber-600 transition-transform duration-300 ${
             isOpen ? 'rotate-45' : ''
           }`}
         >
@@ -188,17 +188,13 @@ export default function JourneySection() {
         </div>
 
         {/* ===== Tentang / Kenapa memilih kami ===== */}
-        {/* TAMBAHKAN ID="about" DI SINI */}
         <section id="about" className="mx-auto max-w-6xl px-6 py-16 sm:py-24">
-          {/* Eyebrow: Diperbesar dan di tengah */}
           <p className="mb-4 text-center font-warm text-sm sm:text-base font-semibold uppercase tracking-[0.3em] text-amber-600">
             {journeySection.eyebrow}
           </p>
-          {/* Judul: Bold dan Center */}
           <h2 className="animate-on-scroll mb-6 text-center font-display text-[clamp(1.8rem,5vw,3.2rem)] font-bold leading-tight text-slate-900">
             {journeySection.title}
           </h2>
-          {/* Paragraf: isi medium/regular (karena global font-warm sudah 500, tapi pastikan tidak bold) */}
           <p className="mx-auto max-w-2xl text-center font-warm text-sm font-medium leading-relaxed text-slate-600 sm:text-base">
             {journeySection.body}
           </p>
@@ -207,7 +203,7 @@ export default function JourneySection() {
             {journeySection.features.map((feature, index) => (
               <div
                 key={feature.title}
-                className="glass-card-light group p-6 transition-all duration-300 hover:border-amber-500/50 hover:shadow-lg hover:shadow-slate-200/50"
+                className="glass-card-light group p-6 transition-all duration-300 hover:border-amber-500/50 hover:shadow-[0_10px_25px_rgba(0,0,0,0.15)]"
               >
                 <LottieIcon
                   src={FEATURE_LOTTIES[index % FEATURE_LOTTIES.length]}
@@ -226,7 +222,6 @@ export default function JourneySection() {
         </section>
 
         {/* ===== Destinasi ===== */}
-        {/* TAMBAHKAN ID="services" DI SINI */}
         <section id="services" className="mx-auto max-w-6xl px-6 pb-16 sm:pb-24">
           <h2 className="mb-10 text-center font-display text-[clamp(1.6rem,4.5vw,2.6rem)] font-bold text-slate-900">
             {journeySection.destinationsTitle}
@@ -277,7 +272,7 @@ export default function JourneySection() {
               {journeySection.testimonials.map((t) => (
                 <div
                   key={t.name}
-                  className="rounded-xl border-2 border-slate-300 bg-white p-8 shadow-md"
+                  className="rounded-xl border-2 border-slate-300 bg-slate-50 p-8 shadow-[0_6px_16px_rgba(0,0,0,0.12)]"
                 >
                   <p className="mb-2 font-display text-4xl leading-none text-amber-600">
                     &ldquo;
@@ -313,15 +308,15 @@ export default function JourneySection() {
               </div>
 
               <div className="text-center sm:text-right">
-                <p className="mb-3 font-warm text-xs font-semibold uppercase tracking-[0.2em] text-amber-700">
+                <p className="mb-3 font-warm text-xs font-bold uppercase tracking-[0.2em] text-amber-700">
                   Alamat Kami
                 </p>
-                {/* Warinoi Timur: ubah ke font-medium agar tidak bold */}
+                {/* Warinoi Timur: diubah menjadi Montserrat Bold (font-bold) */}
                 <a
                   href={buildWhatsappLink()}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 font-warm text-sm font-medium normal-case text-slate-700 underline-offset-4 transition-colors hover:text-amber-600 hover:underline"
+                  className="inline-flex items-center gap-2 font-sans text-sm font-bold normal-case text-slate-800 underline-offset-4 transition-colors hover:text-amber-600 hover:underline"
                 >
                   Warinoi Timur V no.17, Kota Malang
                 </a>
