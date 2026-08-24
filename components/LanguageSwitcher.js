@@ -2,10 +2,6 @@
 
 import { useEffect, useRef, useState } from 'react';
 
-// Shortcut sederhana ke Google Translate - BUKAN terjemahan manual buatan
-// sendiri. Widget resmi Google Translate dimuat tersembunyi di background;
-// tombol bendera ini cuma "remote control" kecil buat memilih bahasanya.
-// Kualitas terjemahan mengikuti Google Translate apa adanya.
 const LANGUAGES = [
   { code: 'id', label: 'Indonesia', flag: '🇮🇩' },
   { code: 'en', label: 'English', flag: '🇬🇧' },
@@ -58,7 +54,6 @@ function setLanguage(code) {
 
   if (applyOnCombo()) return;
 
-  // Widget-nya baru async dimuat - coba lagi tiap 300ms sampai 5 detik.
   let attempts = 0;
   const interval = setInterval(() => {
     attempts += 1;
@@ -73,6 +68,21 @@ export default function LanguageSwitcher({ variant = 'dark' }) {
 
   useEffect(() => {
     loadGoogleTranslate();
+
+    // Sembunyikan semua elemen notifikasi Google Translate agar tidak muncul.
+    const style = document.createElement('style');
+    style.innerHTML = `
+      .goog-te-banner-frame, .goog-te-gadget-icon, .goog-tooltip,
+      .goog-text-highlight, #goog-gt-tt, .goog-te-balloon-frame {
+        display: none !important;
+      }
+      body { top: 0 !important; }
+    `;
+    document.head.appendChild(style);
+
+    return () => {
+      if (style.parentNode) style.parentNode.removeChild(style);
+    };
   }, []);
 
   useEffect(() => {
@@ -89,8 +99,6 @@ export default function LanguageSwitcher({ variant = 'dark' }) {
 
   return (
     <div ref={wrapperRef} className="relative">
-      {/* Widget resmi Google Translate - disembunyikan, kita cuma pakai
-          mesinnya lewat tombol sendiri di bawah. */}
       <div id="google_translate_element" className="hidden" />
 
       <button
@@ -99,12 +107,10 @@ export default function LanguageSwitcher({ variant = 'dark' }) {
         aria-label="Pilih bahasa"
         className={`flex h-9 w-9 items-center justify-center overflow-hidden rounded-full border backdrop-blur-sm transition-colors sm:h-10 sm:w-10 ${
           isLight
-            ? 'border-welcome-primary/30 bg-white/70 hover:border-welcome-primary'
+            ? 'border-slate-300 bg-white/80 hover:border-amber-500'
             : 'border-cinematic-cream/30 bg-cinematic-black/30 hover:border-cinematic-amber'
         }`}
       >
-        {/* Bendera bulat (emoji bendera di-crop lingkaran via overflow-hidden
-            + sedikit di-scale) - bukan icon globe generik. */}
         <span className="flex h-full w-full scale-[1.35] items-center justify-center text-[19px] leading-none">
           {current.flag}
         </span>
@@ -114,7 +120,7 @@ export default function LanguageSwitcher({ variant = 'dark' }) {
         <div
           className={`absolute right-0 top-11 z-50 max-h-80 w-48 overflow-y-auto rounded-lg border py-2 shadow-xl backdrop-blur-md ${
             isLight
-              ? 'border-welcome-border bg-white/95'
+              ? 'border-slate-200 bg-white/95'
               : 'border-cinematic-cream/15 bg-cinematic-black/95'
           }`}
         >
@@ -129,7 +135,7 @@ export default function LanguageSwitcher({ variant = 'dark' }) {
               }}
               className={`flex w-full items-center gap-3 px-4 py-2 text-left font-sans text-sm transition-colors ${
                 isLight
-                  ? 'text-welcome-text hover:bg-welcome-bgSoft'
+                  ? 'text-slate-700 hover:bg-slate-50 hover:text-amber-600'
                   : 'text-cinematic-cream/90 hover:bg-cinematic-cream/10'
               }`}
             >
