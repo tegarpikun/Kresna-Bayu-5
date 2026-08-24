@@ -17,7 +17,7 @@ function DestinationCard({ photo, index, onOpen }) {
     <button
       type="button"
       onClick={() => onOpen(index)}
-      className="group relative aspect-[4/3] overflow-hidden rounded-xl border-2 border-slate-300 bg-slate-50 text-left transition-all duration-300 hover:border-amber-500/50 hover:shadow-[0_10px_20px_rgba(0,0,0,0.15)]"
+      className="group relative aspect-[4/3] overflow-hidden rounded-xl border-2 border-slate-400 bg-slate-100 text-left transition-all duration-300 hover:border-amber-500/50 hover:shadow-[0_10px_25px_rgba(0,0,0,0.25)]"
     >
       {!failed ? (
         // eslint-disable-next-line @next/next/no-img-element
@@ -29,7 +29,7 @@ function DestinationCard({ photo, index, onOpen }) {
           className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
         />
       ) : (
-        <div className="flex h-full w-full items-center justify-center bg-slate-100 text-slate-400">
+        <div className="flex h-full w-full items-center justify-center bg-slate-200 text-slate-500">
           <span className="font-display italic text-sm">{photo.title}</span>
         </div>
       )}
@@ -123,7 +123,7 @@ function DestinationLightbox({ index, onClose, onNavigate }) {
 
 function FaqItem({ item, isOpen, onToggle }) {
   return (
-    <div className="overflow-hidden rounded-xl border-2 border-slate-300 bg-slate-50 shadow-[0_4px_12px_rgba(0,0,0,0.1)]">
+    <div className="overflow-hidden rounded-xl border-2 border-slate-400 bg-slate-100 shadow-[0_8px_24px_rgba(0,0,0,0.15)]">
       <button
         type="button"
         onClick={onToggle}
@@ -133,7 +133,7 @@ function FaqItem({ item, isOpen, onToggle }) {
           {item.q}
         </span>
         <span
-          className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full border-2 border-amber-600/40 font-warm text-amber-600 transition-transform duration-300 ${
+          className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full border-2 border-amber-600/50 font-warm text-amber-600 transition-transform duration-300 ${
             isOpen ? 'rotate-45' : ''
           }`}
         >
@@ -146,7 +146,7 @@ function FaqItem({ item, isOpen, onToggle }) {
         }`}
       >
         <div className="overflow-hidden">
-          <p className="px-6 pb-6 font-warm text-sm leading-relaxed text-slate-600">
+          <p className="px-6 pb-6 font-warm text-sm leading-relaxed text-slate-700">
             {item.a}
           </p>
         </div>
@@ -203,7 +203,7 @@ export default function JourneySection() {
             {journeySection.features.map((feature, index) => (
               <div
                 key={feature.title}
-                className="glass-card-light group p-6 transition-all duration-300 hover:border-amber-500/50 hover:shadow-[0_10px_25px_rgba(0,0,0,0.15)]"
+                className="rounded-xl border-2 border-slate-400 bg-slate-100 p-6 shadow-[0_8px_24px_rgba(0,0,0,0.15)] transition-all duration-300 hover:border-amber-500/50 hover:shadow-[0_12px_30px_rgba(0,0,0,0.25)]"
               >
                 <LottieIcon
                   src={FEATURE_LOTTIES[index % FEATURE_LOTTIES.length]}
@@ -213,7 +213,7 @@ export default function JourneySection() {
                 <h3 className="mb-2 font-display text-lg text-slate-900">
                   {feature.title}
                 </h3>
-                <p className="font-warm text-sm font-medium leading-relaxed text-slate-600">
+                <p className="font-warm text-sm font-medium leading-relaxed text-slate-700">
                   {feature.desc}
                 </p>
               </div>
@@ -272,7 +272,7 @@ export default function JourneySection() {
               {journeySection.testimonials.map((t) => (
                 <div
                   key={t.name}
-                  className="rounded-xl border-2 border-slate-300 bg-slate-50 p-8 shadow-[0_6px_16px_rgba(0,0,0,0.12)]"
+                  className="rounded-xl border-2 border-slate-400 bg-slate-100 p-8 shadow-[0_10px_28px_rgba(0,0,0,0.2)]"
                 >
                   <p className="mb-2 font-display text-4xl leading-none text-amber-600">
                     &ldquo;
@@ -311,12 +311,12 @@ export default function JourneySection() {
                 <p className="mb-3 font-warm text-xs font-bold uppercase tracking-[0.2em] text-amber-700">
                   Alamat Kami
                 </p>
-                {/* Warinoi Timur: diubah menjadi Montserrat Bold (font-bold) */}
+                {/* Warinoi Timur: Montserrat Bold */}
                 <a
                   href={buildWhatsappLink()}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 font-sans text-sm font-bold normal-case text-slate-800 underline-offset-4 transition-colors hover:text-amber-600 hover:underline"
+                  className="inline-flex items-center gap-2 font-sans text-sm font-bold normal-case text-slate-900 underline-offset-4 transition-colors hover:text-amber-600 hover:underline"
                 >
                   Warinoi Timur V no.17, Kota Malang
                 </a>
