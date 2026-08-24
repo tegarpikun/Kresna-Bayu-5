@@ -91,9 +91,9 @@ export default function LanguageSwitcher({ variant = 'dark' }) {
         type="button"
         onClick={() => setOpen((v) => !v)}
         aria-label="Pilih bahasa"
-        className={`flex h-9 w-9 items-center justify-center overflow-hidden rounded-full border backdrop-blur-sm transition-colors sm:h-10 sm:w-10 ${
+        className={`flex h-9 w-9 items-center justify-center overflow-hidden rounded-full border transition-colors sm:h-10 sm:w-10 ${
           isTransparent
-            ? 'border-white/40 bg-white/20 hover:border-white/80'
+            ? 'border-white/40 bg-transparent hover:border-white' // TANPA BG, TANPA GARIS KUNING
             : isLight
             ? 'border-slate-300 bg-white/80 hover:border-amber-500'
             : 'border-cinematic-cream/30 bg-cinematic-black/30 hover:border-cinematic-amber'
