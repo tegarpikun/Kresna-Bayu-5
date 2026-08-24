@@ -1,5 +1,4 @@
 'use client';
-
 import { Suspense, useEffect, useState } from 'react';
 import { Canvas } from '@react-three/fiber';
 import * as THREE from 'three';
@@ -7,16 +6,13 @@ import CinematicLighting from './CinematicLighting';
 import PhotoScatter from './PhotoScatter';
 import DustParticles from './DustParticles';
 import CameraRig from './CameraRig';
-
-export default function CinematicCanvas({ endingRushRef, active = true }) {
+export default function CinematicCanvas({ endingRushRef, active = true, sentinelRef }) {
   const [dustCount, setDustCount] = useState(500);
-
   useEffect(() => {
     // Kurangi jumlah partikel di layar kecil agar tetap ringan / mendekati 60fps.
     const isCompact = window.innerWidth < 768;
     setDustCount(isCompact ? 220 : 500);
   }, []);
-
   return (
     <div className="fixed inset-0 z-10">
       <Canvas
@@ -35,19 +31,17 @@ export default function CinematicCanvas({ endingRushRef, active = true }) {
         }}
         style={{ background: 'transparent' }}
       >
-        {/* Densitas diturunkan (0.011 -> 0.007) menyesuaikan jangkauan
-            kamera yang sekarang lebih jauh (sampai z=-63, sebelumnya
-            cuma -38) setelah 6 foto baru ditambahkan - supaya foto-foto
-            baru di ujung jalur tidak tertutup kabut berlebihan. */}
-        <fogExp2 attach="fog" color="#030305" density={0.007} />
-
+        {/* Densitas dikembalikan ke 0.011 - menyesuaikan CAMERA_END_Z di
+            CameraRig.js yang juga dikembalikan ke -38 (bukan -63),
+            sesuai jangkauan 8 foto yang sebenarnya ada di photoData.js
+            (foto terjauh di z=-33.4). */}
+        <fogExp2 attach="fog" color="#030305" density={0.011} />
         <Suspense fallback={null}>
           <CinematicLighting />
           <PhotoScatter />
           <DustParticles count={dustCount} />
         </Suspense>
-
-        <CameraRig endingRushRef={endingRushRef} />
+        <CameraRig endingRushRef={endingRushRef} sentinelRef={sentinelRef} />
       </Canvas>
     </div>
   );
