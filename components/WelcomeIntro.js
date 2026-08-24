@@ -144,8 +144,7 @@ export default function WelcomeIntro() {
           fetchPriority="high"
           className="h-full w-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-cinematic-black/70 via-cinematic-black/45 to-cinematic-black/80" />
-        <div className="absolute inset-0 bg-cinematic-black/10" />
+        <div className="absolute inset-0 bg-gradient-to-b from-cinematic-black/40 via-cinematic-black/15 to-cinematic-black/55" />
         <div className="absolute -left-32 -top-32 h-[30rem] w-[30rem] rounded-full bg-welcome-primary/10 blur-3xl" />
         <div className="absolute -bottom-32 -right-24 h-[26rem] w-[26rem] rounded-full bg-welcome-accent/15 blur-3xl" />
       </div>
