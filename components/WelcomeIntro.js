@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import FlyingPlane from '@/components/FlyingPlane';
 
 const HEADLINE = 'Melayani Sepenuh Hati';
 const SUBLINE = 'Info selanjutnya scroll ke bawah.';
@@ -133,8 +132,6 @@ export default function WelcomeIntro() {
       ref={sectionRef}
       className="scroll-nav-target relative z-[55] flex min-h-[100dvh] items-center justify-center overflow-hidden bg-cinematic-black px-4 sm:px-8"
     >
-      <FlyingPlane containerRef={sectionRef} />
-
       {/* Foto latar (ganti bg putih polos sebelumnya) + lapisan gelap
           gradasi di atasnya supaya judul & subjudul tetap terbaca jelas
           di atas foto yang ramai. */}
@@ -181,12 +178,7 @@ export default function WelcomeIntro() {
         </div>
       </div>
 
-      {/* Shape divider - transisi ke bagian sinematik di bawahnya. Diubah
-          jadi "mengarah ke bawah" (lekukannya menjorok turun ke area
-          gelap di bawah, bukan menonjol naik ke atas menutupi konten
-          section ini) - sebelumnya salah satu puncak lengkungnya nyaris
-          menyentuh batas paling atas divider sehingga ikut menutupi
-          kartu video yang posisinya dekat bawah layar. */}
+      {/* Shape divider - transisi ke bagian sinematik di bawahnya. */}
       <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 overflow-hidden leading-[0]">
         <svg
           viewBox="0 0 1440 110"
