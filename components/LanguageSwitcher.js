@@ -68,21 +68,6 @@ export default function LanguageSwitcher({ variant = 'dark' }) {
 
   useEffect(() => {
     loadGoogleTranslate();
-
-    // Sembunyikan semua elemen notifikasi Google Translate agar tidak muncul.
-    const style = document.createElement('style');
-    style.innerHTML = `
-      .goog-te-banner-frame, .goog-te-gadget-icon, .goog-tooltip,
-      .goog-text-highlight, #goog-gt-tt, .goog-te-balloon-frame {
-        display: none !important;
-      }
-      body { top: 0 !important; }
-    `;
-    document.head.appendChild(style);
-
-    return () => {
-      if (style.parentNode) style.parentNode.removeChild(style);
-    };
   }, []);
 
   useEffect(() => {
@@ -96,6 +81,7 @@ export default function LanguageSwitcher({ variant = 'dark' }) {
   }, []);
 
   const isLight = variant === 'light';
+  const isTransparent = variant === 'transparent';
 
   return (
     <div ref={wrapperRef} className="relative">
@@ -106,7 +92,9 @@ export default function LanguageSwitcher({ variant = 'dark' }) {
         onClick={() => setOpen((v) => !v)}
         aria-label="Pilih bahasa"
         className={`flex h-9 w-9 items-center justify-center overflow-hidden rounded-full border backdrop-blur-sm transition-colors sm:h-10 sm:w-10 ${
-          isLight
+          isTransparent
+            ? 'border-white/40 bg-white/20 hover:border-white/80'
+            : isLight
             ? 'border-slate-300 bg-white/80 hover:border-amber-500'
             : 'border-cinematic-cream/30 bg-cinematic-black/30 hover:border-cinematic-amber'
         }`}
@@ -119,7 +107,9 @@ export default function LanguageSwitcher({ variant = 'dark' }) {
       {open && (
         <div
           className={`absolute right-0 top-11 z-50 max-h-80 w-48 overflow-y-auto rounded-lg border py-2 shadow-xl backdrop-blur-md ${
-            isLight
+            isTransparent
+              ? 'border-white/20 bg-black/60'
+              : isLight
               ? 'border-slate-200 bg-white/95'
               : 'border-cinematic-cream/15 bg-cinematic-black/95'
           }`}
@@ -134,7 +124,9 @@ export default function LanguageSwitcher({ variant = 'dark' }) {
                 setOpen(false);
               }}
               className={`flex w-full items-center gap-3 px-4 py-2 text-left font-sans text-sm transition-colors ${
-                isLight
+                isTransparent
+                  ? 'text-white hover:bg-white/10 hover:text-amber-400'
+                  : isLight
                   ? 'text-slate-700 hover:bg-slate-50 hover:text-amber-600'
                   : 'text-cinematic-cream/90 hover:bg-cinematic-cream/10'
               }`}
