@@ -119,7 +119,11 @@ export default function Home() {
       >
         <VideoBackground endRef={sentinelRef} />
         <CanvasErrorBoundary>
-          <CinematicCanvas endingRushRef={endingRushRef} active={cinematicActive} />
+          <CinematicCanvas
+            endingRushRef={endingRushRef}
+            active={cinematicActive}
+            sentinelRef={sentinelRef}
+          />
         </CanvasErrorBoundary>
         <UIOverlay />
       </div>
@@ -147,12 +151,14 @@ export default function Home() {
 
         {/* Spacer kosong (tanpa teks) - menggantikan tinggi 3 section teks
             yang dihapus. Kamera 3D & pergantian scene background dikontrol
-            berdasarkan progres scroll SELURUH halaman (lihat CameraRig.js &
-            VideoBackground), jadi kalau tinggi halaman dipotong, kamera
-            "buru-buru" menembus galeri foto. Spacer ini menjaga jarak
-            scroll tetap panjang supaya foto-foto yang terbang & pergantian
-            scene background bisa dinikmati lebih lama, tanpa teks apa pun
-            di atasnya. */}
+            berdasarkan progres scroll SELAMA kanvas ini kelihatan (dari
+            atas halaman sampai sentinelRef di bawah - lihat CameraRig.js),
+            jadi kalau tinggi halaman DI BAWAH sentinel berubah (mis.
+            JourneySection makin panjang), kecepatan kamera di sini TIDAK
+            ikut berubah lagi. Spacer ini menjaga jarak scroll tetap
+            panjang supaya foto-foto yang terbang & pergantian scene
+            background bisa dinikmati lebih lama, tanpa teks apa pun di
+            atasnya. */}
         <div className="min-h-[300dvh]" aria-hidden="true" />
 
         <EndingSequence
