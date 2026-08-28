@@ -1,6 +1,7 @@
 'use client';
 
 import { buildWhatsappLink } from '@/lib/siteConfig';
+import { trackWhatsAppClick } from '@/components/GoogleAnalytics';
 
 export default function WhatsAppButton() {
   return (
@@ -9,6 +10,7 @@ export default function WhatsAppButton() {
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Chat via WhatsApp"
+      onClick={() => trackWhatsAppClick('floating_button_homepage')}
       className="fixed z-[110] bottom-[calc(4vh+16px)] right-4 sm:right-6 safe-bottom flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-full bg-cinematic-whatsapp shadow-[0_8px_24px_rgba(0,0,0,0.5)] transition-transform hover:scale-105 active:scale-95"
     >
       <span className="absolute inline-flex h-full w-full rounded-full bg-cinematic-whatsapp animate-pulse-ring" />
