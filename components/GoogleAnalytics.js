@@ -5,10 +5,10 @@ import Script from 'next/script';
 // GANTI 'G-XXXXXXXXXX' dengan Measurement ID asli dari akun Google
 // Analytics 4 Anda (analytics.google.com > Admin > Data Streams).
 // Kalau belum punya akun GA4, buat dulu di analytics.google.com - gratis.
-const GA_MEASUREMENT_ID = 'G-XXXXXXXXXX';
+const GA_MEASUREMENT_ID = 'G-6DVLRHWTPH';
 
 export default function GoogleAnalytics() {
-  if (GA_MEASUREMENT_ID === 'G-XXXXXXXXXX') {
+  if (GA_MEASUREMENT_ID === 'G-6DVLRHWTPH') {
     // Belum diisi ID asli - tidak memuat script apa pun supaya tidak error.
     return null;
   }
