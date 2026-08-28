@@ -87,6 +87,13 @@ export default function DestinationPage({ params }) {
         Paket Tour Rombongan {destination.name}
       </h1>
 
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={destination.heroImage}
+        alt={`Destinasi wisata ${destination.name} - Kresna Bayu Tour`}
+        className="w-full h-64 md:h-96 object-cover rounded-2xl mb-10"
+      />
+
       <p className="text-lg text-white/80 leading-relaxed mb-10">
         {destination.intro}
       </p>
