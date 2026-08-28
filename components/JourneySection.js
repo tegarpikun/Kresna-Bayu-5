@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useCallback, useEffect, useRef } from 'react';
+import Link from 'next/link';
 import { siteConfig, buildWhatsappLink } from '@/lib/siteConfig';
 import { destinationPhotos } from '@/lib/photoData';
 import SocialIcons from '@/components/SocialIcons';
@@ -9,6 +10,21 @@ import LottieIcon from '@/components/LottieIcon';
 import FlyingPlane from '@/components/FlyingPlane';
 
 const FEATURE_LOTTIES = ['/lottie/plan.json', '/lottie/guide.json', '/lottie/route.json'];
+
+// Menghubungkan judul foto di grid "Destinasi Favorit" ke halaman
+// /tour/[slug] yang sesuai (dibuat di app/tour/[slug]/page.js).
+// Kalau nanti nambah destinasi baru di lib/destinationsData.js,
+// tambahkan juga pasangan title -> slug di sini supaya link-nya muncul.
+const DESTINATION_SLUG_MAP = {
+  Yogyakarta: 'yogyakarta',
+  Banyuwangi: 'banyuwangi',
+  Flores: 'labuan-bajo',
+  Bali: 'bali',
+  Malang: 'malang',
+  Jakarta: 'jakarta',
+  semarang: 'semarang',
+  Banjarmasin: 'banjarmasin',
+};
 
 // Ubah nomor WhatsApp mentah (mis. "6281334499505") jadi format yang enak
 // dibaca (mis. "+62 813-3449-9505"). Diformat otomatis dari
@@ -24,35 +40,46 @@ function formatPhoneDisplay(raw) {
 
 function DestinationCard({ photo, index, onOpen }) {
   const [failed, setFailed] = useState(false);
+  const slug = DESTINATION_SLUG_MAP[photo.title];
 
   return (
-    <button
-      type="button"
-      onClick={() => onOpen(index)}
-      className="group relative aspect-[4/3] overflow-hidden rounded-xl border-2 border-slate-400 bg-slate-100 text-left transition-all duration-300 hover:border-amber-500/50 hover:shadow-[0_10px_25px_rgba(0,0,0,0.25)]"
-    >
-      {!failed ? (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
-          src={photo.url}
-          alt={photo.title}
-          loading="lazy"
-          onError={() => setFailed(true)}
-          className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
-        />
-      ) : (
-        <div className="flex h-full w-full items-center justify-center bg-slate-200 text-slate-500">
-          <span className="font-display italic text-sm">{photo.title}</span>
+    <div className="group relative aspect-[4/3] overflow-hidden rounded-xl border-2 border-slate-400 bg-slate-100 transition-all duration-300 hover:border-amber-500/50 hover:shadow-[0_10px_25px_rgba(0,0,0,0.25)]">
+      <button
+        type="button"
+        onClick={() => onOpen(index)}
+        className="block h-full w-full text-left"
+      >
+        {!failed ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={photo.url}
+            alt={photo.title}
+            loading="lazy"
+            onError={() => setFailed(true)}
+            className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+          />
+        ) : (
+          <div className="flex h-full w-full items-center justify-center bg-slate-200 text-slate-500">
+            <span className="font-display italic text-sm">{photo.title}</span>
+          </div>
+        )}
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 p-4 pb-2">
+          <p className="font-display text-lg text-white">{photo.title}</p>
+          <p className="font-warm text-[10px] uppercase tracking-[0.2em] text-amber-400">
+            {photo.location}
+          </p>
         </div>
+      </button>
+      {slug && (
+        <Link
+          href={`/tour/${slug}`}
+          className="absolute bottom-2 right-3 z-10 font-warm text-[11px] font-semibold text-white underline decoration-amber-400 underline-offset-2 hover:text-amber-300"
+        >
+          Lihat Paket →
+        </Link>
       )}
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
-      <div className="absolute bottom-0 left-0 right-0 p-4">
-        <p className="font-display text-lg text-white">{photo.title}</p>
-        <p className="font-warm text-[10px] uppercase tracking-[0.2em] text-amber-400">
-          {photo.location}
-        </p>
-      </div>
-    </button>
+    </div>
   );
 }
 
@@ -323,23 +350,10 @@ export default function JourneySection() {
                 <p className="mb-3 font-warm text-xs font-bold uppercase tracking-[0.2em] text-amber-700">
                   Alamat Kami
                 </p>
-                {/* Sebelumnya alamat ini malah jadi link ke WhatsApp - agak
-                    aneh (alamat bukan ajakan chat). Sekarang jadi teks
-                    biasa, dan link WhatsApp-nya dipindah ke nomor telepon
-                    di "Kontak Kami" di bawah - lebih pas dipakai di sana. */}
                 <p className="font-sans text-sm font-bold normal-case text-slate-900">
                   Warinoi Timur V no.17, Kota Malang
                 </p>
 
-                {/* ===== Kontak Kami =====
-                    Label "Kontak Kami" pakai warna amber-700 - sama seperti
-                    label "Alamat Kami" di atasnya - sedangkan nomor
-                    teleponnya sendiri warnanya beda (slate-900 gelap
-                    pekat), supaya label & isinya kebeda jelas, sesuai yang
-                    diminta. Nomornya otomatis ambil dari
-                    siteConfig.whatsappNumber (lewat formatPhoneDisplay di
-                    atas) - kalau nomor WA diganti di siteConfig.js, di sini
-                    ikut berubah otomatis, tidak perlu edit dua tempat. */}
                 <p className="mb-3 mt-6 font-warm text-xs font-bold uppercase tracking-[0.2em] text-amber-700">
                   Kontak Kami
                 </p>
