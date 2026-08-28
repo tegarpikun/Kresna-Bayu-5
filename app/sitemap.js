@@ -1,19 +1,13 @@
 import { destinations } from '@/lib/destinationsData';
+import { blogPosts } from '@/lib/blogData';
 
-// Next.js otomatis mengubah file ini jadi /sitemap.xml yang bisa
-// disubmit ke Google Search Console. Setiap kali Anda tambah destinasi
-// baru di lib/destinationsData.js, sitemap ini otomatis ikut bertambah
-// tanpa perlu diedit manual.
 export default function sitemap() {
   const baseUrl = 'https://www.kresnabayutour.co.id';
 
   const staticRoutes = [
-    {
-      url: baseUrl,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 1,
-    },
+    { url: baseUrl, lastModified: new Date(), changeFrequency: 'weekly', priority: 1 },
+    { url: `${baseUrl}/en`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.9 },
+    { url: `${baseUrl}/blog`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.7 },
   ];
 
   const destinationRoutes = destinations.map((d) => ({
@@ -23,5 +17,12 @@ export default function sitemap() {
     priority: 0.8,
   }));
 
-  return [...staticRoutes, ...destinationRoutes];
+  const blogRoutes = blogPosts.map((p) => ({
+    url: `${baseUrl}/blog/${p.slug}`,
+    lastModified: p.publishedDate,
+    changeFrequency: 'monthly',
+    priority: 0.6,
+  }));
+
+  return [...staticRoutes, ...destinationRoutes, ...blogRoutes];
 }
