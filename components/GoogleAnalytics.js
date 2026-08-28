@@ -8,7 +8,7 @@ import Script from 'next/script';
 const GA_MEASUREMENT_ID = 'G-6DVLRHWTPH';
 
 export default function GoogleAnalytics() {
-  if (GA_MEASUREMENT_ID === 'G-6DVLRHWTPH') {
+  if (GA_MEASUREMENT_ID === 'G-XXXXXXXXXX') {
     // Belum diisi ID asli - tidak memuat script apa pun supaya tidak error.
     return null;
   }
