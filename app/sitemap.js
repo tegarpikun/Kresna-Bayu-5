@@ -1,5 +1,6 @@
 import { destinations } from '@/lib/destinationsData';
 import { blogPosts } from '@/lib/blogData';
+import { ziarahDestinations } from '@/lib/ziarahData';
 
 export default function sitemap() {
   const baseUrl = 'https://www.kresnabayutour.co.id';
@@ -8,6 +9,8 @@ export default function sitemap() {
     { url: baseUrl, lastModified: new Date(), changeFrequency: 'weekly', priority: 1 },
     { url: `${baseUrl}/en`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.9 },
     { url: `${baseUrl}/blog`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.7 },
+    { url: `${baseUrl}/layanan/dokumentasi-tour`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.7 },
+    { url: `${baseUrl}/ziarah-katolik`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.8 },
   ];
 
   const destinationRoutes = destinations.map((d) => ({
@@ -24,5 +27,12 @@ export default function sitemap() {
     priority: 0.6,
   }));
 
-  return [...staticRoutes, ...destinationRoutes, ...blogRoutes];
+  const ziarahRoutes = ziarahDestinations.map((d) => ({
+    url: `${baseUrl}/ziarah-katolik/${d.slug}`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly',
+    priority: 0.7,
+  }));
+
+  return [...staticRoutes, ...destinationRoutes, ...blogRoutes, ...ziarahRoutes];
 }
