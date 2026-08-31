@@ -7,6 +7,9 @@ const NAV_LINKS = [
   { href: '#home', label: 'Home' },
   { href: '#about', label: 'About Us' },
   { href: '#services', label: 'Service' },
+  { href: '/blog', label: 'Blog' },
+  { href: '/ziarah-katolik', label: 'Tour Rohani' },
+  { href: '/layanan/dokumentasi-tour', label: 'Dokumentasi' },
   { href: '#contact', label: 'Contact' },
 ];
 
