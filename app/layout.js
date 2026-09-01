@@ -14,18 +14,25 @@ export const metadata = {
   description: siteConfig.metaDescription,
 
   keywords: [
-    'tour rombongan Malang',
-    'travel Malang',
-    'paket wisata Bali Jogja',
-    'sewa bus pariwisata Malang',
-    'tour sekolah kantor',
-    'travel terpercaya Malang',
-    'paket tour keluarga',
-    'wisata',
-    'perjalanan',
-    'paket tour jakarta',
-    'indonesia tour'
-    
+  'tour rombongan Malang',
+  'travel Malang',
+  'paket wisata Bali Jogja',
+  'sewa bus pariwisata Malang',
+  'tour sekolah kantor',
+  'travel terpercaya Malang',
+  'paket tour keluarga',
+  'ziarah katolik',
+  'paket wisata katolik',
+  'ziarah katholik',
+  'Indonesia Catholic Tour',
+  'gua maria',
+  'ziarah maria',
+  'tour rohani katolik',
+  'gua maria malang',
+  'wisata',
+  'perjalanan',
+  'paket tour jakarta',
+  'indonesia tour'
   ],
 
   authors: [{ name: 'Kresna Bayu Tour' }],
