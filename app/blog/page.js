@@ -1,16 +1,19 @@
+// app/blog/page.js — GANTI file lama dengan ini
 import Link from 'next/link';
-import { blogPosts } from '@/lib/blogData';
+import { getAllPosts } from '@/lib/sanity/queries';
 
 export const metadata = {
   title: 'Blog Tips & Panduan Tour Rombongan | Kresna Bayu Tour',
   description:
     'Kumpulan artikel tips, itinerary, dan panduan biaya tour rombongan ke berbagai destinasi di Indonesia.',
-  alternates: {
-    canonical: 'https://www.kresnabayutour.co.id/blog',
-  },
+  alternates: { canonical: 'https://www.kresnabayutour.co.id/blog' },
 };
 
-export default function BlogIndexPage() {
+export const revalidate = 60;
+
+export default async function BlogListPage() {
+  const posts = await getAllPosts();
+
   return (
     <main className="min-h-screen bg-cinematic-black text-white px-6 py-16 max-w-4xl mx-auto">
       <nav className="text-sm text-white/50 mb-8">
@@ -18,20 +21,29 @@ export default function BlogIndexPage() {
       </nav>
 
       <h1 className="text-4xl md:text-5xl font-bold mb-10">
-        Tips & Panduan Tour Rombongan
+        Tips &amp; Panduan Tour Rombongan
       </h1>
 
       <div className="space-y-8">
-        {blogPosts.map((post) => (
+        {posts.map((post) => (
           <Link
             key={post.slug}
             href={`/blog/${post.slug}`}
-            className="block border border-white/10 rounded-2xl p-6 hover:border-amber-500/50 transition-colors"
+            className="block border-b border-white/10 pb-6 hover:opacity-80 transition-opacity"
           >
             <h2 className="text-2xl font-semibold mb-2">{post.title}</h2>
             <p className="text-white/70">{post.excerpt}</p>
           </Link>
         ))}
+        {posts.length === 0 && (
+          <p className="text-white/50">
+            Belum ada artikel. Tulis artikel pertama di{' '}
+            <Link href="/studio" className="underline">
+              /studio
+            </Link>
+            .
+          </p>
+        )}
       </div>
     </main>
   );
