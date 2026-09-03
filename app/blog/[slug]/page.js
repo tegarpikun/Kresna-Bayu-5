@@ -1,15 +1,20 @@
-import { blogPosts, getBlogPostBySlug } from '@/lib/blogData';
+// app/blog/[slug]/page.js — GANTI file lama dengan ini
+import { PortableText } from '@portabletext/react';
+import Link from 'next/link';
+import { notFound } from 'next/navigation';
+import { getPostBySlug, getAllPostSlugs } from '@/lib/sanity/queries';
 import { getDestinationBySlug } from '@/lib/destinationsData';
 import { siteConfig, buildWhatsappLink } from '@/lib/siteConfig';
-import { notFound } from 'next/navigation';
-import Link from 'next/link';
 
-export function generateStaticParams() {
-  return blogPosts.map((p) => ({ slug: p.slug }));
+export const revalidate = 60;
+
+export async function generateStaticParams() {
+  const slugs = await getAllPostSlugs();
+  return slugs.map((s) => ({ slug: s.slug }));
 }
 
 export async function generateMetadata({ params }) {
-  const post = getBlogPostBySlug(params.slug);
+  const post = await getPostBySlug(params.slug);
   if (!post) return {};
 
   return {
@@ -27,8 +32,21 @@ export async function generateMetadata({ params }) {
   };
 }
 
-export default function BlogPostPage({ params }) {
-  const post = getBlogPostBySlug(params.slug);
+// Komponen kustom biar heading H2 di body dapat style yang sama
+// dengan desain lama (font-semibold, dst).
+const portableTextComponents = {
+  block: {
+    h2: ({ children }) => (
+      <h2 className="text-xl font-semibold mb-2 mt-8">{children}</h2>
+    ),
+    normal: ({ children }) => (
+      <p className="text-white/80 leading-relaxed mb-4">{children}</p>
+    ),
+  },
+};
+
+export default async function BlogPostPage({ params }) {
+  const post = await getPostBySlug(params.slug);
   if (!post) notFound();
 
   const relatedDestination = post.relatedDestinationSlug
@@ -45,14 +63,11 @@ export default function BlogPostPage({ params }) {
     headline: post.title,
     description: post.metaDescription,
     datePublished: post.publishedDate,
-    author: {
-      '@type': 'Organization',
-      name: siteConfig.brandName,
-    },
+    author: { '@type': 'Organization', name: siteConfig.brandName },
   };
 
   const faqSchema =
-    post.faq.length > 0
+    post.faq && post.faq.length > 0
       ? {
           '@context': 'https://schema.org',
           '@type': 'FAQPage',
@@ -86,16 +101,11 @@ export default function BlogPostPage({ params }) {
         {post.title}
       </h1>
 
-      <div className="space-y-8">
-        {post.content.map((section) => (
-          <section key={section.heading}>
-            <h2 className="text-xl font-semibold mb-2">{section.heading}</h2>
-            <p className="text-white/80 leading-relaxed">{section.body}</p>
-          </section>
-        ))}
+      <div className="space-y-2">
+        <PortableText value={post.body} components={portableTextComponents} />
       </div>
 
-      {post.faq.length > 0 && (
+      {post.faq && post.faq.length > 0 && (
         <section className="mt-10">
           <h2 className="text-xl font-semibold mb-4">Pertanyaan Umum</h2>
           <div className="space-y-4">
