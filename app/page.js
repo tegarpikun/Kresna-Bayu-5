@@ -156,9 +156,9 @@ export default function Home() {
             <p className="animate-on-scroll hero-slide-in slide-in-left mb-3 font-sans text-[10px] uppercase tracking-[0.3em] text-cinematic-amber text-shadow-cinematic sm:mb-4 sm:text-xs">
               {siteConfig.hero.eyebrow}
             </p>
-            <h1 className="animate-on-scroll hero-slide-in slide-in-right mb-4 whitespace-pre-line font-serif text-[clamp(2rem,7vw,5rem)] font-bold leading-[1.05] text-cinematic-cream text-shadow-cinematic sm:mb-6">
+            <h2 className="animate-on-scroll hero-slide-in slide-in-right mb-4 whitespace-pre-line font-serif text-[clamp(2rem,7vw,5rem)] font-bold leading-[1.05] text-cinematic-cream text-shadow-cinematic sm:mb-6">
               {siteConfig.hero.title}
-            </h1>
+            </h2>
             <p className="animate-on-scroll hero-fade-delayed mx-auto max-w-lg font-serif text-sm italic text-cinematic-cream text-shadow-cinematic sm:mx-0 sm:text-lg md:text-xl">
               {siteConfig.hero.subtitle}
             </p>
