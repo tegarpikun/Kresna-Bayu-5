@@ -155,9 +155,12 @@ export default function WelcomeIntro() {
 
       <div className="relative z-10 max-w-3xl text-center">
         <h1 className="min-h-[1.3em] font-display text-[clamp(1.6rem,5.5vw,3.4rem)] font-semibold leading-tight text-cinematic-cream text-shadow-cinematic">
+        <span className="sr-only">{HEADLINE}</span>
+        <span aria-hidden="true">
           {typed}
           <span className="typewriter-cursor">|</span>
-        </h1>
+        </span>
+      </h1>
 
         {/* Sebelumnya bagian bawah headline kosong/terasa terlalu pendek -
             ditambah subjudul singkat + penanda scroll supaya section ini
