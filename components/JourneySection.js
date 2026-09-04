@@ -293,7 +293,7 @@ export default function JourneySection() {
               <p className="mb-6 font-warm text-sm leading-relaxed text-slate-300 sm:text-base">
                 Kami juga melayani paket <strong>ziarah Katolik</strong> dan{' '}
                 <strong>ziarah Maria</strong> rombongan dari Malang ke berbagai
-                gua Maria dan gereja ziarah di Jawa — cocok untuk komunitas
+                gua Maria dan gereja ziarah di seluruh Indonesia cocok untuk komunitas
                 paroki, keluarga besar, maupun rombongan sekolah Katolik.
               </p>
               <Link
@@ -306,8 +306,8 @@ export default function JourneySection() {
             <div className="relative aspect-[4/3] overflow-hidden rounded-2xl">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="/photos/ziarah/dokumentasi/puhsarang.jpg"
-                alt="Ziarah Gua Maria Puhsarang bersama Kresna Bayu Tour"
+                src="/photos/ziarah/dokumentasi/kerep.jpg"
+                alt="Ziarah Gua Maria Kerep bersama Kresna Bayu Tour"
                 className="h-full w-full object-cover"
               />
             </div>
