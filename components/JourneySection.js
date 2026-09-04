@@ -275,9 +275,43 @@ export default function JourneySection() {
               />
             ))}
           </div>
-          <p className="mt-4 text-center font-warm text-xs font-medium text-slate-500">
+                   <p className="mt-4 text-center font-warm text-xs font-medium text-slate-500">
             Klik foto untuk melihat lebih besar
           </p>
+        </section>
+
+        {/* ===== Tour Rohani & Ziarah Katolik ===== */}
+        <section className="mx-auto max-w-6xl px-6 pb-16 sm:pb-24">
+          <div className="grid items-center gap-8 rounded-3xl bg-slate-900 p-8 sm:grid-cols-2 sm:p-12">
+            <div>
+              <p className="mb-2 font-warm text-xs font-semibold uppercase tracking-widest text-amber-400">
+                Layanan Khusus
+              </p>
+              <h2 className="mb-4 font-display text-[clamp(1.5rem,3.5vw,2.2rem)] font-bold text-white">
+                Tour Rohani &amp; Ziarah Katolik Rombongan
+              </h2>
+              <p className="mb-6 font-warm text-sm leading-relaxed text-slate-300 sm:text-base">
+                Kami juga melayani paket <strong>ziarah Katolik</strong> dan{' '}
+                <strong>ziarah Maria</strong> rombongan dari Malang ke berbagai
+                gua Maria dan gereja ziarah di Jawa — cocok untuk komunitas
+                paroki, keluarga besar, maupun rombongan sekolah Katolik.
+              </p>
+              <Link
+                href="/ziarah-katolik"
+                className="inline-block rounded-full bg-amber-500 px-6 py-3 font-semibold text-slate-900 transition-colors hover:bg-amber-400"
+              >
+                Lihat Paket Tour Rohani &amp; Ziarah Katolik →
+              </Link>
+            </div>
+            <div className="relative aspect-[4/3] overflow-hidden rounded-2xl">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/photos/ziarah/dokumentasi/puhsarang.jpg"
+                alt="Ziarah Gua Maria Puhsarang bersama Kresna Bayu Tour"
+                className="h-full w-full object-cover"
+              />
+            </div>
+          </div>
         </section>
 
         {/* ===== FAQ ===== */}
