@@ -28,13 +28,23 @@ export default async function BlogListPage() {
 
       <div className="space-y-8">
         {posts.map((post) => (
-          <Link
-            key={post.slug}
-            href={`/blog/${post.slug}`}
-            className="block border-b border-white/10 pb-6 hover:opacity-80 transition-opacity"
-          >
-            <h2 className="text-2xl font-semibold mb-2">{post.title}</h2>
-            <p className="text-white/70">{post.excerpt}</p>
+           <Link
+              key={post.slug}
+              href={`/blog/${post.slug}`}
+              className="block border-b border-white/10 pb-6 hover:opacity-80 transition-opacity"
+            >
+              {post.mainImage && (
+                <div className="relative w-full aspect-video mb-4 rounded-xl overflow-hidden">
+                  <Image
+                    src={urlForImage(post.mainImage).width(800).height(450).url()}
+                    alt={post.title}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+              )}
+              <h2 className="text-2xl font-semibold mb-2">{post.title}</h2>
+              <p className="text-white/70">{post.excerpt}</p>
           </Link>
         ))}
         {posts.length === 0 && (
