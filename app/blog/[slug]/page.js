@@ -104,7 +104,7 @@ export default async function BlogPostPage({ params }) {
       </h1>
 
       {post.mainImage && (
-        <div className="relative w-full max-w-md mx-auto aspect-video mb-8 rounded-2xl overflow-hidden">
+        <div className="relative w-full aspect-video mb-8 rounded-2xl overflow-hidden">
           <ExpandableImage
             src={urlForImage(post.mainImage).width(1200).height(675).url()}
             alt={post.title}
