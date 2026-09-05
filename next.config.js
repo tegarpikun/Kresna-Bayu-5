@@ -7,6 +7,10 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'images.unsplash.com',
       },
+      {
+        protocol: 'https',
+        hostname: 'cdn.sanity.io',   // ← tambahkan ini
+      },
     ],
   },
   // Default Next.js untuk file di /public adalah
