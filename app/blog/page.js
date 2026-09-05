@@ -33,10 +33,10 @@ export default async function BlogListPage() {
               href={`/blog/${post.slug}`}
               className="block border-b border-white/10 pb-6 hover:opacity-80 transition-opacity"
             >
-              {post.mainImage && (
-                <div className="relative w-full aspect-video mb-4 rounded-xl overflow-hidden">
+           {post.mainImage && (
+                <div className="relative w-40 h-28 flex-shrink-0 rounded-lg overflow-hidden">
                   <Image
-                    src={urlForImage(post.mainImage).width(800).height(450).url()}
+                    src={urlForImage(post.mainImage).width(400).height(280).url()}
                     alt={post.title}
                     fill
                     className="object-cover"
