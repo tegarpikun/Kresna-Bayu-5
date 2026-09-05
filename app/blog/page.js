@@ -1,5 +1,7 @@
 // app/blog/page.js — GANTI file lama dengan ini
 import Link from 'next/link';
+import Image from 'next/image';
+import { urlForImage } from '@/lib/sanity/image';
 import { getAllPosts } from '@/lib/sanity/queries';
 
 export const metadata = {
