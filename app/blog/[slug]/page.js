@@ -1,5 +1,7 @@
 // app/blog/[slug]/page.js — GANTI file lama dengan ini
 import { PortableText } from '@portabletext/react';
+import Image from 'next/image';
+import { urlForImage } from '@/lib/sanity/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getPostBySlug, getAllPostSlugs } from '@/lib/sanity/queries';
