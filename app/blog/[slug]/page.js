@@ -103,6 +103,18 @@ export default async function BlogPostPage({ params }) {
         {post.title}
       </h1>
 
+      {post.mainImage && (
+        <div className="relative w-full aspect-video mb-8 rounded-2xl overflow-hidden">
+          <Image
+            src={urlForImage(post.mainImage).width(1200).height(675).url()}
+            alt={post.title}
+            fill
+            className="object-cover"
+            priority
+          />
+        </div>
+      )}
+
       <div className="space-y-2">
         <PortableText value={post.body} components={portableTextComponents} />
       </div>
