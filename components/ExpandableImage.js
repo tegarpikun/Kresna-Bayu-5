@@ -8,8 +8,8 @@ export default function ExpandableImage({ src, alt, className }) {
 
   return (
     <>
-      <div
-        className={`relative cursor-zoom-in ${className}`}
+       <div
+        className={`relative w-full h-full cursor-zoom-in ${className || ''}`}
         onClick={() => setOpen(true)}
       >
         <Image src={src} alt={alt} fill className="object-cover" />
