@@ -1,4 +1,3 @@
-// app/blog/[slug]/page.js — GANTI file lama dengan ini
 import { PortableText } from '@portabletext/react';
 import ExpandableImage from '@/components/ExpandableImage';
 import { urlForImage } from '@/lib/sanity/image';
@@ -6,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import NavBar from '@/components/NavBar';
+import SocialIcons from '@/components/SocialIcons';
 import { getPostBySlug, getAllPostSlugs, getAllPosts } from '@/lib/sanity/queries';
 import { getDestinationBySlug } from '@/lib/destinationsData';
 import { siteConfig, buildWhatsappLink } from '@/lib/siteConfig';
@@ -179,6 +179,31 @@ export default async function BlogPostPage({ params }) {
               >
                 Konsultasi via WhatsApp
               </a>
+            </div>
+
+            {/* Byline penulis + tanggal terbit + media sosial resmi
+                Kresna Bayu Tour, ditampilkan di bagian paling bawah
+                artikel. */}
+            <div className="mt-10 border-t border-white/10 pt-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <p className="text-sm text-white/60">
+                Ditulis oleh{' '}
+                <span className="text-white/85 font-medium">
+                  {post.author || 'Kresna Bayu Tour Team'}
+                </span>
+                {post.publishedDate && (
+                  <>
+                    {' '}
+                    &middot; Diterbitkan{' '}
+                    {new Date(post.publishedDate).toLocaleDateString('id-ID', {
+                      day: 'numeric',
+                      month: 'long',
+                      year: 'numeric',
+                    })}
+                  </>
+                )}
+              </p>
+
+              <SocialIcons variant="dark" />
             </div>
           </article>
 
