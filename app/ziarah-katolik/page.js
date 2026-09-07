@@ -11,14 +11,14 @@ import { buildWhatsappLink } from '@/lib/siteConfig';
 export const metadata = {
   title: 'Ziarah Katolik & Ziarah Maria di Indonesia | Tour Rohani Rombongan - Kresna Bayu Tour',
   description:
-    'Paket ziarah Katolik dan ziarah Maria untuk rombongan paroki, keluarga besar, dan sekolah Katolik ke berbagai gua Maria dan gereja ziarah di Jawa. Melayani keberangkatan dari Malang, Surabaya, Yogyakarta, Semarang, dan kota-kota lain di Indonesia.',
+    'Paket ziarah Katolik dan ziarah Maria untuk rombongan paroki, keluarga besar, dan sekolah Katolik ke berbagai gua Maria dan gereja ziarah di Indonesia. Melayani keberangkatan dari berbagai daerah di seluruh Indonesia.',
   alternates: {
     canonical: 'https://www.kresnabayutour.co.id/ziarah-katolik',
   },
   openGraph: {
     title: 'Ziarah Katolik & Ziarah Maria di Indonesia | Tour Rohani Rombongan',
     description:
-      'Paket ziarah Maria dan tour rohani Katolik untuk rombongan dari berbagai kota di Indonesia ke destinasi ziarah populer di Jawa.',
+      'Paket ziarah Maria dan tour rohani Katolik untuk rombongan dari berbagai kota di Indonesia ke destinasi ziarah populer di Indonesia.',
     type: 'website',
   },
 };
@@ -27,10 +27,6 @@ const hubFaq = [
   {
     q: 'Apa itu ziarah Katolik dan ziarah Maria?',
     a: 'Ziarah Katolik adalah perjalanan rohani ke tempat-tempat yang dianggap suci atau bersejarah dalam iman Katolik, dilakukan untuk berdoa, merenung, dan memperdalam iman. Ziarah Maria secara khusus mengunjungi gua Maria atau gereja yang didedikasikan untuk penghormatan kepada Bunda Maria, seperti Gua Maria Lourdes Puhsarang, Sendangsono, atau Ganjuran.',
-  },
-  {
-    q: 'Apakah Kresna Bayu Tour hanya melayani ziarah dari Malang?',
-    a: 'Tidak. Kami berbasis operasional di Malang, tetapi melayani rombongan ziarah Katolik dan ziarah Maria dari berbagai kota di Indonesia, termasuk Surabaya, Yogyakarta, Semarang, Jakarta, dan kota lainnya. Titik penjemputan dan itinerary dapat disesuaikan dengan asal rombongan.',
   },
   {
     q: 'Apa saja yang termasuk dalam paket tour rohani Katolik ini?',
@@ -47,13 +43,13 @@ const hubFaq = [
 ];
 
 const kotaKeberangkatan = [
-  'Malang',
   'Surabaya',
   'Yogyakarta',
   'Semarang',
   'Jakarta',
   'Kediri',
   'Solo',
+  'Luar-Jawa',
 ];
 
 export default function ZiarahKatolikHubPage() {
@@ -109,7 +105,7 @@ export default function ZiarahKatolikHubPage() {
     },
     audience: {
       '@type': 'Audience',
-      audienceType: 'Komunitas paroki, keluarga besar, sekolah Katolik',
+      audienceType: 'Komunitas paroki, keluarga besar, Perusahaan, sekolah Katolik',
     },
   };
 
@@ -161,11 +157,11 @@ export default function ZiarahKatolikHubPage() {
           tetap menjadi tujuan tour rohani hingga sekarang.
         </p>
         <p className="text-white/80 leading-relaxed">
-          Banyak paroki, keluarga besar, dan sekolah Katolik mengadakan ziarah
+          Banyak paroki, keluarga besar, perusahaan dan sekolah Katolik mengadakan ziarah
           rombongan sebagai bagian dari retret tahunan, bulan Maria (Mei dan
-          Oktober), atau perayaan khusus lainnya — biasanya dengan
+          Oktober), atau perayaan khusus lainnya yang biasanya dengan
           transportasi bersama, pendampingan, dan itinerary yang mencakup
-          satu atau beberapa lokasi ziarah sekaligus.
+          satu atau beberapa lokasi ziarah dan paket wisata sekaligus.
         </p>
       </section>
 
@@ -200,8 +196,7 @@ export default function ZiarahKatolikHubPage() {
         </h2>
         <p className="text-white/80 leading-relaxed mb-4">
           Basis operasional kami ada di Malang, tetapi paket ziarah Katolik
-          dan tour rohani kami melayani rombongan dari berbagai kota,
-          termasuk:
+          dan tour rohani kami melayani rombongan dari berbagai daerah di seluruh Indonesia,
         </p>
         <div className="flex flex-wrap gap-2">
           {kotaKeberangkatan.map((kota) => (
@@ -214,7 +209,7 @@ export default function ZiarahKatolikHubPage() {
           ))}
         </div>
         <p className="text-white/60 text-sm mt-4">
-          Kota keberangkatan lain di luar daftar ini tetap bisa dilayani —
+          Kota keberangkatan lain di luar daftar ini tetap bisa dilayani 
           hubungi kami untuk konsultasi rute dan estimasi biaya.
         </p>
       </section>
