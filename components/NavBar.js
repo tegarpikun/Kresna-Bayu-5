@@ -4,12 +4,12 @@ import { useState } from 'react';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 
 const NAV_LINKS = [
-  { href: '#home', label: 'Home' },
-  { href: '#about', label: 'About Us' },
-  { href: '#services', label: 'Service' },
+  { href: '/#home', label: 'Home' },
+  { href: '/#about', label: 'About Us' },
+  { href: '/#services', label: 'Service' },
   { href: '/blog', label: 'Blog' },
   { href: '/ziarah-katolik', label: 'Tour Rohani' },
-  { href: '#contact', label: 'Contact' },
+  { href: '/#contact', label: 'Contact' },
 ];
 
 export default function NavBar() {
