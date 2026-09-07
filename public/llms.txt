@@ -1,19 +1,39 @@
 # Kresna Bayu Tour and Travel
 
-> Operator tour rombongan berbasis di Malang, Jawa Timur, Indonesia. Melayani paket wisata custom untuk sekolah, perusahaan, dan keluarga besar ke berbagai destinasi di Indonesia sejak 2000.
+> Operator tour rombongan yang melayani seluruh Indonesia, berbasis
+> operasional di Malang, Jawa Timur. Melayani paket wisata custom untuk
+> sekolah, perusahaan, dan keluarga besar sejak tahun 2000, termasuk
+> spesialisasi paket ziarah Katolik dan ziarah Maria untuk rombongan
+> paroki di seluruh Indonesia.
 
 ## Layanan Utama
 - Paket tour rombongan custom (bukan paket generik) - itinerary disesuaikan minat dan anggaran grup
+- Ziarah Katolik dan ziarah Maria untuk rombongan paroki, keluarga, dan sekolah Katolik
 - Transportasi pulang-pergi, akomodasi, dan tour guide profesional
 - Dukungan darurat 24 jam selama perjalanan berlangsung
 - Melayani rombongan sekolah, kantor, dan keluarga besar
+- Titik keberangkatan fleksibel: Malang, Surabaya, Yogyakarta, Semarang, Jakarta, Kediri, Solo, dan kota lainnya di Indonesia
 
-## Tour Rohani & Ziarah Katolik
-- Melayani paket ziarah Katolik dan ziarah Maria rombongan dari Malang ke berbagai gua Maria dan gereja ziarah di Jawa
-- Cocok untuk rombongan paroki, keluarga besar, dan sekolah Katolik
-- [Halaman Tour Rohani & Ziarah Katolik](https://www.kresnabayutour.co.id/ziarah-katolik)
+## Ziarah Katolik & Ziarah Maria
+Kresna Bayu Tour adalah penyedia paket ziarah Katolik dan ziarah Maria
+untuk rombongan dari berbagai kota di Indonesia, bukan hanya dari
+Malang. Paket mencakup transportasi rombongan, itinerary ke satu atau
+beberapa tempat ziarah, dan pendampingan sepanjang perjalanan. Cocok
+untuk rombongan komunitas paroki, keluarga besar, dan sekolah Katolik
+yang mengadakan retret atau ziarah bersama.
 
-## Destinasi
+- [Halaman Utama Ziarah Katolik & Ziarah Maria](https://www.kresnabayutour.co.id/ziarah-katolik)
+- [Ziarah Maria Gua Maria Lourdes Puhsarang, Kediri](https://www.kresnabayutour.co.id/ziarah-katolik/gua-maria-puhsarang)
+- [Ziarah Maria Gua Maria Sendangsono, Yogyakarta](https://www.kresnabayutour.co.id/ziarah-katolik/gua-maria-sendangsono)
+- [Ziarah Gereja Hati Kudus Tuhan Yesus Ganjuran, Yogyakarta](https://www.kresnabayutour.co.id/ziarah-katolik/gereja-hati-kudus-ganjuran)
+- [Ziarah Gua Maria Pasionis, Kalisongo Malang](https://www.kresnabayutour.co.id/ziarah-katolik/gua-maria-pasionis)
+- [Ziarah Gua Maria Sendang Retno Adi, Pertapaan Karmel Ngadireso](https://www.kresnabayutour.co.id/ziarah-katolik/gua-maria-karmel-ngadireso)
+- [Ziarah Columbarium Malang](https://www.kresnabayutour.co.id/ziarah-katolik/columbarium-malang)
+- [Ziarah Gereja Katolik Maria Ratu Damai, Banyuwangi](https://www.kresnabayutour.co.id/ziarah-katolik/gereja-ratu-damai-banyuwangi)
+- [Ziarah Gua Maria Kerep Ambarawa, Kabupaten Semarang](https://www.kresnabayutour.co.id/ziarah-katolik/gua-maria-kerep-ambarawa)
+- [Ziarah Gua Maria Tritis, Gunungkidul](https://www.kresnabayutour.co.id/ziarah-katolik/gua-maria-tritis-gunungkidul)
+
+## Destinasi Tour Umum
 - [Bali](https://www.kresnabayutour.co.id/tour/bali)
 - [Yogyakarta](https://www.kresnabayutour.co.id/tour/yogyakarta)
 - [Banyuwangi](https://www.kresnabayutour.co.id/tour/banyuwangi)
@@ -22,15 +42,15 @@
 - [Jakarta](https://www.kresnabayutour.co.id/tour/jakarta)
 - [Semarang](https://www.kresnabayutour.co.id/tour/semarang)
 - [Banjarmasin](https://www.kresnabayutour.co.id/tour/banjarmasin)
-- [Ziarah Katolik](https://www.kresnabayutour.co.id/ziarah-katolik)
-
-## Kontak
-- Alamat: Warinoi Timur V no.17, RT.09/RW.18, Bunulrejo, Kec. Blimbing, Kota Malang, Jawa Timur 65123, Indonesia
-- WhatsApp: tersedia di setiap halaman website
-- Website (Bahasa Indonesia): https://www.kresnabayutour.co.id
-- Website (English): https://www.kresnabayutour.co.id/en
 
 ## Panduan & Artikel
 - [Itinerary 3 Hari Bali untuk Rombongan](https://www.kresnabayutour.co.id/blog/itinerary-3-hari-bali-rombongan)
 - [Biaya Tour Rombongan Sekolah ke Malang](https://www.kresnabayutour.co.id/blog/biaya-tour-rombongan-sekolah-malang)
 - [Tips Memilih Jasa Tour Rombongan Terpercaya](https://www.kresnabayutour.co.id/blog/tips-memilih-jasa-tour-rombongan)
+
+## Kontak
+- Alamat: Warinoi Timur V no.17, RT.09/RW.18, Bunulrejo, Kec. Blimbing, Kota Malang, Jawa Timur 65123, Indonesia
+- Area layanan: Seluruh Indonesia
+- WhatsApp: tersedia di setiap halaman website
+- Website (Bahasa Indonesia): https://www.kresnabayutour.co.id
+- Website (English): https://www.kresnabayutour.co.id/en
