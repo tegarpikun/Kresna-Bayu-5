@@ -2,26 +2,36 @@ import Link from 'next/link';
 import { ziarahDestinations } from '@/lib/ziarahData';
 import { buildWhatsappLink } from '@/lib/siteConfig';
 
-// Halaman hub ini yang menargetkan kata kunci utama:
-// "ziarah maria", "ziarah katolik", "tour rohani", "tour rohani katolik"
-// Judul, deskripsi, dan isi paragraf sengaja memuat variasi frasa itu
-// secara alami (bukan diulang-ulang / keyword stuffing).
+// Halaman hub ini menargetkan kata kunci utama secara NASIONAL:
+// "ziarah katolik", "ziarah maria", "tour rohani katolik"
+// PENTING: title, H1, dan paragraf pembuka SENGAJA tidak lagi memaksakan
+// "dari Malang" di posisi awal — itu menyempitkan relevansi ke query
+// lokal saja. Malang tetap disebut sebagai basis operasional (baik untuk
+// kepercayaan/E-E-A-T), tapi cakupan layanan ditulis eksplisit nasional.
 export const metadata = {
-  title: 'Tour Rohani & Ziarah Katolik Rombongan dari Malang | Kresna Bayu Tour',
+  title: 'Ziarah Katolik & Ziarah Maria di Indonesia | Tour Rohani Rombongan - Kresna Bayu Tour',
   description:
-    'Paket tour rohani dan ziarah Katolik rombongan dari Malang: ziarah Maria ke Puhsarang, Sendangsono, Ganjuran, dan destinasi ziarah lainnya. Transportasi, itinerary, dan pendampingan untuk komunitas paroki.',
+    'Paket ziarah Katolik dan ziarah Maria untuk rombongan paroki, keluarga besar, dan sekolah Katolik ke berbagai gua Maria dan gereja ziarah di Jawa. Melayani keberangkatan dari Malang, Surabaya, Yogyakarta, Semarang, dan kota-kota lain di Indonesia.',
   alternates: {
     canonical: 'https://www.kresnabayutour.co.id/ziarah-katolik',
   },
   openGraph: {
-    title: 'Tour Rohani & Ziarah Katolik Rombongan dari Malang',
+    title: 'Ziarah Katolik & Ziarah Maria di Indonesia | Tour Rohani Rombongan',
     description:
-      'Paket ziarah Maria dan tour rohani Katolik rombongan dari Malang ke berbagai destinasi ziarah di Jawa.',
+      'Paket ziarah Maria dan tour rohani Katolik untuk rombongan dari berbagai kota di Indonesia ke destinasi ziarah populer di Jawa.',
     type: 'website',
   },
 };
 
 const hubFaq = [
+  {
+    q: 'Apa itu ziarah Katolik dan ziarah Maria?',
+    a: 'Ziarah Katolik adalah perjalanan rohani ke tempat-tempat yang dianggap suci atau bersejarah dalam iman Katolik, dilakukan untuk berdoa, merenung, dan memperdalam iman. Ziarah Maria secara khusus mengunjungi gua Maria atau gereja yang didedikasikan untuk penghormatan kepada Bunda Maria, seperti Gua Maria Lourdes Puhsarang, Sendangsono, atau Ganjuran.',
+  },
+  {
+    q: 'Apakah Kresna Bayu Tour hanya melayani ziarah dari Malang?',
+    a: 'Tidak. Kami berbasis operasional di Malang, tetapi melayani rombongan ziarah Katolik dan ziarah Maria dari berbagai kota di Indonesia, termasuk Surabaya, Yogyakarta, Semarang, Jakarta, dan kota lainnya. Titik penjemputan dan itinerary dapat disesuaikan dengan asal rombongan.',
+  },
   {
     q: 'Apa saja yang termasuk dalam paket tour rohani Katolik ini?',
     a: 'Paket ziarah Katolik kami umumnya mencakup transportasi rombongan, itinerary ke satu atau beberapa tempat ziarah, dan pendampingan selama perjalanan. Detail bisa disesuaikan dengan kebutuhan komunitas paroki atau keluarga Anda.',
@@ -34,6 +44,16 @@ const hubFaq = [
     q: 'Apakah tour rohani ini juga cocok untuk rombongan sekolah Katolik?',
     a: 'Sangat cocok. Kami melayani rombongan komunitas paroki, keluarga besar, maupun rombongan sekolah Katolik yang ingin mengadakan retret atau ziarah bersama.',
   },
+];
+
+const kotaKeberangkatan = [
+  'Malang',
+  'Surabaya',
+  'Yogyakarta',
+  'Semarang',
+  'Jakarta',
+  'Kediri',
+  'Solo',
 ];
 
 export default function ZiarahKatolikHubPage() {
@@ -51,11 +71,61 @@ export default function ZiarahKatolikHubPage() {
     })),
   };
 
+  const breadcrumbSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Beranda',
+        item: 'https://www.kresnabayutour.co.id',
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Ziarah Katolik',
+        item: 'https://www.kresnabayutour.co.id/ziarah-katolik',
+      },
+    ],
+  };
+
+  // Schema Service terpisah dari TravelAgency global (di StructuredData.js)
+  // supaya Google & AI generatif tahu ini adalah LAYANAN SPESIFIK (bukan
+  // cuma bagian umum dari bisnis tour), dengan areaServed eksplisit
+  // se-Indonesia, bukan Malang saja.
+  const serviceSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    serviceType: 'Ziarah Katolik & Tour Rohani',
+    name: 'Paket Ziarah Katolik & Ziarah Maria Rombongan',
+    provider: {
+      '@type': 'TravelAgency',
+      name: 'Kresna Bayu Tour',
+    },
+    areaServed: {
+      '@type': 'Country',
+      name: 'Indonesia',
+    },
+    audience: {
+      '@type': 'Audience',
+      audienceType: 'Komunitas paroki, keluarga besar, sekolah Katolik',
+    },
+  };
+
   return (
     <main className="min-h-screen bg-cinematic-black text-white px-6 py-16 max-w-4xl mx-auto">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}
       />
 
       <nav className="text-sm text-white/50 mb-8">
@@ -63,20 +133,46 @@ export default function ZiarahKatolikHubPage() {
       </nav>
 
       <h1 className="text-4xl md:text-5xl font-bold mb-6">
-        Tour Rohani &amp; Ziarah Katolik Rombongan
+        Ziarah Katolik &amp; Ziarah Maria di Indonesia
       </h1>
 
-      <p className="text-lg text-white/80 leading-relaxed mb-10">
+      <p className="text-lg text-white/80 leading-relaxed mb-6">
         Kresna Bayu Tour melayani paket <strong>ziarah Katolik</strong> dan{' '}
-        <strong>tour rohani</strong> rombongan dari Malang menuju berbagai
-        tempat <strong>ziarah Maria</strong> di Jawa. Cocok untuk komunitas
-        paroki, keluarga besar, maupun rombongan sekolah Katolik yang ingin
-        mengadakan retret atau ziarah bersama dengan itinerary yang
-        disesuaikan kebutuhan rombongan.
+        <strong>ziarah Maria</strong> untuk rombongan dari berbagai kota di
+        Indonesia menuju sejumlah gua Maria dan gereja ziarah bersejarah di
+        Jawa. Cocok untuk komunitas paroki, keluarga besar, maupun rombongan
+        sekolah Katolik yang ingin mengadakan retret atau <strong>tour rohani
+        Katolik</strong> bersama, dengan itinerary yang disesuaikan kebutuhan
+        rombongan.
       </p>
 
       <section className="mb-10">
-        <h2 className="text-2xl font-semibold mb-6">Destinasi Ziarah</h2>
+        <h2 className="text-2xl font-semibold mb-4">
+          Apa itu Ziarah Katolik dan Ziarah Maria?
+        </h2>
+        <p className="text-white/80 leading-relaxed mb-4">
+          Ziarah Katolik adalah perjalanan rohani ke tempat-tempat yang
+          dianggap suci atau bersejarah dalam iman Katolik — dilakukan untuk
+          berdoa, merenung, dan memperdalam iman bersama komunitas. Ziarah
+          Maria secara khusus mengunjungi gua Maria atau gereja yang
+          didedikasikan untuk penghormatan kepada Bunda Maria. Di Indonesia,
+          tradisi ziarah Maria berkembang pesat terutama di Pulau Jawa, dengan
+          gua-gua Maria yang berdiri sejak masa awal penyebaran Katolik dan
+          tetap menjadi tujuan tour rohani hingga sekarang.
+        </p>
+        <p className="text-white/80 leading-relaxed">
+          Banyak paroki, keluarga besar, dan sekolah Katolik mengadakan ziarah
+          rombongan sebagai bagian dari retret tahunan, bulan Maria (Mei dan
+          Oktober), atau perayaan khusus lainnya — biasanya dengan
+          transportasi bersama, pendampingan, dan itinerary yang mencakup
+          satu atau beberapa lokasi ziarah sekaligus.
+        </p>
+      </section>
+
+      <section className="mb-10">
+        <h2 className="text-2xl font-semibold mb-6">
+          Destinasi Ziarah Maria &amp; Gereja Ziarah Populer
+        </h2>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
           {ziarahDestinations.map((d) => (
             <Link
@@ -100,11 +196,37 @@ export default function ZiarahKatolikHubPage() {
 
       <section className="mb-10">
         <h2 className="text-2xl font-semibold mb-4">
+          Melayani Rombongan dari Berbagai Kota di Indonesia
+        </h2>
+        <p className="text-white/80 leading-relaxed mb-4">
+          Basis operasional kami ada di Malang, tetapi paket ziarah Katolik
+          dan tour rohani kami melayani rombongan dari berbagai kota,
+          termasuk:
+        </p>
+        <div className="flex flex-wrap gap-2">
+          {kotaKeberangkatan.map((kota) => (
+            <span
+              key={kota}
+              className="px-4 py-2 rounded-full border border-white/10 text-white/80 text-sm"
+            >
+              {kota}
+            </span>
+          ))}
+        </div>
+        <p className="text-white/60 text-sm mt-4">
+          Kota keberangkatan lain di luar daftar ini tetap bisa dilayani —
+          hubungi kami untuk konsultasi rute dan estimasi biaya.
+        </p>
+      </section>
+
+      <section className="mb-10">
+        <h2 className="text-2xl font-semibold mb-4">
           Kenapa Memilih Kresna Bayu Tour untuk Tour Rohani Katolik
         </h2>
         <ul className="list-disc list-inside space-y-2 text-white/80">
-          <li>Pengalaman melayani rombongan sejak tahun 2010</li>
-          <li>Itinerary fleksibel, bisa gabung beberapa lokasi ziarah</li>
+          <li>Pengalaman melayani rombongan sejak tahun 2000</li>
+          <li>Melayani rombongan dari berbagai kota di Indonesia, bukan hanya satu wilayah</li>
+          <li>Itinerary fleksibel, bisa gabung beberapa lokasi ziarah dalam satu perjalanan</li>
           <li>Transportasi dan pendampingan sepanjang perjalanan</li>
           <li>Dukungan darurat 24 jam selama trip berlangsung</li>
         </ul>
