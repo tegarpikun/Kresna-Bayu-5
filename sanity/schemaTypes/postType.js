@@ -52,6 +52,14 @@ export const postType = defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: 'author',
+      title: 'Nama Penulis',
+      type: 'string',
+      initialValue: 'Kresna Bayu Tour Team',
+      description:
+        'Ditampilkan di bagian bawah artikel. Kosongkan/biarkan default kalau artikel ditulis atas nama tim/brand.',
+    }),
+    defineField({
       name: 'relatedDestinationSlug',
       title: 'Slug Destinasi Terkait (opsional, mis. "bali", "malang")',
       description:
