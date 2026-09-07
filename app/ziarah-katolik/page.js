@@ -220,10 +220,12 @@ export default function ZiarahKatolikHubPage() {
         </h2>
         <ul className="list-disc list-inside space-y-2 text-white/80">
           <li>Pengalaman melayani rombongan sejak tahun 2000</li>
-          <li>Melayani rombongan dari berbagai kota di Indonesia, bukan hanya satu wilayah</li>
-          <li>Itinerary fleksibel, bisa gabung beberapa lokasi ziarah dalam satu perjalanan</li>
+          <li>Tour Agen yang memahami liturgi sehingga dapat mempersiapkan paket tour ziarah yang memadai</li>
+          <li>Memiliki koneksi dengan imam/pastur yang sangat luas</li>
+          <li>Itinerary fleksibel, bisa gabung beberapa lokasi ziarah atau paket wisata umum jika dibutuhkan</li>
           <li>Transportasi dan pendampingan sepanjang perjalanan</li>
           <li>Dukungan darurat 24 jam selama trip berlangsung</li>
+          <li>Fasilitas Asuransi perjalanan dan dokumentasi profesional membuat kegiatan tour lebih optimal</li>
         </ul>
       </section>
 
